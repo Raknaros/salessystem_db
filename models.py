@@ -1,17 +1,14 @@
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, BigInteger, ForeignKey, Text
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine, Column, Integer, String, BigInteger
+from sqlalchemy.orm import sessionmaker, declarative_base
 
 engine = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com'
                        ':3306/salessystem')
 
-metadata = MetaData()
+Base = declarative_base()
 
 Session = sessionmaker(bind=engine)
 session = Session()
 
-class Base(DeclarativeBase):
-    pass
 
 class Vehiculo(Base):
     __tablename__ = 'vehiculos'
@@ -29,9 +26,13 @@ class Vehiculo(Base):
     estado = Column(String(15), nullable=True)
 
 
-# Using the 'Vehiculo' class (assuming you defined it)
-result = session.query(Vehiculo).all()  # Replace 'Vehiculo' with your actual class name if defined
+"""vehiculo = session.query(Vehiculos).all()
 
 # Loop through the results
-for vehicle in result:
-    print(vehicle)  # Each 'vehicle' will be an instance of your 'Vehiculo' class
+for vehicle in vehiculo:
+    print(vehicle.placa)  # Each 'vehicle' will be an instance of your 'Vehiculo' class
+"""
+
+new_vehicle = Vehiculo(placa="PRUEBA", modelo="CarroPrueba", marca=)
+session.add(new_vehicle)
+session.commit()
