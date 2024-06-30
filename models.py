@@ -64,11 +64,11 @@ class ListaGuias(Base):
 # Using the 'Vehiculo' class (assuming you defined it)
 results = session.query(ListaFacturas).all()  # Replace 'Vehiculo' with your actual class name if defined
 
-facturas_por_cui = defaultdict(list)
+#facturas_por_cui = defaultdict(list)
 
 # Iterar sobre los resultados y agrupar por 'cui'
-for factura in results:
-    facturas_por_cui[factura.cui].append(factura)
+#for factura in results:
+#    facturas_por_cui[factura.cui].append(factura)
 
 
 #for cui, facturas in facturas_por_cui.items():
@@ -77,9 +77,26 @@ for factura in results:
 #        print(f"  Descripcion: {factura.descripcion}, Precio: {factura.p_unit}, Cantidad: {factura.cantidad}")
 
 # O acceder directamente a un grupo específico
-cui_especifico = 'X134D8F41-2'
-facturas_cui_especifico = facturas_por_cui[cui_especifico]
-print(facturas_cui_especifico[1].descripcion)
+#cui_especifico = 'X134D8F41-2'
+#facturas_cui_especifico = facturas_por_cui[cui_especifico]
+#print(facturas_cui_especifico[1].descripcion)
+
+# Crear un diccionario con cui como clave y listas de valores como valor
+grouped_dict = defaultdict(list)
+
+for factura in results:
+    cui = factura.cui
+    descripcion = factura.descripcion
+    cantidad = factura.cantidad
+    precio = factura.p_unit
+
+    # Agregar la lista de valores a la clave cui correspondiente
+    grouped_dict[cui].append([descripcion, cantidad, precio])
+
+# Convertir el defaultdict a un diccionario regular (opcional)
+grouped_dict = dict(grouped_dict)
+print(grouped_dict)
+
 """vehiculo = session.query(Vehiculos).all()
 
 # Loop through the results
