@@ -30,14 +30,14 @@ class Vehiculo(Base):
 
 class ListaFacturas(Base):
     __tablename__ = 'lista_facturas'
-
+    #__table_args__ = {'extend_existing': True}
     alias = Column(String(35), nullable=True)
     cui = Column(String(35), primary_key=True)
     guia = Column(String(35), nullable=True)
     numero = Column(String(35), nullable=True)
     ruc = Column(BigInteger, nullable=True)
     emision = Column(String(35), nullable=True)
-    descripcion = Column(String(35), nullable=True)
+    descripcion = Column(String(35), primary_key=True)
     unidad_medida = Column(String(35), nullable=True)
     cantidad = Column(String(35), nullable=True)
     p_unit = Column(String(35), nullable=True)
@@ -52,7 +52,7 @@ class ListaGuias(Base):
     __tablename__ = 'lista_guias'
     alias = Column(String(35), nullable=True)
     cui = Column(String(35), primary_key=True)
-    traslado = Column(String(35), nullable=True)
+    traslado = Column(String(35), primary_key=True)
     partida = Column(String(35), nullable=True)
     llegada = Column(String(35), nullable=True)
     placa = Column(String(35), nullable=True)
@@ -63,6 +63,9 @@ class ListaGuias(Base):
 
 # Using the 'Vehiculo' class (assuming you defined it)
 results = session.query(ListaFacturas).all()  # Replace 'Vehiculo' with your actual class name if defined
+
+for row in results:
+    print(row.cui)
 
 #facturas_por_cui = defaultdict(list)
 
@@ -81,21 +84,6 @@ results = session.query(ListaFacturas).all()  # Replace 'Vehiculo' with your act
 #facturas_cui_especifico = facturas_por_cui[cui_especifico]
 #print(facturas_cui_especifico[1].descripcion)
 
-# Crear un diccionario con cui como clave y listas de valores como valor
-grouped_dict = defaultdict(list)
-
-for factura in results:
-    cui = factura.cui
-    descripcion = factura.descripcion
-    cantidad = factura.cantidad
-    precio = factura.p_unit
-
-    # Agregar la lista de valores a la clave cui correspondiente
-    grouped_dict[cui].append([descripcion, cantidad, precio])
-
-# Convertir el defaultdict a un diccionario regular (opcional)
-grouped_dict = dict(grouped_dict)
-print(grouped_dict)
 
 """vehiculo = session.query(Vehiculos).all()
 
