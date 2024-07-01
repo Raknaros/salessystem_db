@@ -1,5 +1,5 @@
 from collections import defaultdict
-
+import pandas as pd
 from sqlalchemy import create_engine, Column, Integer, String, BigInteger
 from sqlalchemy.orm import sessionmaker, declarative_base
 
@@ -61,29 +61,9 @@ class ListaGuias(Base):
     observaciones = Column(String(35), nullable=True)
 
 
+listas = pd.read_sql(sql=session.query(ListaFacturas).all(), con=engine)
 
-
-# Using the 'Vehiculo' class (assuming you defined it)
-#results = session.query(ListaFacturas).all()  # Replace 'Vehiculo' with your actual class name if defined
-
-result_dict = [u.__dict__ for u in session.query(ListaFacturas).all()]
-
-print(result_dict)
-# Iterar sobre los resultados y agrupar por 'cui'
-#for factura in results:
-#    facturas_por_cui[factura.cui].append(factura)
-
-
-#for cui, facturas in facturas_por_cui.items():
-#    print(f"CUI: {cui}")
-#    for factura in facturas:
-#        print(f"  Descripcion: {factura.descripcion}, Precio: {factura.p_unit}, Cantidad: {factura.cantidad}")
-
-# O acceder directamente a un grupo específico
-#cui_especifico = 'X134D8F41-2'
-#facturas_cui_especifico = facturas_por_cui[cui_especifico]
-#print(facturas_cui_especifico[1].descripcion)
-
+print(listas)
 
 """vehiculo = session.query(Vehiculos).all()
 
