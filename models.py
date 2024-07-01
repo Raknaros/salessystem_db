@@ -61,14 +61,14 @@ class ListaGuias(Base):
     observaciones = Column(String(35), nullable=True)
 
 
+
+
 # Using the 'Vehiculo' class (assuming you defined it)
-results = session.query(ListaFacturas).all()  # Replace 'Vehiculo' with your actual class name if defined
+#results = session.query(ListaFacturas).all()  # Replace 'Vehiculo' with your actual class name if defined
 
-for row in results:
-    print(row.cui)
+result_dict = [u.__dict__ for u in session.query(ListaFacturas).all()]
 
-#facturas_por_cui = defaultdict(list)
-
+print(result_dict)
 # Iterar sobre los resultados y agrupar por 'cui'
 #for factura in results:
 #    facturas_por_cui[factura.cui].append(factura)
