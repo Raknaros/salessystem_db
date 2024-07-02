@@ -61,9 +61,31 @@ class ListaGuias(Base):
     observaciones = Column(String(35), nullable=True)
 
 
-listas = pd.read_sql(sql=session.query(ListaFacturas).all(), con=engine)
+#Query de vista "lista_facturas"
+lista_facturas_query = session.query(ListaFacturas).statement
+#Query de vista "lista_guias"
+lista_guias_query = session.query(ListaGuias).statement
 
-print(listas)
+# Leer los resultados en un DataFrame de Pandas
+lista_facturas = pd.read_sql(lista_facturas_query, con=engine)
+lista_guias = pd.read_sql(lista_guias_query, con=engine)
+lista_cui = lista_facturas['cui'].drop_duplicates().tolist()
+
+for cui in lista_cui:
+    facturas = lista_facturas[lista_facturas['cui'] == cui].reset_index(drop=False)
+    for index, row in facturas.iterrows():
+        if index == 0:
+            print(cui, row['guia'], row['numero'], row['emision'], row['ruc'], row['descripcion'], row['cantidad'],
+                  row['p_unit'], row['sub_total'], row['vencimiento'], row['unidad_medida'], row['moneda'])
+        elif index == len(facturas) - 1:
+            print(row['descripcion'], row['cantidad'],
+                  row['p_unit'], row['sub_total'])
+            print(facturas['sub_total'].sum(), facturas['sub_total'].sum() * 0.18, facturas['sub_total'].sum() * 1.18)
+            print(lista_guias[lista_guias['cui'] == cui])
+            print('\n')
+        else:
+            print(row['descripcion'], row['cantidad'],
+                  row['p_unit'], row['sub_total'])
 
 """vehiculo = session.query(Vehiculos).all()
 
