@@ -66,11 +66,13 @@ lista_facturas_query = session.query(ListaFacturas).statement
 #Query de vista "lista_guias"
 lista_guias_query = session.query(ListaGuias).statement
 
+lista_proveedores = pd.read_sql('SELECT alias, numero_documento, usuario_sol, clave_sol FROM proveedores', engine)
+
 # Leer los resultados en un DataFrame de Pandas
 lista_facturas = pd.read_sql(lista_facturas_query, con=engine)
 lista_guias = pd.read_sql(lista_guias_query, con=engine)
 lista_cui = lista_facturas['cui'].drop_duplicates().tolist()
-
+proveedores=['CHERRYS','CONSULCACH','CONSULCELIZ','NOVATEX','IMBOX','TOCAM']
 for cui in lista_cui:
     facturas = lista_facturas[lista_facturas['cui'] == cui].reset_index(drop=False)
     for index, row in facturas.iterrows():
@@ -93,6 +95,8 @@ for cui in lista_cui:
             lista_proveedor = lista_facturas[lista_facturas['alias'] == proveedor]
             if lista_proveedor.empty:
                 break
+            workbook = writer.book
+            current_worksheet = workbook.add_worksheet(proveedor)
             current_lista = pd.pivot_table(lista_proveedor,
                                            values=["sub_total", "igv", "total", "vencimiento", "moneda"],
                                            index=['cui', 'guia', 'numero', 'ruc', 'emision', 'descripcion', 'unidad_medida',
@@ -111,8 +115,6 @@ for cui in lista_cui:
                 for x, y in current_lista.groupby(level=0)
             ])
             current_lista.to_excel(writer, sheet_name=proveedor, float_format='%.3f', startrow=1)
-            workbook = writer.book
-            current_worksheet = writer.sheets[proveedor]
             current_worksheet.write_row(0, 0, lista_proveedores.loc[lista_proveedores['alias'] == proveedor].values.flatten().tolist())
             cell_format = workbook.add_format({'bold': True, 'font_size': 10})
 
