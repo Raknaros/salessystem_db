@@ -87,14 +87,42 @@ for cui in lista_cui:
             print(row['descripcion'], row['cantidad'],
                   row['p_unit'], row['sub_total'])
 
-"""vehiculo = session.query(Vehiculos).all()
+"""""
+    with pd.ExcelWriter('PorEmitir.xlsx', engine='xlsxwriter') as writer:
+        for proveedor in proveedores:
+            lista_proveedor = lista_facturas[lista_facturas['alias'] == proveedor]
+            if lista_proveedor.empty:
+                break
+            current_lista = pd.pivot_table(lista_proveedor,
+                                           values=["sub_total", "igv", "total", "vencimiento", "moneda"],
+                                           index=['cui', 'guia', 'numero', 'ruc', 'emision', 'descripcion', 'unidad_medida',
+                                                  'cantidad', 'p_unit'],
+                                           aggfunc={'sub_total': 'sum', 'igv': 'sum', 'total': 'sum',
+                                                    'vencimiento': 'first',
+                                                    'moneda': 'first'})
 
-# Loop through the results
-for vehicle in vehiculo:
-    print(vehicle.placa)  # Each 'vehicle' will be an instance of your 'Vehiculo' class
+            current_lista = current_lista[['sub_total', 'igv', 'total', 'vencimiento', 'moneda']]
+            current_lista = pd.concat([
+                y._append(
+                    y[['sub_total', 'igv', 'total']].sum().rename(
+                        (x, list_guias.at[x, 'placa'], list_guias.at[x, 'conductor'],
+                         '', '', list_guias.at[x, 'llegada'],
+                         list_guias.at[x, 'datos_adicionales'], '', 'Totales')))
+                for x, y in current_lista.groupby(level=0)
+            ])
+            current_lista.to_excel(writer, sheet_name=proveedor, float_format='%.3f', startrow=1)
+            workbook = writer.book
+            current_worksheet = writer.sheets[proveedor]
+            current_worksheet.write_row(0, 0, lista_proveedores.loc[lista_proveedores['alias'] == proveedor].values.flatten().tolist())
+            cell_format = workbook.add_format({'bold': True, 'font_size': 10})
 
-
-new_vehicle = Vehiculo(placa="PRUEBA", modelo="CarroPrueba", marca=)
-session.add(new_vehicle)
-session.commit()
+            current_worksheet.set_column(1, 15, None, cell_format)
+            current_worksheet.set_column(0, 0, 13)
+            current_worksheet.set_column(1, 1, 11)
+            current_worksheet.set_column(2, 2, 10)
+            current_worksheet.set_column(3, 3, 12)
+            current_worksheet.set_column(4, 4, 11)
+            current_worksheet.set_column(5, 5, 45)
+            current_worksheet.set_column(6, 6, 5)
+            current_worksheet.set_column(12, 12, 10)
 """
