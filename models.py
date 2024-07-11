@@ -57,7 +57,7 @@ class ListaGuias(Base):
     llegada = Column(String(35), nullable=True)
     placa = Column(String(35), nullable=True)
     conductor = Column(String(35), nullable=True)
-    datos_adicionales = Column(String(35), nullable=True)
+    datos_adicionales   = Column(String(35), nullable=True)
     observaciones = Column(String(35), nullable=True)
 
 
