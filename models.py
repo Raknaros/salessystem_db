@@ -61,24 +61,82 @@ class ListaGuias(Base):
     observaciones = Column(String(35), nullable=True)
 
 
-#Query de vista "lista_facturas"
+# VISTA LISTAFACTURAS DE FACTURAS CON ESTADO 'POR EMITIR'
 lista_facturas_query = session.query(ListaFacturas).statement
-#Query de vista "lista_guias"
+# VISTA LISTAGUIAS DE GUIAS CON ESTADO 'POR EMITIR'
 lista_guias_query = session.query(ListaGuias).statement
-
+# QUERY DE PROVEEDORES CON LOS DATOS DE ACCESO
 lista_proveedores = pd.read_sql('SELECT alias, numero_documento, usuario_sol, clave_sol FROM proveedores', engine)
 
-# Leer los resultados en un DataFrame de Pandas
+# DATAFRAME LISTAFACTURAS
 lista_facturas = pd.read_sql(lista_facturas_query, con=engine)
+# DATAFRAME LISTAGUIAS
 lista_guias = pd.read_sql(lista_guias_query, con=engine)
-lista_cui = lista_facturas['cui'].drop_duplicates().tolist()
-proveedores=['CHERRYS','CONSULCACH','CONSULCELIZ','NOVATEX','IMBOX','TOCAM']
+
+# PROVEEDORES SOLICITADOS
+proveedores = ['CHERRYS', 'CONSULCACH', 'CONSULCELIZ', 'NOVATEX', 'IMBOX', 'TOCAM']
+
+with pd.ExcelWriter('PorEmitir.xlsx', engine='xlsxwriter') as writer:
+    for proveedor in proveedores:
+        lista_proveedor = lista_facturas[lista_facturas['alias'] == proveedor]
+        # LISTA DE CUI SIN DUPLICADOS BASADA EN LAS FACTURAS
+        lista_cui = lista_proveedor['cui'].drop_duplicates().tolist()
+        if lista_proveedor.empty:
+            break
+        workbook = writer.book
+        current_worksheet = workbook.add_worksheet(proveedor)
+        fila = 0
+        current_worksheet.write_row(fila, 0, lista_proveedores.loc[
+            lista_proveedores['alias'] == proveedor].values.flatten().tolist())
+        fila += 1
+        current_worksheet.write_row(fila, 0, list(lista_facturas.columns))
+        cell_format = workbook.add_format({'bold': True, 'font_size': 10})
+        for cui in lista_cui:
+            # SELECCIONAR LAS FACTURAS QUE COINCIDAN CON EL CUI SELECCIONADO RESETEANDO EL INDICE PARA QUE EMPIECE DESDE 0
+            facturas = lista_facturas[lista_facturas['cui'] == cui].reset_index(drop=False)
+            # POR CADA INDICE Y FILA
+            for index, row in facturas.iterrows():
+                # SI EL INDICE ES 0 O ES LA PRIMERA LINEA DE LA FACTURA
+                if index == 0:
+                    # COLOCAR TODOS LOS DATOS
+                    current_worksheet.write_row(fila, 0, (cui, row['guia'], row['numero'], row['emision'], row['ruc'],
+                                                          row['descripcion'], row['cantidad'], row['p_unit'],
+                                                          row['sub_total'], row['vencimiento'], row['unidad_medida'],
+                                                          row['moneda']))
+                    fila += 1
+
+                # SI EL INDICE ES EL ULTIMO COLOCAR TOTALES (en la emision solo figuran cantidad, p.unit, igv total y total por item)
+                elif index == len(facturas) - 1:
+                    current_worksheet.write_row(fila, 5, (row['descripcion'], row['cantidad'],
+                                                          row['p_unit'], row['sub_total']))
+                    fila += 1
+                    # SUBTOTALIZAR CADA ARTICULO Y EL TOTAL DE LA FACTURA TAMBIEN CON SU ENCABEZADO PEQUENO
+                    print(facturas['sub_total'].sum(), facturas['sub_total'].sum() * 0.18,
+                          facturas['sub_total'].sum() * 1.18)
+                    fila += 1
+                    # CONSIDERAR COLOCAR CADA DETALLE DE LA GUIA CON SU ENCABEZADO EN FORMATO MAS PEQUENO
+                    print(lista_guias[lista_guias['cui'] == cui])
+                    # +2 REEMPLAZA A LA FILA VACIA QUE SE NECESITA
+                    fila += 2
+                else:
+                    current_worksheet.write_row(fila, 5, (row['descripcion'], row['cantidad'],
+                                                          row['p_unit'], row['sub_total']))
+                    fila += 1
+
+# POR CADA CUI EN LA LISTA
 for cui in lista_cui:
+    # SELECCIONAR LAS FACTURAS QUE COINCIDAN CON EL CUI SELECCIONADO RESETEANDO EL INDICE PARA QUE EMPIECE DESDE 0
     facturas = lista_facturas[lista_facturas['cui'] == cui].reset_index(drop=False)
+
+    # POR CADA INDICE Y FILA
     for index, row in facturas.iterrows():
+
+        # SI EL INDICE ES 0 O ES LA PRIMERA LINEA DE LA FACTURA
         if index == 0:
+            #COLOCAR TODOS LOS DATOS
             print(cui, row['guia'], row['numero'], row['emision'], row['ruc'], row['descripcion'], row['cantidad'],
                   row['p_unit'], row['sub_total'], row['vencimiento'], row['unidad_medida'], row['moneda'])
+        # SI EL INDICE ES EL ULTIMO COLOCAR TOTALES
         elif index == len(facturas) - 1:
             print(row['descripcion'], row['cantidad'],
                   row['p_unit'], row['sub_total'])
