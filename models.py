@@ -91,8 +91,12 @@ def formato_float(num):
         # Mostrar hasta 4 decimales como máximo
         if num_decimales > 4:
             return f'{num:.4f}'
-        else:
+        elif 0 < num_decimales <= 2:
+            return f'{num:.2f}'
+        elif 2 < num_decimales <= 4:
             return f'{num:.{num_decimales}f}'
+        else:
+            return f'{num:.0f}'
     else:
         return ''
 
@@ -106,7 +110,12 @@ lista_facturas[['cantidad', 'p_unit']] = lista_facturas[['cantidad', 'p_unit']].
 
 with pd.ExcelWriter('PorEmitir.xlsx', engine='xlsxwriter') as writer:
     workbook = writer.book
-
+    formato1 = workbook.add_format({'bold': True, 'font_size': 12})
+    formato2 = workbook.add_format({'italic': True, 'font_size': 10})
+    formato3 = workbook.add_format({'font_size': 10})
+    formato4 = workbook.add_format({'bold': True, 'font_size': 8})
+    alineamiento = workbook.add_format()
+    alineamiento.set_align('vright')
     for proveedor in proveedores:
         lista_proveedor = lista_facturas[lista_facturas['alias'] == proveedor]
         # LISTA DE CUI SIN DUPLICADOS BASADA EN LAS FACTURAS
@@ -114,10 +123,6 @@ with pd.ExcelWriter('PorEmitir.xlsx', engine='xlsxwriter') as writer:
         if lista_proveedor.empty:
             break
         current_worksheet = workbook.add_worksheet(proveedor)
-        formato1 = workbook.add_format({'bold': True, 'font_size': 12})
-        formato2 = workbook.add_format({'italic': True, 'font_size': 10})
-        formato3 = workbook.add_format({'font_size': 10})
-        formato4 = workbook.add_format({'bold': True, 'font_size': 8})
         fila = 0
         current_worksheet.write_row(fila, 0, lista_proveedores.loc[
             lista_proveedores['alias'] == proveedor].values.flatten().tolist(), formato4)
@@ -161,6 +166,16 @@ with pd.ExcelWriter('PorEmitir.xlsx', engine='xlsxwriter') as writer:
                     current_worksheet.write_row(fila, 5, (row['unidad_medida'], row['descripcion'], row['cantidad'],
                                                           row['p_unit'], row['sub_total']), formato3)
                     fila += 1
+        current_worksheet.set_column(0, 0, 12) #COLUMNA CUI
+        current_worksheet.set_column(1, 1, 10) #COLUMNA GUIA
+        current_worksheet.set_column(2, 2, 10) #COLUMNA FACTURA
+        current_worksheet.set_column(3, 3, 10) #COLUMNA EMISION
+        current_worksheet.set_column(4, 4, 11) #COLUMNA ADQUIRIENTE
+        current_worksheet.set_column(5, 5, 4) #COLUMNA UNIDAD DE MEDIDA
+        current_worksheet.set_column(6, 6, 45) #COLUMNA DESCRIPCION
+        current_worksheet.set_column(7, 8, None, alineamiento)
+        current_worksheet.set_column(10, 10, 10) #COLUMNA VENCIMIENTO
+
 
 # POR CADA CUI EN LA LISTA
 """for cui in lista_cui:
