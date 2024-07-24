@@ -61,6 +61,7 @@ class ListaGuias(Base):
     observaciones = Column(String(35), nullable=True)
 
 
+
 # VISTA LISTAFACTURAS DE FACTURAS CON ESTADO 'POR EMITIR'
 lista_facturas_query = session.query(ListaFacturas).statement
 # VISTA LISTAGUIAS DE GUIAS CON ESTADO 'POR EMITIR'
