@@ -1,6 +1,6 @@
 from collections import defaultdict
 import pandas as pd
-from sqlalchemy import create_engine, Column, Integer, String, BigInteger
+from sqlalchemy import create_engine, Column, Integer, String, BigInteger, Float, Date, Boolean
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 engine = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com'
@@ -31,35 +31,75 @@ class Vehiculo(Base):
 class ListaFacturas(Base):
     __tablename__ = 'lista_facturas'
     #__table_args__ = {'extend_existing': True}
-    alias = Column(String(35), nullable=True)
+    alias = Column(String(12), nullable=True)
     cui = Column(String(35), primary_key=True)
-    guia = Column(String(35), nullable=True)
-    numero = Column(String(35), nullable=True)
+    guia = Column(String(8), nullable=True)
+    numero = Column(String(8), nullable=True)
     ruc = Column(BigInteger, nullable=True)
-    emision = Column(String(35), nullable=True)
-    descripcion = Column(String(35), primary_key=True)
-    unidad_medida = Column(String(35), nullable=True)
-    cantidad = Column(String(35), nullable=True)
-    p_unit = Column(String(35), nullable=True)
-    sub_total = Column(String(35), nullable=True)
-    igv = Column(String(35), nullable=True)
-    total = Column(String(35), nullable=True)
-    vencimiento = Column(String(35), nullable=True)
-    moneda = Column(String(35), nullable=True)
+    emision = Column(Date, nullable=True)
+    descripcion = Column(String(50), primary_key=True)
+    unidad_medida = Column(String(5), nullable=True)
+    cantidad = Column(Float, nullable=True)
+    p_unit = Column(Float, nullable=True)
+    sub_total = Column(Float, nullable=True)
+    igv = Column(Float, nullable=True)
+    total = Column(Float, nullable=True)
+    vencimiento = Column(Date, nullable=True)
+    moneda = Column(String(4), nullable=True)
 
 
 class ListaGuias(Base):
     __tablename__ = 'lista_guias'
     alias = Column(String(35), nullable=True)
     cui = Column(String(35), primary_key=True)
-    traslado = Column(String(35), primary_key=True)
-    partida = Column(String(35), nullable=True)
-    llegada = Column(String(35), nullable=True)
-    placa = Column(String(35), nullable=True)
-    conductor = Column(String(35), nullable=True)
-    datos_adicionales   = Column(String(35), nullable=True)
+    traslado = Column(Date, primary_key=True)
+    partida = Column(String(50), nullable=True)
+    llegada = Column(String(50), nullable=True)
+    placa = Column(String(8), nullable=True)
+    conductor = Column(String(10), nullable=True)
+    datos_adicionales = Column(String(35), nullable=True)
     observaciones = Column(String(35), nullable=True)
 
+
+class Pedidos(Base):
+    __tablename__ = 'pedidos'
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    cod_pedido = Column(String(8), nullable=True)
+    fecha_pedido = Column(Date, nullable=True)
+    periodo = Column(Integer, nullable=True)
+    adquiriente = Column(String(35), nullable=True)
+    importe_total = Column(Float, nullable=True)
+    rubro = Column(Float, nullable=True)
+    promedio_factura = Column(Float, nullable=True)
+    contado_credito = Column(Float, nullable=True)
+    bancariza = Column(Float, nullable=True)
+    notas = Column(Float, nullable=True)
+    estado = Column(String(20), nullable=True)
+    punto_entrega = Column(Float, nullable=True)
+
+
+class FacturasNoAnuladas(Base):
+    __tablename__ = 'facturas_noanuladas'
+
+
+class Bancarizaciones(Base):
+    __tablename__ = 'v_bcp'
+
+
+class Facturas(Base):
+    __tablename__ = 'facturas'
+
+
+class RemisionRemitente(Base):
+    __tablename__ = 'remision_remitente'
+
+
+class Customers(Base):
+    __tablename__ = 'customers'
+
+
+class Proveedores(Base):
+    __tablename__ = 'proveedores'
 
 
 # VISTA LISTAFACTURAS DE FACTURAS CON ESTADO 'POR EMITIR'
@@ -81,6 +121,7 @@ proveedores = ['TOCAM']  #'CHERRYS', 'CONSULCACH', 'CONSULCELIZ', 'NOVATEX', 'IM
 # Función para cambiar formato de fecha a dd/mm/yyyy
 def formato_fecha(fecha):
     return pd.to_datetime(fecha, format='%Y-%m-%d').strftime('%d/%m/%Y')
+
 
 # Función para cambiar formato de float a str con dos decimales o entero
 def formato_float(num):
@@ -167,16 +208,15 @@ with pd.ExcelWriter('PorEmitir.xlsx', engine='xlsxwriter') as writer:
                     current_worksheet.write_row(fila, 5, (row['unidad_medida'], row['descripcion'], row['cantidad'],
                                                           row['p_unit'], row['sub_total']), formato3)
                     fila += 1
-        current_worksheet.set_column(0, 0, 12) #COLUMNA CUI
-        current_worksheet.set_column(1, 1, 10) #COLUMNA GUIA
-        current_worksheet.set_column(2, 2, 10) #COLUMNA FACTURA
-        current_worksheet.set_column(3, 3, 10) #COLUMNA EMISION
-        current_worksheet.set_column(4, 4, 11) #COLUMNA ADQUIRIENTE
-        current_worksheet.set_column(5, 5, 4) #COLUMNA UNIDAD DE MEDIDA
-        current_worksheet.set_column(6, 6, 45) #COLUMNA DESCRIPCION
+        current_worksheet.set_column(0, 0, 12)  #COLUMNA CUI
+        current_worksheet.set_column(1, 1, 10)  #COLUMNA GUIA
+        current_worksheet.set_column(2, 2, 10)  #COLUMNA FACTURA
+        current_worksheet.set_column(3, 3, 10)  #COLUMNA EMISION
+        current_worksheet.set_column(4, 4, 11)  #COLUMNA ADQUIRIENTE
+        current_worksheet.set_column(5, 5, 4)  #COLUMNA UNIDAD DE MEDIDA
+        current_worksheet.set_column(6, 6, 45)  #COLUMNA DESCRIPCION
         current_worksheet.set_column(7, 8, None, alineamiento)
-        current_worksheet.set_column(10, 10, 10) #COLUMNA VENCIMIENTO
-
+        current_worksheet.set_column(10, 10, 10)  #COLUMNA VENCIMIENTO
 
 # POR CADA CUI EN LA LISTA
 """for cui in lista_cui:
