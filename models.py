@@ -78,20 +78,69 @@ class Pedidos(Base):
     punto_entrega = Column(Float, nullable=True)
 
 
-class FacturasNoAnuladas(Base):
-    __tablename__ = 'facturas_noanuladas'
-
-
 class Bancarizaciones(Base):
     __tablename__ = 'v_bcp'
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    dato_referencial = Column(Date, nullable=True)
+    fecha_operacion = Column(Date, nullable=True)
+    hora_operacion = Column(Date, nullable=True)
+    numero_operacion = Column(Integer, nullable=True)
+    importe = Column(Float, nullable=True)
+    adquiriente = Column(String(35), nullable=True)
+    proveedor = Column(String(35), nullable=True)
+    documento_relacionado = Column(String(35), nullable=True)
+    customer_id = Column(String(35), nullable=True)
+    observaciones = Column(String(35), nullable=True)
+    cui = Column(String(30), nullable=True)
 
 
 class Facturas(Base):
     __tablename__ = 'facturas'
+    cod_pedido = Column(String(8), nullable=True)
+    cuo = Column(String(35), nullable=True)
+    alias = Column(String(35), nullable=True)
+    guia = Column(String(35), nullable=True)
+    serie = Column(String(35), nullable=True)
+    numero = Column(String(35), nullable=True)
+    emision = Column(Date, nullable=True)
+    ruc = Column(BigInteger, nullable=True)
+    nombre_razon = Column(String(35), nullable=True)
+    moneda = Column(String(4), nullable=True)
+    descripcion = Column(String(50), nullable=True)
+    unid_medida = Column(String(5), nullable=True)
+    cantidad = Column(Float, nullable=True)
+    precio_unit = Column(Float, nullable=True)
+    forma_pago = Column(String(35), nullable=True)
+    estado = Column(String(20), nullable=True)
+    observaciones = Column(String(35), nullable=True)
+    vencimiento = Column(Date, nullable=True)
+    cuota1 = Column(Float, nullable=True)
+    vencimiento2 = Column(Float, nullable=True)
+    cuota2 = Column(Float, nullable=True)
+    vencimiento3 = Column(Float, nullable=True)
+    cuota3 = Column(Float, nullable=True)
+    vencimiento4 = Column(Float, nullable=True)
+    cuota4 = Column(Float, nullable=True)
+    detraccion = Column(String(35), nullable=True)
+    retencion = Column(String(35), nullable=True)
 
 
 class RemisionRemitente(Base):
     __tablename__ = 'remision_remitente'
+    cod_pedido = Column(String(8), nullable=True)
+    cuo = Column(String(35), nullable=True)
+    alias = Column(String(35), nullable=True)
+    factura = Column(String(35), nullable=True)
+    serie = Column(String(35), nullable=True)
+    numero = Column(String(35), nullable=True)
+    traslado = Column(Date, nullable=True)
+    partida = Column(String(50), nullable=True)
+    llegada = Column(String(50), nullable=True)
+    placa = Column(String(8), nullable=True)
+    conductor = Column(String(10), nullable=True)
+    datos_adicionales = Column(String(35), nullable=True)
+    estado = Column(String(20), nullable=True)
+    observaciones = Column(String(35), nullable=True)
 
 
 class Customers(Base):

@@ -40,7 +40,9 @@
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="2iUBpUxVdstqd7zk8HJhimeFtQz" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -87,8 +89,7 @@
       <workItem from="1721513497080" duration="5842000" />
       <workItem from="1721569055350" duration="1800000" />
       <workItem from="1721608464068" duration="14000" />
-      <workItem from="1721748823124" duration="2298000" />
-      <workItem from="1722268581934" duration="3134000" />
+      <workItem from="1721748823124" duration="1076000" />
     </task>
     <task id="LOCAL-00001" summary="Third">
       <option name="closed" value="true" />
@@ -130,23 +131,7 @@
       <option name="project" value="LOCAL" />
       <updated>1721570863245</updated>
     </task>
-    <task id="LOCAL-00006" summary="Fourth">
-      <option name="closed" value="true" />
-      <created>1721780755219</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1721780755219</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Fourth">
-      <option name="closed" value="true" />
-      <created>1721780838173</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1721780838173</updated>
-    </task>
-    <option name="localTasksCounter" value="8" />
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
