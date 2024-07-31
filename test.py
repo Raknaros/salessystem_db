@@ -1,10 +1,14 @@
-from sqlalchemy import Column, Integer, String, BigInteger, MetaData, create_engine, text
+from models import *
+from sqlalchemy import create_engine
+import pandas as pd
 
-engine = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com'
-                       ':3306/salessystem')
 
-connection = engine.connect()
+session = Session()
+# Realizar la consulta
+consulta = session.query(Facturas).filter(Facturas.estado == 'POR EMITIR')
 
-query = "SELECT * FROM lista_facturas WHERE emision > '2024-06-25'"
-result = connection.execute(text(query))
+# Convertir la consulta a un DataFrame
+df = pd.read_sql_query(consulta.statement, session.bind)
+df2 = pd.DataFrame(session.execute(consulta.statement).fetchall())
 
+print(df2.head())

@@ -1,6 +1,6 @@
 from collections import defaultdict
 import pandas as pd
-from sqlalchemy import create_engine, Column, Integer, String, BigInteger, Float, Date, Boolean
+from sqlalchemy import create_engine, Column, Integer, String, BigInteger, Float, Date, Boolean, Time
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 engine = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com'
@@ -9,7 +9,7 @@ engine = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988owwqm
 Base = declarative_base()
 
 Session = sessionmaker(bind=engine)
-session = Session()
+
 
 
 class Vehiculo(Base):
@@ -64,44 +64,44 @@ class ListaGuias(Base):
 class Pedidos(Base):
     __tablename__ = 'pedidos'
     id = Column(BigInteger, primary_key=True, autoincrement=True)
-    cod_pedido = Column(String(8), nullable=True)
+    cod_pedido = Column(String(10), nullable=True)
     fecha_pedido = Column(Date, nullable=True)
     periodo = Column(Integer, nullable=True)
     adquiriente = Column(String(35), nullable=True)
     importe_total = Column(Float, nullable=True)
-    rubro = Column(Float, nullable=True)
-    promedio_factura = Column(Float, nullable=True)
-    contado_credito = Column(Float, nullable=True)
-    bancariza = Column(Float, nullable=True)
-    notas = Column(Float, nullable=True)
+    rubro = Column(String(35), nullable=True)
+    promedio_factura = Column(Integer, nullable=True)
+    contado_credito = Column(String(7), nullable=True)
+    bancariza = Column(Boolean, nullable=True)
+    notas = Column(String(50), nullable=True)
     estado = Column(String(20), nullable=True)
-    punto_entrega = Column(Float, nullable=True)
+    punto_entrega = Column(String(50), nullable=True)
 
 
 class Bancarizaciones(Base):
     __tablename__ = 'v_bcp'
     id = Column(BigInteger, primary_key=True, autoincrement=True)
-    dato_referencial = Column(Date, nullable=True)
+    dato_referencial = Column(String(35), nullable=True)
     fecha_operacion = Column(Date, nullable=True)
-    hora_operacion = Column(Date, nullable=True)
+    hora_operacion = Column(Time, nullable=True)
     numero_operacion = Column(Integer, nullable=True)
     importe = Column(Float, nullable=True)
     adquiriente = Column(String(35), nullable=True)
     proveedor = Column(String(35), nullable=True)
-    documento_relacionado = Column(String(35), nullable=True)
-    customer_id = Column(String(35), nullable=True)
-    observaciones = Column(String(35), nullable=True)
+    documento_relacionado = Column(String(13), nullable=True)
+    customer_id = Column(String(5), nullable=True)
+    observaciones = Column(String(50), nullable=True)
     cui = Column(String(30), nullable=True)
 
 
 class Facturas(Base):
     __tablename__ = 'facturas'
-    cod_pedido = Column(String(8), nullable=True)
-    cuo = Column(String(35), nullable=True)
-    alias = Column(String(35), nullable=True)
-    guia = Column(String(35), nullable=True)
-    serie = Column(String(35), nullable=True)
-    numero = Column(String(35), nullable=True)
+    cod_pedido = Column(String(10), primary_key=True)
+    cuo = Column(Integer, primary_key=True)
+    alias = Column(String(12), nullable=True)
+    guia = Column(String(13), nullable=True)
+    serie = Column(String(4), nullable=True)
+    numero = Column(BigInteger, nullable=True)
     emision = Column(Date, nullable=True)
     ruc = Column(BigInteger, nullable=True)
     nombre_razon = Column(String(35), nullable=True)
@@ -112,27 +112,27 @@ class Facturas(Base):
     precio_unit = Column(Float, nullable=True)
     forma_pago = Column(String(35), nullable=True)
     estado = Column(String(20), nullable=True)
-    observaciones = Column(String(35), nullable=True)
+    observaciones = Column(String(50), nullable=True)
     vencimiento = Column(Date, nullable=True)
     cuota1 = Column(Float, nullable=True)
-    vencimiento2 = Column(Float, nullable=True)
+    vencimiento2 = Column(Date, nullable=True)
     cuota2 = Column(Float, nullable=True)
-    vencimiento3 = Column(Float, nullable=True)
+    vencimiento3 = Column(Date, nullable=True)
     cuota3 = Column(Float, nullable=True)
-    vencimiento4 = Column(Float, nullable=True)
+    vencimiento4 = Column(Date, nullable=True)
     cuota4 = Column(Float, nullable=True)
-    detraccion = Column(String(35), nullable=True)
-    retencion = Column(String(35), nullable=True)
+    detraccion = Column(Boolean, nullable=True)
+    retencion = Column(Boolean, nullable=True)
 
 
 class RemisionRemitente(Base):
     __tablename__ = 'remision_remitente'
-    cod_pedido = Column(String(8), nullable=True)
-    cuo = Column(String(35), nullable=True)
-    alias = Column(String(35), nullable=True)
-    factura = Column(String(35), nullable=True)
-    serie = Column(String(35), nullable=True)
-    numero = Column(String(35), nullable=True)
+    cod_pedido = Column(String(8), primary_key=True)
+    cuo = Column(String(35), primary_key=True)
+    alias = Column(String(20), nullable=True)
+    factura = Column(String(13), nullable=True)
+    serie = Column(String(4), nullable=True)
+    numero = Column(String(8), nullable=True)
     traslado = Column(Date, nullable=True)
     partida = Column(String(50), nullable=True)
     llegada = Column(String(50), nullable=True)
@@ -140,17 +140,37 @@ class RemisionRemitente(Base):
     conductor = Column(String(10), nullable=True)
     datos_adicionales = Column(String(35), nullable=True)
     estado = Column(String(20), nullable=True)
-    observaciones = Column(String(35), nullable=True)
+    observaciones = Column(String(50), nullable=True)
 
 
 class Customers(Base):
     __tablename__ = 'customers'
+    adquiriente_id = Column(BigInteger, primary_key=True, autoincrement=True)
+    ruc = Column(BigInteger, nullable=True)
+    alias = Column(String(35), nullable=True)
+    related_user = Column(String(35), nullable=True)
+    observaciones = Column(String(50), nullable=True)
+    nombre_razon = Column(String(100), nullable=True)
 
 
 class Proveedores(Base):
     __tablename__ = 'proveedores'
+    proveedor_id = Column(BigInteger, primary_key=True, autoincrement=True)
+    tipo_proveedor = Column(String(35), nullable=True)
+    numero_documento = Column(BigInteger, nullable=True)
+    nombre_razon = Column(String(50), nullable=True)
+    estado = Column(String(20), nullable=True)
+    related_partner = Column(String(35), nullable=True)
+    observaciones = Column(String(50), nullable=True)
+    actividad_economica = Column(String(100), nullable=True)
+    act_econ_sec_1 = Column(String(100), nullable=True)
+    act_econ_sec_2 = Column(String(100), nullable=True)
+    usuario_sol = Column(String(20), nullable=True)
+    clave_sol = Column(String(10), nullable=True)
+    alias = Column(String(20), nullable=True)
 
 
+"""
 # VISTA LISTAFACTURAS DE FACTURAS CON ESTADO 'POR EMITIR'
 lista_facturas_query = session.query(ListaFacturas).statement
 # VISTA LISTAGUIAS DE GUIAS CON ESTADO 'POR EMITIR'
@@ -266,67 +286,4 @@ with pd.ExcelWriter('PorEmitir.xlsx', engine='xlsxwriter') as writer:
         current_worksheet.set_column(6, 6, 45)  #COLUMNA DESCRIPCION
         current_worksheet.set_column(7, 8, None, alineamiento)
         current_worksheet.set_column(10, 10, 10)  #COLUMNA VENCIMIENTO
-
-# POR CADA CUI EN LA LISTA
-"""for cui in lista_cui:
-    # SELECCIONAR LAS FACTURAS QUE COINCIDAN CON EL CUI SELECCIONADO RESETEANDO EL INDICE PARA QUE EMPIECE DESDE 0
-    facturas = lista_facturas[lista_facturas['cui'] == cui].reset_index(drop=False)
-
-    # POR CADA INDICE Y FILA
-    for index, row in facturas.iterrows():
-
-        # SI EL INDICE ES 0 O ES LA PRIMERA LINEA DE LA FACTURA
-        if index == 0:
-            #COLOCAR TODOS LOS DATOS
-            print(cui, row['guia'], row['numero'], row['emision'], row['ruc'], row['descripcion'], row['cantidad'],
-                  row['p_unit'], row['sub_total'], row['vencimiento'], row['unidad_medida'], row['moneda'])
-        # SI EL INDICE ES EL ULTIMO COLOCAR TOTALES
-        elif index == len(facturas) - 1:
-            print(row['descripcion'], row['cantidad'],
-                  row['p_unit'], row['sub_total'])
-            print(facturas['sub_total'].sum(), facturas['sub_total'].sum() * 0.18, facturas['sub_total'].sum() * 1.18)
-            print(lista_guias[lista_guias['cui'] == cui])
-            #print('n')
-        else:
-            print(row['descripcion'], row['cantidad'],
-                  row['p_unit'], row['sub_total'])
-
-""
-    with pd.ExcelWriter('PorEmitir.xlsx', engine='xlsxwriter') as writer:
-        for proveedor in proveedores:
-            lista_proveedor = lista_facturas[lista_facturas['alias'] == proveedor]
-            if lista_proveedor.empty:
-                break
-            workbook = writer.book
-            current_worksheet = workbook.add_worksheet(proveedor)
-            current_lista = pd.pivot_table(lista_proveedor,
-                                           values=["sub_total", "igv", "total", "vencimiento", "moneda"],
-                                           index=['cui', 'guia', 'numero', 'ruc', 'emision', 'descripcion', 'unidad_medida',
-                                                  'cantidad', 'p_unit'],
-                                           aggfunc={'sub_total': 'sum', 'igv': 'sum', 'total': 'sum',
-                                                    'vencimiento': 'first',
-                                                    'moneda': 'first'})
-
-            current_lista = current_lista[['sub_total', 'igv', 'total', 'vencimiento', 'moneda']]
-            current_lista = pd.concat([
-                y._append(
-                    y[['sub_total', 'igv', 'total']].sum().rename(
-                        (x, list_guias.at[x, 'placa'], list_guias.at[x, 'conductor'],
-                         '', '', list_guias.at[x, 'llegada'],
-                         list_guias.at[x, 'datos_adicionales'], '', 'Totales')))
-                for x, y in current_lista.groupby(level=0)
-            ])
-            current_lista.to_excel(writer, sheet_name=proveedor, float_format='%.3f', startrow=1)
-            current_worksheet.write_row(0, 0, lista_proveedores.loc[lista_proveedores['alias'] == proveedor].values.flatten().tolist())
-            cell_format = workbook.add_format({'bold': True, 'font_size': 10})
-
-            current_worksheet.set_column(1, 15, None, cell_format)
-            current_worksheet.set_column(0, 0, 13)
-            current_worksheet.set_column(1, 1, 11)
-            current_worksheet.set_column(2, 2, 10)
-            current_worksheet.set_column(3, 3, 12)
-            current_worksheet.set_column(4, 4, 11)
-            current_worksheet.set_column(5, 5, 45)
-            current_worksheet.set_column(6, 6, 5)
-            current_worksheet.set_column(12, 12, 10)
 """
