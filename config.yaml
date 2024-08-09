@@ -1,17 +1,21 @@
 credentials:
   usernames:
-    facturacion:
+    FACTURACION:
       email: jsmith@gmail.com
-      name: John Smith
-      password: abc # To be replaced with hashed password
-    emision:
-      email: rbriggs@gmail.com
-      name: Rebecca Briggs
-      password: def # To be replaced with hashed password
+      name: Facturacion
+      password: $2b$12$r1ZYdm4GJIpUp3SmestHDuqc0eegojorXR3VEkJ9mdDWhSoYCkRVi # To be replaced with hashed password
+    EMISION:
+      email: vickyvaravara@outlook.com
+      name: Emisor
+      password: $2b$12$xKObxKqjF2n0XhWBlo3azeTX0BVUBij21le7yAoJ4lYLm584BppPe # To be replaced with hashed password
+    GERENCIA:
+      email: gestionempresarialintegral@outlook.com
+      name: Gerencia
+      password: $2b$12$2/DU/2UfdLFmB7Dqs1f3Meb04HTtJIBBCBzMuEKCdInmfqjtM.cuy # To be replaced with hashed password
 cookie:
-  expiry_days: 1
+  expiry_days: 0
   key: random_signature_key # Must be string
   name: random_cookie_name
 preauthorized:
   emails:
-  - melsby@gmail.com
+  - luciocandiotti@outlook.com

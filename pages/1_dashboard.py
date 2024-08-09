@@ -1,18 +1,19 @@
 import streamlit as st
 from Login import authenticator
 
-if st.session_state["authentication_status"]:
-    authenticator.logout()
-    st.write(f'Welcome *{st.session_state["name"]}*')
-    st.title('Some content')
-elif st.session_state["authentication_status"] is False:
-    st.error('Username/password is incorrect')
-elif st.session_state["authentication_status"] is None:
-    st.warning('Please enter your username and password')
-
-st.write("Hello ,let's learn how to build a streamlit app together")
+st.set_page_config(page_title="Dashboard", page_icon=":material/edit:")
 
 st.title("this is the app title")
+st.write("Hello ,let's learn how to build a streamlit app together")
+
+if st.session_state["username"] == 'gerencia':
+    st.session_state.gerencia_sidebar()
+else:
+    st.session_state.other_sidebar()
+st.write("Contenido de otra página")
+
+
+
 st.header("this is the markdown")
 st.markdown("this is the header")
 st.subheader("this is the subheader")
@@ -24,9 +25,6 @@ st.latex(r''' a+a r^1+a r^2+a r^3 ''')
 #st.audio("Audio.mp3")
 #st.video("video.mp4")
 
-# Sidebar navigation
-st.sidebar.page_link('Login.py', label='Home')
-st.sidebar.page_link('pages/1_welcome.py', label='Welcome')
 
 
 st.checkbox('yes')
