@@ -13,7 +13,7 @@ credentials:
       name: Gerencia
       password: $2b$12$2/DU/2UfdLFmB7Dqs1f3Meb04HTtJIBBCBzMuEKCdInmfqjtM.cuy # To be replaced with hashed password
 cookie:
-  expiry_days: 0
+  expiry_days: 1
   key: random_signature_key # Must be string
   name: random_cookie_name
 preauthorized:
