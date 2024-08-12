@@ -12,7 +12,7 @@ if st.session_state["username"] == 'gerencia':
 else:
     st.session_state.other_sidebar()
 
-st.title('Some content')
+st.title('Pedidos por entregar')
 
 container3 = st.container(height=300)
 container3.dataframe(pedidos_pendientes, use_container_width=True)
