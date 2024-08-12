@@ -15,7 +15,7 @@ else:
 st.title('Pedidos por entregar')
 
 container3 = st.container(height=300)
-container3.dataframe(pedidos_pendientes, use_container_width=True)
+container3.dataframe(pedidos_porentregar, use_container_width=True)
 st.header("Ingresar Pedido")
 
 with st.form(key='load_pedidos',border=False):

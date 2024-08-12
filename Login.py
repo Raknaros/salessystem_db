@@ -25,22 +25,18 @@ def other_sidebar():
     st.sidebar.header(st.session_state["name"])
     st.sidebar.page_link('Login.py', label='Home')
     st.sidebar.page_link('pages/2_cargar_pedidos.py', label='Pedidos')
-    st.sidebar.page_link('pages/3_cargar_adquirientes.py', label='Adquirientes')
-    st.sidebar.page_link('pages/4_cargar_cotizaciones.py', label='Cotizaciones')
-    st.sidebar.page_link('pages/5_obtener_precuadros.py', label='Precuadros')
-    st.sidebar.page_link('pages/6_cargar_bancarizaciones.py', label='Bancarizaciones')
-    st.sidebar.page_link('pages/7_obtener_cuadro_emision.py', label='Por Emitir')
+    st.sidebar.page_link('pages/3_cargar_cotizaciones.py', label='Cotizaciones')
+    st.sidebar.page_link('pages/4_cargar_bancarizaciones.py', label='Bancarizaciones')
+    st.sidebar.page_link('pages/5_informacion_adicional.py', label='Informacion Adicional')
 
 def gerencia_sidebar():
     st.sidebar.header(st.session_state["name"])
     st.sidebar.page_link('Login.py', label='Home')
     st.sidebar.page_link('pages/1_dashboard.py', label='Dashboard')
     st.sidebar.page_link('pages/2_cargar_pedidos.py', label='Pedidos')
-    st.sidebar.page_link('pages/3_cargar_adquirientes.py', label='Adquirientes')
-    st.sidebar.page_link('pages/4_cargar_cotizaciones.py', label='Cotizaciones')
-    st.sidebar.page_link('pages/5_obtener_precuadros.py', label='Precuadros')
-    st.sidebar.page_link('pages/6_cargar_bancarizaciones.py', label='Bancarizaciones')
-    st.sidebar.page_link('pages/7_obtener_cuadro_emision.py', label='Por Emitir')
+    st.sidebar.page_link('pages/3_cargar_cotizaciones.py', label='Cotizaciones')
+    st.sidebar.page_link('pages/4_cargar_bancarizaciones.py', label='Bancarizaciones')
+    st.sidebar.page_link('pages/5_informacion_adicional.py', label='Informacion Adicional')
 
 if st.session_state["authentication_status"]:
     sleep(2)
