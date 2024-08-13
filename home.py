@@ -23,7 +23,7 @@ name, authentication_status, username = authenticator.login('main', fields={'For
 def other_sidebar():
 
     st.sidebar.header(st.session_state["name"])
-    st.sidebar.page_link('Login.py', label='Home')
+    st.sidebar.page_link('home.py', label='Home')
     st.sidebar.page_link('pages/2_cargar_pedidos.py', label='Pedidos')
     st.sidebar.page_link('pages/3_cargar_cotizaciones.py', label='Cotizaciones')
     st.sidebar.page_link('pages/4_cargar_bancarizaciones.py', label='Bancarizaciones')
@@ -31,7 +31,7 @@ def other_sidebar():
 
 def gerencia_sidebar():
     st.sidebar.header(st.session_state["name"])
-    st.sidebar.page_link('Login.py', label='Home')
+    st.sidebar.page_link('home.py', label='Home')
     st.sidebar.page_link('pages/1_dashboard.py', label='Dashboard')
     st.sidebar.page_link('pages/2_cargar_pedidos.py', label='Pedidos')
     st.sidebar.page_link('pages/3_cargar_cotizaciones.py', label='Cotizaciones')
@@ -39,7 +39,7 @@ def gerencia_sidebar():
     st.sidebar.page_link('pages/5_informacion_adicional.py', label='Informacion Adicional', disabled=True)
 
 if st.session_state["authentication_status"]:
-    sleep(2)
+    sleep(1)
     authenticator.logout()
     st.write(f'Bienvenid@ *{st.session_state["name"]}*')
     if username == 'gerencia':

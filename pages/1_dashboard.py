@@ -1,5 +1,5 @@
 import streamlit as st
-from Login import authenticator
+from home import authenticator
 
 st.set_page_config(page_title="Dashboard", page_icon=":material/edit:")
 
