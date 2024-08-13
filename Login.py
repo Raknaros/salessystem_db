@@ -4,7 +4,7 @@ import yaml
 from yaml.loader import SafeLoader
 from time import sleep
 
-st.set_page_config(page_title="Home", page_icon=":material/edit:")
+st.set_page_config(page_title="Home", page_icon=":material/edit:", layout="wide")
 
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
@@ -27,7 +27,7 @@ def other_sidebar():
     st.sidebar.page_link('pages/2_cargar_pedidos.py', label='Pedidos')
     st.sidebar.page_link('pages/3_cargar_cotizaciones.py', label='Cotizaciones')
     st.sidebar.page_link('pages/4_cargar_bancarizaciones.py', label='Bancarizaciones')
-    st.sidebar.page_link('pages/5_informacion_adicional.py', label='Informacion Adicional')
+    st.sidebar.page_link('pages/5_informacion_adicional.py', label='Informacion Adicional', disabled=True)
 
 def gerencia_sidebar():
     st.sidebar.header(st.session_state["name"])
@@ -36,7 +36,7 @@ def gerencia_sidebar():
     st.sidebar.page_link('pages/2_cargar_pedidos.py', label='Pedidos')
     st.sidebar.page_link('pages/3_cargar_cotizaciones.py', label='Cotizaciones')
     st.sidebar.page_link('pages/4_cargar_bancarizaciones.py', label='Bancarizaciones')
-    st.sidebar.page_link('pages/5_informacion_adicional.py', label='Informacion Adicional')
+    st.sidebar.page_link('pages/5_informacion_adicional.py', label='Informacion Adicional', disabled=True)
 
 if st.session_state["authentication_status"]:
     sleep(2)

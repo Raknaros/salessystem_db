@@ -10,7 +10,9 @@ warehouse = create_engine('postgresql://admindb:72656770@datawarehouse.cgvmexzrr
 pedidos_porentregar = pd.read_sql("SELECT * FROM pedidos WHERE estado NOT IN ('TERMINADO', 'ENTREGADO', 'ANULADO')",
                                   salessystem)
 
-bancarizaciones_poremitir = pd.read_sql("SELECT * FROM facturas WHERE estado NOT IN ('TERMINADO', 'ENTREGADO', 'ANULADA')",
+cotizaciones_poremitir = pd.read_sql("SELECT * FROM facturas WHERE estado NOT IN ('TERMINADO', 'ENTREGADO', 'ANULADA')",
                                         salessystem)
 
+bancarizaciones_poremitir = pd.read_sql("SELECT * FROM v_bcp WHERE estado NOT IN ('TERMINADO', 'ENTREGADO', 'ANULADA')",
+                                        salessystem)
 
