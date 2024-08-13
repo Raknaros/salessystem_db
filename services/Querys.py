@@ -7,8 +7,10 @@ salessystem = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988
 warehouse = create_engine('postgresql://admindb:72656770@datawarehouse.cgvmexzrrsgs.us-east-1.rds.amazonaws.com'
                           ':5432/warehouse')
 
-pedidos_porentregar = pd.read_sql("SELECT * FROM pedidos WHERE estado='PENDIENTE'", salessystem)
+pedidos_porentregar = pd.read_sql("SELECT * FROM pedidos WHERE estado NOT IN ('TERMINADO', 'ENTREGADO', 'ANULADO')",
+                                  salessystem)
 
-bancarizaciones_poremitir = pd.read_sql("SELECT * FROM facturas WHERE estado != 'EMITIDA'")
+bancarizaciones_poremitir = pd.read_sql("SELECT * FROM facturas WHERE estado NOT IN ('TERMINADO', 'ENTREGADO', 'ANULADA')",
+                                        salessystem)
 
 
