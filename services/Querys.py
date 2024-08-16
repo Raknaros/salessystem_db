@@ -16,3 +16,11 @@ cotizaciones_poremitir = pd.read_sql("SELECT * FROM facturas WHERE estado NOT IN
 bancarizaciones_poremitir = pd.read_sql("SELECT * FROM v_bcp WHERE estado NOT IN ('TERMINADO', 'ENTREGADO', 'ANULADA')",
                                         salessystem)
 
+adquirientes = pd.read_sql("SELECT * FROM customers", salessystem)
+
+proveedores = pd.read_sql("SELECT * FROM proveedores", salessystem)
+
+catalogo = pd.read_sql("SELECT * FROM catalogo", salessystem)
+
+vehiculos = pd.read_sql("SELECT * FROM vehiculos", salessystem)
+
