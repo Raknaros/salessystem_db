@@ -22,5 +22,5 @@ proveedores = pd.read_sql("SELECT * FROM proveedores", salessystem)
 
 catalogo = pd.read_sql("SELECT * FROM catalogo", salessystem)
 
-vehiculos = pd.read_sql("SELECT * FROM vehiculos", salessystem)
+#vehiculos = pd.read_sql("SELECT * FROM vehiculos", salessystem)
 
