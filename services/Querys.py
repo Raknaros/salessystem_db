@@ -10,6 +10,8 @@ warehouse = create_engine('postgresql://admindb:72656770@datawarehouse.cgvmexzrr
 pedidos_porentregar = pd.read_sql("SELECT * FROM pedidos WHERE estado NOT IN ('TERMINADO', 'ENTREGADO', 'ANULADO')",
                                   salessystem)
 
+#df[~df['estado'].isin(['TERMINADO', 'ENTREGADO', 'ANULADO'])]
+
 cotizaciones_poremitir = pd.read_sql("SELECT * FROM facturas WHERE estado NOT IN ('TERMINADO', 'ENTREGADO', 'ANULADA')",
                                         salessystem)
 
