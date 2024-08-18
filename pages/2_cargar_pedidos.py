@@ -14,7 +14,39 @@ else:
 
 st.title('Pedidos por entregar')
 
-st.dataframe(pedidos_porentregar, height=300, hide_index=True)
+st.dataframe(pedidos_porentregar, height=300, hide_index=True, column_config={
+            "tipo_proveedor": st.column_config.NumberColumn(
+                "Tipo",
+                help="Diferenciacion de los proveedores",
+                format='%d',
+            ),
+            "numero_documento": st.column_config.NumberColumn(
+                "RUC",
+                format='%d'
+            ),
+            "nombre_razon": st.column_config.TextColumn(
+                "Nombre o Razon Social"
+            ),
+            "alias": st.column_config.TextColumn(
+                "Alias"
+            ),
+            "estado": st.column_config.TextColumn(
+                "Estado"
+            ),
+            "observaciones": st.column_config.TextColumn(
+                "Observaciones"
+            ),
+            "actividad_economica": st.column_config.TextColumn(
+                "Actividad Economica"
+            ),
+            "act_econ_sec_1": st.column_config.TextColumn(
+                "Act. Econ. Secundaria 1"
+            ),
+            "act_econ_sec_2": st.column_config.TextColumn(
+                "Act. Econ. Secundaria 2"
+            )
+        }, column_order=['tipo_proveedor', 'numero_documento', 'nombre_razon', 'alias', 'estado', 'observaciones',
+                         'actividad_economica', 'act_econ_sec_1', 'act_econ_sec_2'])
 st.header("Ingresar Pedido")
 
 with st.form(key='load_pedidos', border=False):

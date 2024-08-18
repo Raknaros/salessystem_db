@@ -13,7 +13,7 @@ if st.session_state["username"] == 'gerencia':
 else:
     st.session_state.other_sidebar()
 
-st.title('Pedidos por entregar')
+st.title('Bancarizaciones')
 
 st.dataframe(bancarizaciones_poremitir, height=300, hide_index=True)
 st.header("Ingresar Pedido")
