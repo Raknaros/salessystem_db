@@ -1,6 +1,6 @@
 import streamlit as st
 
-from services.Querys import cotizaciones_poremitir
+from services.Querys import facturas_poremitir
 
 st.set_page_config(page_title="Cotizaciones", page_icon=":material/edit:", layout="wide")
 
@@ -11,7 +11,64 @@ else:
 
 st.title('Cotizaciones')
 
-st.dataframe(cotizaciones_poremitir, height=450, hide_index=True)
+st.dataframe(facturas_poremitir, height=450, hide_index=True, column_config={
+            "cod_pedido": st.column_config.TextColumn(
+                "Codigo de Pedido",
+                help="Codigo unico del pedido al que corresponde esta factura"
+            ),
+            "cuo": st.column_config.NumberColumn(
+                "CUO",
+                help="Codigo unico de la operacion, dentro del codigo de pedido",
+                format="%d",
+            ),
+            "alias": st.column_config.TextColumn(
+                "Alias",
+            ),
+            "emision": st.column_config.DateColumn(
+                "Fecha de Emision",
+                help="Total a bancarizar",
+                format='DD/MM/YYYY',
+            ),
+            "ruc": st.column_config.NumberColumn(
+                "RUC",
+                format="%d",
+            ),
+            "nombre_razon": st.column_config.TextColumn(
+                "Nombre o Razon Social",
+                width='medium'
+            ),
+            "moneda": st.column_config.TextColumn(
+                "Moneda",
+                help="Tipo de moneda de la factura"
+            ),
+            "total": st.column_config.NumberColumn(
+                "Total",
+                help="Total incluido IGV",
+                format="S/. %.2f",
+                width='small'
+            ),
+            "forma_pago": st.column_config.TextColumn(
+                "Forma de Pago",
+                help="Forma de pago a consignar en la factura"
+            ),
+            "detraccion": st.column_config.TextColumn(
+                "Detraccion",
+                help="Codigo de detraccion correspondiente"
+            ),
+            "retencion": st.column_config.TextColumn(
+                "Retencion",
+                help="Porcentaje de retencion correspondiente"
+            ),
+            "observaciones": st.column_config.TextColumn(
+                "Observaciones",
+                width='medium'
+            ),
+            "estado": st.column_config.TextColumn(
+                "Estado",
+                width='medium'
+            )
+        }, column_order=['cod_pedido', 'cuo', 'alias', 'emision', 'ruc', 'nombre_razon',
+                         'moneda', 'total', 'forma_pago', 'detraccion', 'retencion', 'observaciones','estado'])
 
 col1, col2, col3 = st.columns(3)
 

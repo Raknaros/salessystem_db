@@ -3,7 +3,7 @@ import streamlit as st
 import yaml
 from yaml.loader import SafeLoader
 from time import sleep
-from services.Querys import pedidos_porentregar
+from services.Querys import pedidos
 
 st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wide")
 
@@ -14,39 +14,60 @@ else:
 
 st.title('Pedidos por entregar')
 
-st.dataframe(pedidos_porentregar, height=300, hide_index=True, column_config={
-            "tipo_proveedor": st.column_config.NumberColumn(
-                "Tipo",
-                help="Diferenciacion de los proveedores",
+st.dataframe(pedidos[~pedidos['estado'].isin(['TERMINADO', 'ENTREGADO', 'ANULADO'])], height=300, hide_index=True, column_config={
+            "cod_pedido": st.column_config.TextColumn(
+                "Codigo de Pedido",
+                help="Codigo unico de pedido"
+            ),
+            "fecha_pedido": st.column_config.DateColumn(
+                "Fecha de Pedido",
+                help="Fecha en la cual se solicita el pedido",
+                format='DD/MM/YYYY'
+            ),
+            "periodo": st.column_config.NumberColumn(
+                "Periodo",
+                help="Periodo al que corresponde el pedido, por ejemplo facturas de diciembre del 2020 seria 202012",
                 format='%d',
             ),
-            "numero_documento": st.column_config.NumberColumn(
-                "RUC",
-                format='%d'
+            "adquiriente": st.column_config.TextColumn(
+                "Adquiriente",
+                help="Alias o RUC del adquiriente o del receptor de las facturas"
             ),
-            "nombre_razon": st.column_config.TextColumn(
-                "Nombre o Razon Social"
+            "importe_total": st.column_config.NumberColumn(
+                "Total",
+                help="Total del pedido incluido IGV",
+                format='%d',
             ),
-            "alias": st.column_config.TextColumn(
-                "Alias"
+            "rubro": st.column_config.TextColumn(
+                "Rubro",
+                help="A que rubro o de que categoria son los articulos del pedido",
+                width='medium'
+            ),
+            "promedio_factura": st.column_config.NumberColumn(
+                "Promedio",
+                help="Total promedio o maximo por factura",
+                format='%d',
+            ),
+            "contado_credito": st.column_config.TextColumn(
+                "Forma de pago",
+                help="Forma de pago, al contado o a credito cuantos dias",
+                width='medium'
+            ),
+            "notas": st.column_config.TextColumn(
+                "Notas",
+                help="Informacion adicional especifica del pedido",
+                width='medium'
+            ),
+            "punto_entrega": st.column_config.TextColumn(
+                "Direccion de Llegada",
+                help="Direccion a consignar en las guias",
+                width='medium'
             ),
             "estado": st.column_config.TextColumn(
                 "Estado"
-            ),
-            "observaciones": st.column_config.TextColumn(
-                "Observaciones"
-            ),
-            "actividad_economica": st.column_config.TextColumn(
-                "Actividad Economica"
-            ),
-            "act_econ_sec_1": st.column_config.TextColumn(
-                "Act. Econ. Secundaria 1"
-            ),
-            "act_econ_sec_2": st.column_config.TextColumn(
-                "Act. Econ. Secundaria 2"
             )
-        }, column_order=['tipo_proveedor', 'numero_documento', 'nombre_razon', 'alias', 'estado', 'observaciones',
-                         'actividad_economica', 'act_econ_sec_1', 'act_econ_sec_2'])
+        }, column_order=['cod_pedido', 'fecha_pedido', 'periodo', 'adquiriente', 'importe_total', 'rubro',
+                         'promedio_factura', 'contado_credito', 'notas', 'punto_entrega', 'estado'])
 st.header("Ingresar Pedido")
 
 with st.form(key='load_pedidos', border=False):
