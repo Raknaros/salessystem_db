@@ -99,6 +99,21 @@ elif option == "Pedido":
                                     options=["Green", "Yellow", "Red", "Blue"], label_visibility='collapsed')
     col2.button(label='Descagar')
 
+"""
+@st.cache_data
+def convert_df(df):
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df.to_csv().encode("utf-8")
+
+csv = convert_df(my_large_df)
+
+st.download_button(
+    label="Download data as CSV",
+    data=csv,
+    file_name="large_df.csv",
+    mime="text/csv",
+)"""
+
 col3.subheader('Subir Cotizaciones Emitidas')
 
 col3.file_uploader("Subir Cotizaciones Emitidas", type=['xlsx'],
