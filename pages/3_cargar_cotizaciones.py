@@ -12,63 +12,63 @@ else:
 st.title('Cotizaciones')
 
 st.dataframe(facturas_poremitir, height=450, hide_index=True, column_config={
-            "cod_pedido": st.column_config.TextColumn(
-                "Codigo de Pedido",
-                help="Codigo unico del pedido al que corresponde esta factura"
-            ),
-            "cuo": st.column_config.NumberColumn(
-                "CUO",
-                help="Codigo unico de la operacion, dentro del codigo de pedido",
-                format="%d",
-            ),
-            "alias": st.column_config.TextColumn(
-                "Alias",
-            ),
-            "emision": st.column_config.DateColumn(
-                "Fecha de Emision",
-                help="Total a bancarizar",
-                format='DD/MM/YYYY',
-            ),
-            "ruc": st.column_config.NumberColumn(
-                "RUC",
-                format="%d",
-            ),
-            "nombre_razon": st.column_config.TextColumn(
-                "Nombre o Razon Social",
-                width='medium'
-            ),
-            "moneda": st.column_config.TextColumn(
-                "Moneda",
-                help="Tipo de moneda de la factura"
-            ),
-            "total": st.column_config.NumberColumn(
-                "Total",
-                help="Total incluido IGV",
-                format="S/. %.2f",
-                width='small'
-            ),
-            "forma_pago": st.column_config.TextColumn(
-                "Forma de Pago",
-                help="Forma de pago a consignar en la factura"
-            ),
-            "detraccion": st.column_config.TextColumn(
-                "Detraccion",
-                help="Codigo de detraccion correspondiente"
-            ),
-            "retencion": st.column_config.TextColumn(
-                "Retencion",
-                help="Porcentaje de retencion correspondiente"
-            ),
-            "observaciones": st.column_config.TextColumn(
-                "Observaciones",
-                width='medium'
-            ),
-            "estado": st.column_config.TextColumn(
-                "Estado",
-                width='medium'
-            )
-        }, column_order=['cod_pedido', 'cuo', 'alias', 'emision', 'ruc', 'nombre_razon',
-                         'moneda', 'total', 'forma_pago', 'detraccion', 'retencion', 'observaciones','estado'])
+    "cod_pedido": st.column_config.TextColumn(
+        "Codigo de Pedido",
+        help="Codigo unico del pedido al que corresponde esta factura"
+    ),
+    "cuo": st.column_config.NumberColumn(
+        "CUO",
+        help="Codigo unico de la operacion, dentro del codigo de pedido",
+        format="%d",
+    ),
+    "alias": st.column_config.TextColumn(
+        "Alias",
+    ),
+    "emision": st.column_config.DateColumn(
+        "Fecha de Emision",
+        help="Total a bancarizar",
+        format='DD/MM/YYYY',
+    ),
+    "ruc": st.column_config.NumberColumn(
+        "RUC",
+        format="%d",
+    ),
+    "nombre_razon": st.column_config.TextColumn(
+        "Nombre o Razon Social",
+        width='medium'
+    ),
+    "moneda": st.column_config.TextColumn(
+        "Moneda",
+        help="Tipo de moneda de la factura"
+    ),
+    "total": st.column_config.NumberColumn(
+        "Total",
+        help="Total incluido IGV",
+        format="S/. %.2f",
+        width='small'
+    ),
+    "forma_pago": st.column_config.TextColumn(
+        "Forma de Pago",
+        help="Forma de pago a consignar en la factura"
+    ),
+    "detraccion": st.column_config.TextColumn(
+        "Detraccion",
+        help="Codigo de detraccion correspondiente"
+    ),
+    "retencion": st.column_config.TextColumn(
+        "Retencion",
+        help="Porcentaje de retencion correspondiente"
+    ),
+    "observaciones": st.column_config.TextColumn(
+        "Observaciones",
+        width='medium'
+    ),
+    "estado": st.column_config.TextColumn(
+        "Estado",
+        width='medium'
+    )
+}, column_order=['cod_pedido', 'cuo', 'alias', 'emision', 'ruc', 'nombre_razon',
+                 'moneda', 'total', 'forma_pago', 'detraccion', 'retencion', 'observaciones', 'estado'])
 
 col1, col2, col3 = st.columns(3)
 
@@ -90,6 +90,14 @@ option = col2.selectbox(
 
 if option == "Proveedor":
 
+    subcol1, subcol2 = col2.container().columns(2)
+    fecha_inicio = subcol1.date_input(
+        'Fecha Inicial',
+        help='Indicar desde que fecha desea descargar (maximo 2 dias anteriores al dia de hoy)')
+    fecha_final = subcol2.date_input(
+        'Fecha Final',
+        help='Indicar desde que fecha desea descargar (maximo 1 dia posterior al dia de hoy)')
+
     pick_proveedores = col2.multiselect("proveedores", placeholder='Elige  los proveedores',
                                         options=["Green", "Yellow", "Red", "Blue"], label_visibility='collapsed')
     col2.button(label='Descagar')
@@ -98,7 +106,6 @@ elif option == "Pedido":
     pick_pedidos = col2.multiselect("pedidos", placeholder='Elige  los pedidos',
                                     options=["Green", "Yellow", "Red", "Blue"], label_visibility='collapsed')
     col2.button(label='Descagar')
-
 """
 @st.cache_data
 def convert_df(df):
@@ -116,7 +123,7 @@ st.download_button(
 
 col3.subheader('Subir Cotizaciones Emitidas')
 
-col3.file_uploader("Subir Cotizaciones Emitidas", type=['xlsx'],
+col3.file_uploader("Subir Facturas Emitidas", type=['xlsx'],
                    help='Subir archivo excel de Cuadro para Emitir ya realizado y con numero de guia y factura colocada',
                    label_visibility='collapsed')
-col3.button(label='Subir',key='subir_cotizaciones_emitidas')
+col3.button(label='Subir', key='subir_cotizaciones_emitidas')
