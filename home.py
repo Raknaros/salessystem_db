@@ -26,18 +26,18 @@ def other_sidebar():
     st.sidebar.header(st.session_state["name"])
     st.sidebar.page_link('home.py', label='Home')
     st.sidebar.page_link('pages/2_cargar_pedidos.py', label='Pedidos')
-    st.sidebar.page_link('pages/3_cargar_cotizaciones.py', label='Cotizaciones')
-    st.sidebar.page_link('pages/4_cargar_bancarizaciones.py', label='Bancarizaciones')
+    st.sidebar.page_link('pages/3_cargar_cotizaciones.py', label='Cotizaciones', disabled=True)
+    st.sidebar.page_link('pages/4_cargar_bancarizaciones.py', label='Bancarizaciones', disabled=True)
     st.sidebar.page_link('pages/5_informacion_adicional.py', label='Informacion Adicional', disabled=True)
 
 
 def gerencia_sidebar():
     st.sidebar.header(st.session_state["name"])
     st.sidebar.page_link('home.py', label='Home')
-    st.sidebar.page_link('pages/1_dashboard.py', label='Dashboard')
+    st.sidebar.page_link('pages/1_dashboard.py', label='Dashboard', disabled=True)
     st.sidebar.page_link('pages/2_cargar_pedidos.py', label='Pedidos')
-    st.sidebar.page_link('pages/3_cargar_cotizaciones.py', label='Cotizaciones')
-    st.sidebar.page_link('pages/4_cargar_bancarizaciones.py', label='Bancarizaciones')
+    st.sidebar.page_link('pages/3_cargar_cotizaciones.py', label='Cotizaciones', disabled=True)
+    st.sidebar.page_link('pages/4_cargar_bancarizaciones.py', label='Bancarizaciones', disabled=True)
     st.sidebar.page_link('pages/5_informacion_adicional.py', label='Informacion Adicional', disabled=True)
 
 
