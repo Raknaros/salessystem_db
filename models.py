@@ -7,17 +7,14 @@ import pymysql
 #engine = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com'
 #                       ':3306/salessystem')
 
-connection = pymysql.connect(
-    host='sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com',
-    user='admin',
-    password='Giu72656770',
-    database='salessystem',
-    connect_timeout=30  # Aumentar el valor de tiempo de espera
+engine = create_engine(
+    'mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com/salessystem',
+    connect_args={"connect_timeout": 30}  # Tiempo de espera para la conexión
 )
 
 Base = declarative_base()
 
-Session = sessionmaker(bind=connection)
+Session = sessionmaker(bind=engine)
 
 session = Session()
 
@@ -77,11 +74,11 @@ class Pedidos(Base):
     cod_pedido = Column(String(10), nullable=True)
     fecha_pedido = Column(Date, nullable=True)
     periodo = Column(Integer, nullable=True)
-    adquiriente = Column(String(35), nullable=True)
+    adquiriente = Column(BigInteger, nullable=True)
     importe_total = Column(Float, nullable=True)
     rubro = Column(String(35), nullable=True)
     promedio_factura = Column(Integer, nullable=True)
-    contado_credito = Column(String(7), nullable=True)
+    contado_credito = Column(String(30), nullable=True)
     bancariza = Column(Boolean, nullable=True)
     notas = Column(String(50), nullable=True)
     estado = Column(String(20), nullable=True)

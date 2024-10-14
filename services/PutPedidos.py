@@ -11,4 +11,10 @@ pd.set_option('display.max_rows', None)
 
 
 def put_pedidos(data: list):
-    pedido = session.execute(insert(Pedidos), data)
+    #decidir entre insert interado y bulk insert, colocar el trigger de cambio de alias a ruc en el metodo put_pedidos
+    try:
+        session.execute(insert(Pedidos), data)
+        session.commit()
+    except Exception as e:
+        session.rollback()
+        print(f"Error al insertar el pedido: {e}")

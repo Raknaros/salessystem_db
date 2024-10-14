@@ -127,7 +127,7 @@ if submit:
     else:
         data = {
             "fecha_pedido": fecha_pedido,
-            "fecha_entrega": periodo,
+            "periodo": periodo,
             "adquiriente": adquiriente,
             "total": total,
             "rubro": rubro,
