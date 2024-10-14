@@ -1,6 +1,8 @@
 import pandas as pd
 from sqlalchemy import create_engine
 
+
+
 salessystem = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com'
                             ':3306/salessystem')
 

@@ -2,14 +2,24 @@ from collections import defaultdict
 import pandas as pd
 from sqlalchemy import create_engine, Column, Integer, String, BigInteger, Float, Date, Boolean, Time
 from sqlalchemy.orm import sessionmaker, declarative_base
+import pymysql
 
-engine = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com'
-                       ':3306/salessystem')
+#engine = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com'
+#                       ':3306/salessystem')
+
+connection = pymysql.connect(
+    host='sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com',
+    user='admin',
+    password='Giu72656770',
+    database='salessystem',
+    connect_timeout=30  # Aumentar el valor de tiempo de espera
+)
 
 Base = declarative_base()
 
-Session = sessionmaker(bind=engine)
+Session = sessionmaker(bind=connection)
 
+session = Session()
 
 
 class Vehiculo(Base):
@@ -168,4 +178,3 @@ class Proveedores(Base):
     usuario_sol = Column(String(20), nullable=True)
     clave_sol = Column(String(10), nullable=True)
     alias = Column(String(20), nullable=True)
-

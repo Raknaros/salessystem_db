@@ -123,6 +123,16 @@ if submit:
             if pedidos[column].notna().any():
                 pedidos[column] = pedidos[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
 
-        put_pedidos(pedidos.values.tolist())
+        put_pedidos(pedidos.to_dict(orient='records'))
     else:
-        put_pedidos([fecha_pedido, fecha_pedido, adquiriente, total, rubro, promedio, punto_llegada, forma_pago, notas])
+        data = {
+            "fecha_pedido": fecha_pedido,
+            "fecha_entrega": periodo,
+            "adquiriente": adquiriente,
+            "total": total,
+            "rubro": rubro,
+            "promedio": promedio,
+            "punto_llegada": punto_llegada,
+            "forma_pago": forma_pago,
+            "notas": notas,
+        }
