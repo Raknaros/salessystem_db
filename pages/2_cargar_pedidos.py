@@ -1,8 +1,12 @@
+import numpy as np
+import pandas as pd
 import streamlit_authenticator as stauth
 import streamlit as st
 import yaml
 from yaml.loader import SafeLoader
 from time import sleep
+
+from services.PutPedidos import put_pedidos
 from services.Querys import pedidos
 
 st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wide")
@@ -119,7 +123,6 @@ if submit:
             if pedidos[column].notna().any():
                 pedidos[column] = pedidos[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
 
-        pedidos.values.tolist()
+        put_pedidos(pedidos.values.tolist())
     else:
-        st.write(
-            fecha_pedido + fecha_pedido + adquiriente + total + rubro + promedio + punto_llegada + forma_pago + notas)
+        put_pedidos([fecha_pedido, fecha_pedido, adquiriente, total, rubro, promedio, punto_llegada, forma_pago, notas])
