@@ -105,12 +105,13 @@ with st.form(key='load_pedidos', border=False):
                            height=100, help='Indicar detalles adicionales o solicitudes puntuales del cliente')
 
     masivo = col1.file_uploader("Subir Masivo", type=['xlsx'],
-                                help='Subir archivo excel para ingreso de varios pedidos, si sube excel no ingresar otros datos.')
-    submit = col2.form_submit_button('Subir')
+                                help='Subir archivo excel para ingreso de varios pedidos, si sube excel no ingresar '
+                                     'otros datos.')
+    submit = col2.form_submit_button('Subir', on_click=pedidos)
 
 if submit:
     if masivo is not None:
-        pedidos = pd.read_excel(masivo, sheet_name='pedidos', date_format='%d/%m/%Y',
+        pedidos = pd.read_excel('D:/OneDrive/facturacion/importar.xlsx', sheet_name='pedidos', date_format='%d/%m/%Y',
                                 dtype={'periodo': np.int32, 'adquiriente': object, 'importe_total': np.int64,
                                        'rubro': str,
                                        'promedio_factura': None, 'contado_credito': str,
@@ -122,17 +123,18 @@ if submit:
         for column in str_columns:
             if pedidos[column].notna().any():
                 pedidos[column] = pedidos[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
-
+        pedidos.replace(np.nan, None, inplace=True)
         put_pedidos(pedidos.to_dict(orient='records'))
     else:
-        data = {
+        data = [{
             "fecha_pedido": fecha_pedido,
             "periodo": periodo,
             "adquiriente": adquiriente,
-            "total": total,
+            "importe_total": total,
             "rubro": rubro,
-            "promedio": promedio,
+            "promedio_factura": promedio,
             "punto_llegada": punto_llegada,
             "forma_pago": forma_pago,
             "notas": notas,
-        }
+        }, ]
+        put_pedidos(data)
