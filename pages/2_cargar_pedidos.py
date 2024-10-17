@@ -75,6 +75,9 @@ st.dataframe(pedidos[~pedidos['estado'].isin(['TERMINADO', 'ENTREGADO', 'ANULADO
                               'promedio_factura', 'contado_credito', 'notas', 'punto_entrega', 'estado'])
 st.header("Ingresar Pedido")
 
+#if 'datos' not in st.session_state:
+#    st.session_state.datos = cargar_datos()
+
 with st.form(key='load_pedidos', border=False):
     col1, col2, col3 = st.columns(3)
 
@@ -107,7 +110,7 @@ with st.form(key='load_pedidos', border=False):
     masivo = col1.file_uploader("Subir Masivo", type=['xlsx'],
                                 help='Subir archivo excel para ingreso de varios pedidos, si sube excel no ingresar '
                                      'otros datos.')
-    submit = col2.form_submit_button('Subir', on_click=pedidos)
+    submit = col2.form_submit_button('Subir')
 
 if submit:
     if masivo is not None:
@@ -125,6 +128,7 @@ if submit:
                 pedidos[column] = pedidos[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
         pedidos.replace(np.nan, None, inplace=True)
         put_pedidos(pedidos.to_dict(orient='records'))
+
     else:
         data = [{
             "fecha_pedido": fecha_pedido,
@@ -138,3 +142,5 @@ if submit:
             "notas": notas,
         }, ]
         put_pedidos(data)
+
+
