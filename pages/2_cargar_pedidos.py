@@ -7,7 +7,7 @@ from yaml.loader import SafeLoader
 from time import sleep
 
 from services.PutPedidos import put_pedidos
-from services.Querys import pedidos
+from services.Querys import pedidos, cargar_datos
 
 st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wide")
 
@@ -18,7 +18,11 @@ else:
 
 st.title('Pedidos por entregar')
 
-st.dataframe(pedidos[~pedidos['estado'].isin(['TERMINADO', 'ENTREGADO', 'ANULADO'])], height=300, hide_index=True,
+if 'datos' not in st.session_state:
+    st.session_state.datos = cargar_datos()
+
+
+st.dataframe(st.session_state.datos[~st.session_state.datos['estado'].isin(['TERMINADO', 'ENTREGADO', 'ANULADO'])], height=300, hide_index=True,
              column_config={
                  "cod_pedido": st.column_config.TextColumn(
                      "Codigo de Pedido",
@@ -72,7 +76,7 @@ st.dataframe(pedidos[~pedidos['estado'].isin(['TERMINADO', 'ENTREGADO', 'ANULADO
                      "Estado"
                  )
              }, column_order=['cod_pedido', 'fecha_pedido', 'periodo', 'adquiriente', 'importe_total', 'rubro',
-                              'promedio_factura', 'contado_credito', 'notas', 'punto_entrega', 'estado'])
+                              'promedio_factura', 'contado_credito', 'notas', 'punto_entrega', 'estado', 'alias'])
 st.header("Ingresar Pedido")
 
 #if 'datos' not in st.session_state:
@@ -143,4 +147,5 @@ if submit:
         }, ]
         put_pedidos(data)
 
-
+    sleep(1)
+    st.session_state.datos = cargar_datos()

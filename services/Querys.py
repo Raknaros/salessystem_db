@@ -12,6 +12,13 @@ warehouse = create_engine('postgresql://admindb:72656770@datawarehouse.cgvmexzrr
 pedidos = pd.read_sql("SELECT * FROM pedidos",
                       salessystem)
 
+
+def cargar_datos():
+    # Función para cargar datos de la base de datos
+    query = "SELECT a.*, proveedores.alias FROM pedidos AS a JOIN proveedores ON proveedores.numero_documento=a.adquiriente"
+    #REVISAR CONSULTA POR INDICES DUPLICADOS, O HACER RESET_INDEX(DROP=TRUE)
+    return pd.read_sql(query, salessystem)
+
 cotizaciones = pd.read_sql("SELECT * FROM facturas WHERE estado NOT IN ('TERMINADO', 'ENTREGADO', 'ANULADA')",
                            salessystem)
 

@@ -7,6 +7,7 @@ import streamlit_authenticator as stauth
 from streamlit_authenticator.utilities.hasher import Hasher
 
 from services.PutPedidos import put_pedidos
+from services.Querys import cargar_datos
 
 passwords_to_hash = ['emisor2024', 'EvelynCBM1968', 'p259E9C695+']
 #hashed_passwords = Hasher(passwords_to_hash).generate()
@@ -30,4 +31,10 @@ for column in str_columns:
     if pedidos[column].notna().any():
         pedidos[column] = pedidos[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
 pedidos.replace(np.nan, None, inplace=True)
-put_pedidos(pedidos.to_dict(orient='records'))
+
+
+datos=cargar_datos()
+
+
+duplicados_filas = datos.duplicated()
+print("Filas duplicadas:", duplicados_filas.sum())
