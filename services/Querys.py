@@ -2,6 +2,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 import toml
 import streamlit as st
+import psycopg2
 
 salessystem_user = st.secrets['DB_USERNAME_SALESSYSTEM']
 salessystem_token = st.secrets['DB_TOKEN_SALESSYSTEM']
