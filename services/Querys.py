@@ -13,7 +13,8 @@ salessystem = create_engine(
     'mysql+pymysql://' + salessystem_user + ':' + salessystem_token + '@sales-system.c988owwqmmkd.us'
                                                                       '-east-1.rds.amazonaws.com'
                                                                       ':3306/salessystem')
-warehouse_url = f'postgresql://{warehouse_user}:{warehouse_token}@datawarehouse.cgvmexzrrsgs.us-east-1.rds.amazonaws.com:5432/warehouse'
+warehouse_url = (f'postgresql://{warehouse_user}:{warehouse_token}@datawarehouse.cgvmexzrrsgs.us-east-1.rds.amazonaws'
+                 f'.com:5432/warehouse')
 warehouse = create_engine(warehouse_url)
 
 pedidos = pd.read_sql("SELECT * FROM pedidos",
