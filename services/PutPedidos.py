@@ -6,7 +6,7 @@ import numpy as np;
 import re
 
 from models import Pedidos, session
-from services.Querys import adquirientes
+from services.Querys import adquirientes, cargar_datos
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
@@ -31,7 +31,11 @@ def put_pedidos(data: list):
             )
             session.add(nuevo_pedido)
         session.commit()  # Commit al final
+        if len(data) > 1:
+            return len(data)
+        elif len(data) == 1:
+            return cargar_datos().tail(1)["cod_pedido"]
     except Exception as e:
-        print(e)
-    #    session.rollback()
-    #    print(f"Error al insertar el pedido: {e}")
+        session.rollback()
+        return "Ocurrió un error al insertar el pedido"
+

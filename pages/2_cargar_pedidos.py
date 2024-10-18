@@ -131,7 +131,7 @@ if submit:
             if pedidos[column].notna().any():
                 pedidos[column] = pedidos[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
         pedidos.replace(np.nan, None, inplace=True)
-        put_pedidos(pedidos.to_dict(orient='records'))
+        st.success(put_pedidos(pedidos.to_dict(orient='records')))
 
     else:
         data = [{
@@ -145,7 +145,7 @@ if submit:
             "forma_pago": forma_pago,
             "notas": notas,
         }, ]
-        put_pedidos(data)
+        st.success(put_pedidos(data))
 
     sleep(1)
     st.session_state.datos = cargar_datos()
