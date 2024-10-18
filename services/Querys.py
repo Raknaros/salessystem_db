@@ -15,7 +15,7 @@ pedidos = pd.read_sql("SELECT * FROM pedidos",
 
 def cargar_datos():
     # Función para cargar datos de la base de datos
-    query = "SELECT a.*, proveedores.alias FROM pedidos AS a JOIN proveedores ON proveedores.numero_documento=a.adquiriente"
+    query="SELECT id, cod_pedido, fecha_pedido, periodo, (CASE customers.alias WHEN null THEN adquiriente ELSE customers.alias END) AS adquiriente, importe_total, rubro, promedio_factura, contado_credito, bancariza, notas, estado, punto_entrega FROM pedidos AS a JOIN customers ON customers.ruc=a.adquiriente"
     #REVISAR CONSULTA POR INDICES DUPLICADOS, O HACER RESET_INDEX(DROP=TRUE)
     return pd.read_sql(query, salessystem)
 

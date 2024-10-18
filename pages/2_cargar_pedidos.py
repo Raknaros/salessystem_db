@@ -79,10 +79,10 @@ st.dataframe(st.session_state.datos[~st.session_state.datos['estado'].isin(['TER
                               'promedio_factura', 'contado_credito', 'notas', 'punto_entrega', 'estado', 'alias'])
 st.header("Ingresar Pedido")
 
-#if 'datos' not in st.session_state:
-#    st.session_state.datos = cargar_datos()
+if 'datos' not in st.session_state:
+    st.session_state.datos = cargar_datos()
 
-with st.form(key='load_pedidos', border=False):
+with st.form(key='load_pedidos', border=False, clear_on_submit=True):
     col1, col2, col3 = st.columns(3)
 
     fecha_pedido = col1.date_input('Fecha del pedido', help='Indicar la fecha en la que fue solicitado el pedido')
@@ -149,3 +149,4 @@ if submit:
 
     sleep(1)
     st.session_state.datos = cargar_datos()
+    st.rerun()
