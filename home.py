@@ -46,6 +46,8 @@ if st.session_state["authentication_status"]:
     authenticator.logout()
     st.write(f'Bienvenid@ *{st.session_state["name"]}*')
     st.title('Informacion Adicional')
+    if "username" not in st.session_state:
+        st.session_state["username"] = None
     if username == 'gerencia':
         # Sidebar navigation
         if 'gerencia_sidebar' not in st.session_state:
