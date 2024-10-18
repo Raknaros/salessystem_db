@@ -7,11 +7,11 @@ salessystem_user = st.secrets['DB_USERNAME_SALESSYSTEM']
 salessystem_token = st.secrets['DB_TOKEN_SALESSYSTEM']
 warehouse_user = st.secrets['DB_USERNAME_WAREHOUSE']
 warehouse_token = st.secrets['DB_TOKEN_WAREHOUSE']
-salessystem = create_engine('mysql+pymysql://'+salessystem_user+'@'+salessystem_token+'@sales-system.c988owwqmmkd.us'
+salessystem = create_engine('mysql+pymysql://'+salessystem_user+':'+salessystem_token+'@sales-system.c988owwqmmkd.us'
                                                                                       '-east-1.rds.amazonaws.com'
                                                                                       ':3306/salessystem')
 
-warehouse = create_engine('postgresql://'+warehouse_user+'@'+warehouse_token+'@datawarehouse.cgvmexzrrsgs.us-east-1'
+warehouse = create_engine('postgresql://'+warehouse_user+':'+warehouse_token+'@datawarehouse.cgvmexzrrsgs.us-east-1'
                                                                              '.rds.amazonaws.com'
                                                                              ':5432/warehouse')
 
