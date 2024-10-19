@@ -11,16 +11,15 @@ from services.Querys import pedidos, cargar_datos
 
 st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wide")
 
-if 'session_token' not in st.session_state:
+if st.session_state["username"] == 'gerencia':
+    st.session_state.gerencia_sidebar()
+elif st.session_state["username"] != 'gerencia':
+    st.session_state.other_sidebar()
+else:
     # Redirigir a la página principal
     st.warning("Su sesión ha expirado. Redirigiendo a la página principal...")
     sleep(2)
     st.switch_page("home.py")
-
-if st.session_state["username"] == 'gerencia':
-    st.session_state.gerencia_sidebar()
-else:
-    st.session_state.other_sidebar()
 
 st.title('Pedidos por entregar')
 
