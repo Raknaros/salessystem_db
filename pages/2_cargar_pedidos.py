@@ -147,6 +147,6 @@ if submit:
         }, ]
         st.success(put_pedidos(data))
 
-    sleep(1)
+    sleep(2)
     st.session_state.datos = cargar_datos()
     st.rerun()
