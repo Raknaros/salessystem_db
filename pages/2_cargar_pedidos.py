@@ -6,15 +6,18 @@ import yaml
 from yaml.loader import SafeLoader
 from time import sleep
 
+from home import authentication_status, authenticator
 from services.PutPedidos import put_pedidos
 from services.Querys import pedidos, cargar_datos
 
 st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wide")
 
-if st.session_state["authentication_status"] is False or st.session_state["authentication_status"] is None:
-    st.warning("Su sesión ha expirado. Redirigiendo a la página principal...")
-    #sleep(2)
+if authentication_status is False or authentication_status is None:
+    st.error("Por favor, inicie sesión para acceder a esta página.")
+    # Aquí podrías redirigir a la página de inicio de sesión o mostrar un formulario de inicio de sesión
+    # Por ejemplo, puedes mostrar el formulario de autenticación:
     st.switch_page("home.py")
+
 
 if st.session_state["username"] == 'gerencia':
     st.session_state.gerencia_sidebar()
