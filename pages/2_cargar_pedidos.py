@@ -131,7 +131,7 @@ if submit:
             if pedidos[column].notna().any():
                 pedidos[column] = pedidos[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
         pedidos.replace(np.nan, None, inplace=True)
-        st.success("Se ingresaron "+put_pedidos(pedidos.to_dict(orient='records'))+" pedidos.")
+        st.info(put_pedidos(pedidos.to_dict(orient='records')))
 
     else:
         data = [{
@@ -145,7 +145,7 @@ if submit:
             "forma_pago": forma_pago,
             "notas": notas,
         }, ]
-        st.success("Se ingresó el pedido con código "+put_pedidos(data)+".")
+        st.info(put_pedidos(data))
 
     sleep(2)
     st.session_state.datos = cargar_datos()
