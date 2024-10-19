@@ -6,7 +6,7 @@ import yaml
 from yaml.loader import SafeLoader
 from time import sleep
 
-from home import authentication_status, authenticator
+from home import authentication_status
 from services.PutPedidos import put_pedidos
 from services.Querys import pedidos, cargar_datos
 
@@ -16,6 +16,7 @@ if authentication_status is False or authentication_status is None:
     st.error("Por favor, inicie sesión para acceder a esta página.")
     # Aquí podrías redirigir a la página de inicio de sesión o mostrar un formulario de inicio de sesión
     # Por ejemplo, puedes mostrar el formulario de autenticación:
+    sleep(2)
     st.switch_page("home.py")
 
 

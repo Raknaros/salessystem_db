@@ -20,7 +20,7 @@ authenticator = stauth.Authenticate(
 )
 
 name, authentication_status, username = authenticator.login('main', fields={'Form name': 'Login'})
-
+#CORREGIR ERRORES CON EL FLUJO, LA AUTENTICACION Y EL KEY ENTRE LOGIN Y LOGOUT
 
 def other_sidebar():
     st.sidebar.header(st.session_state["name"])
@@ -41,7 +41,7 @@ def gerencia_sidebar():
     st.sidebar.page_link('pages/5_informacion_adicional.py', label='Informacion Adicional', disabled=True)
 
 
-if st.session_state["authentication_status"]:
+if authentication_status:
     sleep(1)
     authenticator.logout()
     st.write(f'Bienvenid@ *{st.session_state["name"]}*')
