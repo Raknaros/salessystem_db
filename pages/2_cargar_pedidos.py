@@ -13,7 +13,7 @@ st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wi
 
 if st.session_state["authentication_status"] is False or st.session_state["authentication_status"] is None:
     st.warning("Su sesión ha expirado. Redirigiendo a la página principal...")
-    sleep(2)
+    #sleep(2)
     st.switch_page("home.py")
 
 if st.session_state["username"] == 'gerencia':
