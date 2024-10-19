@@ -118,7 +118,7 @@ with st.form(key='load_pedidos', border=False, clear_on_submit=True):
 
 if submit:
     if masivo is not None:
-        pedidos = pd.read_excel('D:/OneDrive/facturacion/importar.xlsx', sheet_name='pedidos', date_format='%d/%m/%Y',
+        pedidos = pd.read_excel(masivo, sheet_name='pedidos', date_format='%d/%m/%Y',
                                 dtype={'periodo': np.int32, 'adquiriente': object, 'importe_total': np.int64,
                                        'rubro': str,
                                        'promedio_factura': None, 'contado_credito': str,
