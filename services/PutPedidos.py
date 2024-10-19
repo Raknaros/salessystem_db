@@ -32,9 +32,9 @@ def put_pedidos(data: list):
             session.add(nuevo_pedido)
         session.commit()  # Commit al final
         if len(data) > 1:
-            return len(data)
+            return str(len(data))
         elif len(data) == 1:
-            return cargar_datos().tail(1)["cod_pedido"]
+            return cargar_datos().tail(1)["cod_pedido"].values()
     except Exception as e:
         session.rollback()
         return "Ocurrió un error al insertar el pedido"
