@@ -14,8 +14,7 @@ st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wi
 if 'session_token' not in st.session_state:
     # Redirigir a la página principal
     st.warning("Su sesión ha expirado. Redirigiendo a la página principal...")
-    st.session_state["redirect"] = True  # Una variable para evitar recursiones
-    st.rerun()
+    st.switch_page("home.py")
 
 if st.session_state["username"] == 'gerencia':
     st.session_state.gerencia_sidebar()
