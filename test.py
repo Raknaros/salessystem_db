@@ -29,8 +29,4 @@ for column in str_columns:
 pedidos.replace(np.nan, None, inplace=True)
 
 
-datos=cargar_datos()
-
-
-duplicados_filas = datos.duplicated()
-print("Filas duplicadas:", duplicados_filas.sum())
+print(put_pedidos(pedidos.to_dict(orient='records')))

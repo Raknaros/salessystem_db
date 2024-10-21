@@ -41,13 +41,11 @@ def gerencia_sidebar():
     st.sidebar.page_link('pages/5_informacion_adicional.py', label='Informacion Adicional', disabled=True)
 
 
-if authentication_status:
+if st.session_state["authentication_status"]:
     sleep(1)
     authenticator.logout()
     st.write(f'Bienvenid@ *{st.session_state["name"]}*')
     st.title('Informacion Adicional')
-    if "username" not in st.session_state:
-        st.session_state["username"] = None
     if username == 'gerencia':
         # Sidebar navigation
         if 'gerencia_sidebar' not in st.session_state:
@@ -58,6 +56,7 @@ if authentication_status:
         if 'other_sidebar' not in st.session_state:
             st.session_state.other_sidebar = other_sidebar
         other_sidebar()
+
 
     tab1, tab2, tab3 = st.tabs(["Proveedores", "Adquirientes", "Catalogo"])
 
