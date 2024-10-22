@@ -6,7 +6,7 @@ import yaml
 from yaml.loader import SafeLoader
 from time import sleep
 
-from home import authentication_status
+
 from services.PutPedidos import put_pedidos
 from services.Querys import pedidos, cargar_datos
 
@@ -25,11 +25,10 @@ if st.session_state["username"] == 'gerencia':
 else:
     st.session_state.other_sidebar()
 
-
-st.title('Pedidos por entregar')
-
 if 'datos' not in st.session_state:
     st.session_state.datos = cargar_datos()
+
+st.title('Pedidos por entregar')
 
 
 st.dataframe(st.session_state.datos[~st.session_state.datos['estado'].isin(['TERMINADO', 'ENTREGADO', 'ANULADO'])], height=300, hide_index=True,
@@ -89,8 +88,7 @@ st.dataframe(st.session_state.datos[~st.session_state.datos['estado'].isin(['TER
                               'promedio_factura', 'contado_credito', 'notas', 'punto_entrega', 'estado', 'alias'])
 st.header("Ingresar Pedido")
 
-if 'datos' not in st.session_state:
-    st.session_state.datos = cargar_datos()
+
 
 with st.form(key='load_pedidos', border=False, clear_on_submit=True):
     col1, col2, col3 = st.columns(3)
@@ -141,7 +139,7 @@ if submit:
             if pedidos[column].notna().any():
                 pedidos[column] = pedidos[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
         pedidos.replace(np.nan, None, inplace=True)
-        st.info(put_pedidos(pedidos.to_dict(orient='records')))
+        st.success(put_pedidos(pedidos.to_dict(orient='records')))
 
     else:
         data = [{
@@ -155,7 +153,7 @@ if submit:
             "forma_pago": forma_pago,
             "notas": notas,
         }, ]
-        st.info(put_pedidos(data))
+        st.success(put_pedidos(data))
 
     sleep(2)
     st.session_state.datos = cargar_datos()

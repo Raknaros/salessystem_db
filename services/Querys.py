@@ -35,18 +35,18 @@ cotizaciones_poremitir = cotizaciones[~cotizaciones['estado'].isin(['TERMINADO',
 
 facturas_poremitir = (cotizaciones_poremitir.groupby(['cod_pedido', 'cuo'])
                       .agg({
-    'alias': 'first',
-    'emision': 'first',
-    'ruc': 'first',
-    'nombre_razon': 'first',
-    'moneda': 'first',
-    'precio_unit': lambda x: (x * cotizaciones_poremitir.loc[x.index, 'cantidad']).sum() * 1.18,
-    'forma_pago': 'first',
-    'observaciones': 'first',
-    'detraccion': 'first',
-    'retencion': 'first',
-    'estado': 'first'
-}).reset_index())
+                            'alias': 'first',
+                            'emision': 'first',
+                            'ruc': 'first',
+                            'nombre_razon': 'first',
+                            'moneda': 'first',
+                            'precio_unit': lambda x: (x * cotizaciones_poremitir.loc[x.index, 'cantidad']).sum() * 1.18,
+                            'forma_pago': 'first',
+                            'observaciones': 'first',
+                            'detraccion': 'first',
+                            'retencion': 'first',
+                            'estado': 'first'
+                        }).reset_index())
 
 # Renombramos la columna de precio_unit para que tenga el nombre correcto si es necesario
 facturas_poremitir.rename(columns={'precio_unit': 'total'}, inplace=True)
