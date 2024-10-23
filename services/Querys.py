@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 import toml
 import streamlit as st
 import psycopg2
+from sqlalchemy.orm import sessionmaker
 
 salessystem_user = st.secrets['DB_USERNAME_SALESSYSTEM']
 salessystem_token = st.secrets['DB_TOKEN_SALESSYSTEM']
@@ -12,14 +13,18 @@ warehouse_token = st.secrets['DB_TOKEN_WAREHOUSE']
 salessystem = create_engine(
     'mysql+pymysql://' + salessystem_user + ':' + salessystem_token + '@sales-system.c988owwqmmkd.us'
                                                                       '-east-1.rds.amazonaws.com'
-                                                                      ':3306/salessystem')
+                                                                      ':3306/salessystem',
+    connect_args={"connect_timeout": 30})
 warehouse_url = (f'postgresql://{warehouse_user}:{warehouse_token}@datawarehouse.cgvmexzrrsgs.us-east-1.rds.amazonaws'
                  f'.com:5432/warehouse')
 warehouse = create_engine(warehouse_url)
 
+SessionS = sessionmaker(bind=salessystem)
+
+SessionW = sessionmaker(bind=warehouse)
+
 pedidos = pd.read_sql("SELECT * FROM pedidos",
                       salessystem)
-
 
 def cargar_datos():
     # Función para cargar datos de la base de datos
