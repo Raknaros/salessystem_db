@@ -12,13 +12,7 @@ from services.Querys import pedidos, cargar_datos
 
 st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wide")
 
-"""if authentication_status is False or authentication_status is None:
-    st.error("Por favor, inicie sesión para acceder a esta página.")
-    # Aquí podrías redirigir a la página de inicio de sesión o mostrar un formulario de inicio de sesión
-    # Por ejemplo, puedes mostrar el formulario de autenticación:
-    sleep(2)
-    st.switch_page("home.py")
-"""
+
 
 if st.session_state["username"] == 'gerencia':
     st.session_state.gerencia_sidebar()
