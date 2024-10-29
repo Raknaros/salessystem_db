@@ -6,12 +6,6 @@ from services.Querys import facturas_poremitir
 
 st.set_page_config(page_title="Cotizaciones", page_icon=":material/edit:", layout="wide")
 
-if 'session_token' not in st.session_state:
-    # Redirigir a la página principal
-    st.warning("Su sesión ha expirado. Redirigiendo a la página principal...")
-    sleep(2)
-    st.switch_page("home.py")
-
 
 if st.session_state["username"] == 'gerencia':
     st.session_state.gerencia_sidebar()
@@ -22,7 +16,6 @@ st.title('Cotizaciones')
 
 st.dataframe(facturas_poremitir, height=450, hide_index=True, column_config={
     "cod_pedido": st.column_config.TextColumn(
-        "Codigo de Pedido",
         help="Codigo unico del pedido al que corresponde esta factura"
     ),
     "cuo": st.column_config.NumberColumn(
