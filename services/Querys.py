@@ -5,16 +5,17 @@ import streamlit as st
 import psycopg2
 salessystem_user = st.secrets['DB_USERNAME_SALESSYSTEM']
 salessystem_token = st.secrets['DB_TOKEN_SALESSYSTEM']
+salessystem_database = st.secrets['DB_DATABASE_SALESSYSTEM']
+salessystem_url = st.secrets['DB_URL_SALESSYSTEM']
 warehouse_user = st.secrets['DB_USERNAME_WAREHOUSE']
 warehouse_token = st.secrets['DB_TOKEN_WAREHOUSE']
+warehouse_database = st.secrets['DB_DATABASE_WAREHOUSE']
+warehouse_url = st.secrets['DB_URL_WAREHOUSE']
 
-salessystem = create_engine(
-    'mysql+pymysql://' + salessystem_user + ':' + salessystem_token + '@sales-system.c988owwqmmkd.us'
-                                                                      '-east-1.rds.amazonaws.com'
-                                                                      ':3306/salessystem')
-warehouse_url = (f'postgresql://{warehouse_user}:{warehouse_token}@datawarehouse.cgvmexzrrsgs.us-east-1.rds.amazonaws'
-                 f'.com:5432/warehouse')
-warehouse = create_engine(warehouse_url)
+salessystem = create_engine(f'mysql+pymysql://{salessystem_user}:{salessystem_token}@{salessystem_url}:3306/{salessystem_database}',
+    connect_args={"connect_timeout": 30})
+warehouse = create_engine(f'postgresql://{warehouse_user}:{warehouse_token}@{warehouse_url}:5432/{warehouse_database}',
+    connect_args={"connect_timeout": 30})
 
 pedidos = pd.read_sql("SELECT * FROM pedidos",
                       salessystem)

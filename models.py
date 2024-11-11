@@ -1,23 +1,8 @@
-from collections import defaultdict
-import pandas as pd
-from sqlalchemy import create_engine, Column, Integer, String, BigInteger, Float, Date, Boolean, Time
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy import Column, Integer, String, BigInteger, Float, Date, Boolean, Time
+from sqlalchemy.orm import declarative_base
 import pymysql
 
-#engine = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com'
-#                       ':3306/salessystem')
-
-engine = create_engine(
-    'mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com/salessystem',
-    connect_args={"connect_timeout": 30}  # Tiempo de espera para la conexión
-)
-
 Base = declarative_base()
-
-Session = sessionmaker(bind=engine)
-
-session = Session()
-
 
 class Vehiculo(Base):
     __tablename__ = 'vehiculos'
