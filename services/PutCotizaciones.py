@@ -14,23 +14,16 @@ pd.set_option('future.no_silent_downcasting', True)
 
 
 def load_cotizaciones(ruta: str):
-    # Cargar engine de conexion de salessystem database
-    engine = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com'
-                           ':3306/salessystem')
-
     # Determinar ruta del libro
     workbook_path = Path(ruta)
     # Cargar libro excel
     workbook = load_workbook(workbook_path)
-
     # Crear dataframe Cotizaciones
     cotizaciones = pd.DataFrame(
         columns=['cuo', 'alias', 'emision', 'descripcion', 'cantidad', 'precio_unit', 'total', 'peso_articulo',
                  'peso_total', 'observaciones', 'vencimiento', 'cuota1', 'vencimiento2', 'cuota2', 'vencimiento3',
                  'cuota3', 'vencimiento4', 'cuota4', 'moneda', 'unid_medida', 'traslado', 'lugar_entrega', 'placa',
                  'conductor', 'datos_adicionales'])
-
-
 
     # Iterar sobre todas las hojas del libro
     for sheet_name in workbook.sheetnames:

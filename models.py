@@ -1,13 +1,8 @@
-from collections import defaultdict
-import pandas as pd
-from sqlalchemy import create_engine, Column, Integer, String, BigInteger, Float, Date, Boolean, Time
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy import Column, Integer, String, BigInteger, Float, Date, Boolean, Time
+from sqlalchemy.orm import declarative_base
 import pymysql
 
 Base = declarative_base()
-
-
-
 
 class Vehiculo(Base):
     __tablename__ = 'vehiculos'
