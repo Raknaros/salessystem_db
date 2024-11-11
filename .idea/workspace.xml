@@ -20,6 +20,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="dev" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
@@ -52,7 +57,7 @@
     &quot;Python.models.executor&quot;: &quot;Run&quot;,
     &quot;Python.test.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
@@ -108,8 +113,6 @@
       <workItem from="1728928659552" duration="39000" />
       <workItem from="1728928907091" duration="1972000" />
       <workItem from="1729544222493" duration="10035000" />
-      <workItem from="1730242740969" duration="977000" />
-      <workItem from="1730315622273" duration="28000" />
     </task>
     <task id="LOCAL-00001" summary="Third">
       <option name="closed" value="true" />
@@ -369,11 +372,11 @@
     </task>
     <task id="LOCAL-00033" summary="first in dev">
       <option name="closed" value="true" />
-      <created>1730175716432</created>
+      <created>1729665359967</created>
       <option name="number" value="00033" />
       <option name="presentableId" value="LOCAL-00033" />
       <option name="project" value="LOCAL" />
-      <updated>1730175716432</updated>
+      <updated>1729665359967</updated>
     </task>
     <option name="localTasksCounter" value="34" />
     <servers />
