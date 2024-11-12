@@ -3,23 +3,29 @@ from sqlalchemy import create_engine
 import toml
 import streamlit as st
 import psycopg2
-salessystem_user = st.secrets['DB_USERNAME_SALESSYSTEM']
-salessystem_token = st.secrets['DB_TOKEN_SALESSYSTEM']
-salessystem_database = st.secrets['DB_DATABASE_SALESSYSTEM']
-salessystem_url = st.secrets['DB_URL_SALESSYSTEM']
-warehouse_user = st.secrets['DB_USERNAME_WAREHOUSE']
-warehouse_token = st.secrets['DB_TOKEN_WAREHOUSE']
-warehouse_database = st.secrets['DB_DATABASE_WAREHOUSE']
-warehouse_url = st.secrets['DB_URL_WAREHOUSE']
+from sqlalchemy.orm import sessionmaker
 
-salessystem = create_engine(f'mysql+pymysql://{salessystem_user}:{salessystem_token}@{salessystem_url}:3306/{salessystem_database}',
-    connect_args={"connect_timeout": 30})
-warehouse = create_engine(f'postgresql://{warehouse_user}:{warehouse_token}@{warehouse_url}:5432/{warehouse_database}',
-    connect_args={"connect_timeout": 30})
+salessystem_user = st.secrets['DB_USERNAME_SS']
+salessystem_token = st.secrets['DB_TOKEN_SS']
+salessystem_database = st.secrets['DB_DATABASE_SS']
+salessystem_source = st.secrets['DB_SOURCE_SS']
+warehouse_user = st.secrets['DB_USERNAME_WH']
+warehouse_token = st.secrets['DB_TOKEN_WH']
+warehouse_database = st.secrets['DB_DATABASE_WH']
+warehouse_source = st.secrets['DB_SOURCE_WH']
+
+salessystem_url = f'mysql+pymysql://{salessystem_user}:{salessystem_token}@{salessystem_source}:3306/{salessystem_database}'
+warehouse_url = f'postgresql://{warehouse_user}:{warehouse_token}@{warehouse_source}:5432/{warehouse_database}'
+
+salessystem = create_engine(salessystem_url, connect_args={"connect_timeout": 30})
+
+warehouse = create_engine(warehouse_url, connect_args={"connect_timeout": 30})
+
+Session = sessionmaker(bind=salessystem)
+
 
 pedidos = pd.read_sql("SELECT * FROM pedidos",
                       salessystem)
-
 
 def cargar_datos():
     # Función para cargar datos de la base de datos
