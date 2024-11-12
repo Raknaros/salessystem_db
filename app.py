@@ -45,10 +45,7 @@ if 'authenticator' not in st.session_state:
     st.session_state['authenticator'] = authenticator
 
 if st.session_state['authentication_status']:
-    authenticator.logout()
     user_roles = config['credentials']['usernames'][st.session_state["username"]].get('roles', [])
-    st.write(f"Hola {st.session_state["name"]}")
-    # Luego, puedes usar los roles para condicionar accesos:
     if 'admin' in user_roles:
         if 'gerencia_sidebar' not in st.session_state:
             st.session_state.sidebar = gerencia_sidebar

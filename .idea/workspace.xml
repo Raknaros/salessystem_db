@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="dab2095f-379b-465f-87ee-4f7071043456" name="Changes" comment="first in dev">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/0_home.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/0_home.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/2_cargar_pedidos.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/2_cargar_pedidos.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/PutPedidos.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/PutPedidos.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/Querys.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/Querys.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,7 +26,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -110,6 +114,7 @@
       <workItem from="1729544222493" duration="10035000" />
       <workItem from="1730242740969" duration="977000" />
       <workItem from="1730315622273" duration="28000" />
+      <workItem from="1731385711295" duration="1851000" />
     </task>
     <task id="LOCAL-00001" summary="Third">
       <option name="closed" value="true" />

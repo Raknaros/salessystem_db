@@ -3,6 +3,8 @@ from sqlalchemy import create_engine
 import toml
 import streamlit as st
 import psycopg2
+from sqlalchemy.orm import sessionmaker
+
 salessystem_user = st.secrets['DB_USERNAME_SS']
 salessystem_token = st.secrets['DB_TOKEN_SS']
 salessystem_database = st.secrets['DB_DATABASE_SS']
@@ -15,12 +17,12 @@ warehouse_source = st.secrets['DB_SOURCE_WH']
 salessystem_url = f'mysql+pymysql://{salessystem_user}:{salessystem_token}@{salessystem_source}:3306/{salessystem_database}'
 warehouse_url = f'postgresql://{warehouse_user}:{warehouse_token}@{warehouse_source}:5432/{warehouse_database}'
 
-salessystem= create_engine(salessystem_url, connect_args={"connect_timeout": 30})
+salessystem = create_engine(salessystem_url, connect_args={"connect_timeout": 30})
 
 warehouse = create_engine(warehouse_url, connect_args={"connect_timeout": 30})
 
+Session = sessionmaker(bind=salessystem)
 
-#hacer session
 
 pedidos = pd.read_sql("SELECT * FROM pedidos",
                       salessystem)

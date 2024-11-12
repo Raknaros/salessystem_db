@@ -6,31 +6,21 @@ import yaml
 from yaml.loader import SafeLoader
 from time import sleep
 
-
 from services.PutPedidos import put_pedidos
 from services.Querys import pedidos, cargar_datos
 
 st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wide")
 
-"""if authentication_status is False or authentication_status is None:
-    st.error("Por favor, inicie sesión para acceder a esta página.")
-    # Aquí podrías redirigir a la página de inicio de sesión o mostrar un formulario de inicio de sesión
-    # Por ejemplo, puedes mostrar el formulario de autenticación:
-    sleep(2)
-    st.switch_page("app.py")
-"""
-
-
 st.session_state.sidebar()
-
 
 if 'datos' not in st.session_state:
     st.session_state.datos = cargar_datos()
 
 st.title('Pedidos por entregar')
 
-
-st.dataframe(st.session_state.datos[~st.session_state.datos['estado'].isin(['TERMINADO', 'ENTREGADO', 'ANULADO'])], height=300, hide_index=True,
+#IMPLEMENTAR NUEVO FLUJO AUTENTICACION PARA ESTA Y DEMAS PAGINAS, VERIFICAR SI INTRODUCIR EL CONTENIDO EN EL FLUJO O SOLO EL SALUDO
+st.dataframe(st.session_state.datos[~st.session_state.datos['estado'].isin(['TERMINADO', 'ENTREGADO', 'ANULADO'])],
+             height=300, hide_index=True,
              column_config={
                  "cod_pedido": st.column_config.TextColumn(
                      "Codigo de Pedido",
@@ -43,7 +33,8 @@ st.dataframe(st.session_state.datos[~st.session_state.datos['estado'].isin(['TER
                  ),
                  "periodo": st.column_config.NumberColumn(
                      "Periodo",
-                     help="Periodo al que corresponde el pedido, por ejemplo facturas de diciembre del 2020 seria 202012",
+                     help="Periodo al que corresponde el pedido, por ejemplo facturas de diciembre del 2020 seria "
+                          "202012",
                      format='%d',
                  ),
                  "adquiriente": st.column_config.TextColumn(
@@ -86,8 +77,6 @@ st.dataframe(st.session_state.datos[~st.session_state.datos['estado'].isin(['TER
              }, column_order=['cod_pedido', 'fecha_pedido', 'periodo', 'adquiriente', 'importe_total', 'rubro',
                               'promedio_factura', 'contado_credito', 'notas', 'punto_entrega', 'estado', 'alias'])
 st.header("Ingresar Pedido")
-
-
 
 with st.form(key='load_pedidos', border=False, clear_on_submit=True):
     col1, col2, col3 = st.columns(3)
