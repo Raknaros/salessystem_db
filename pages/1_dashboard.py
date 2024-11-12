@@ -6,10 +6,8 @@ st.set_page_config(page_title="Dashboard", page_icon=":material/edit:")
 st.title("this is the app title")
 st.write("Hello ,let's learn how to build a streamlit app together")
 
-if st.session_state["username"] == 'gerencia':
-    st.session_state.gerencia_sidebar()
-else:
-    st.session_state.other_sidebar()
+st.session_state.sidebar()
+
 st.write("Contenido de otra página")
 
 

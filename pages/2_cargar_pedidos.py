@@ -17,13 +17,12 @@ st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wi
     # Aquí podrías redirigir a la página de inicio de sesión o mostrar un formulario de inicio de sesión
     # Por ejemplo, puedes mostrar el formulario de autenticación:
     sleep(2)
-    st.switch_page("home.py")
+    st.switch_page("app.py")
 """
 
-if st.session_state["username"] == 'gerencia':
-    st.session_state.gerencia_sidebar()
-else:
-    st.session_state.other_sidebar()
+
+st.session_state.sidebar()
+
 
 if 'datos' not in st.session_state:
     st.session_state.datos = cargar_datos()

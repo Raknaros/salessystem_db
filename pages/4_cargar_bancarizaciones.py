@@ -9,16 +9,7 @@ from services.Querys import bancarizaciones
 
 st.set_page_config(page_title="Bancarizaciones", page_icon=":material/edit:", layout="wide")
 
-if 'session_token' not in st.session_state:
-    # Redirigir a la página principal
-    st.warning("Su sesión ha expirado. Redirigiendo a la página principal...")
-    sleep(2)
-    st.switch_page("home.py")
-
-if st.session_state["username"] == 'gerencia':
-    st.session_state.gerencia_sidebar()
-else:
-    st.session_state.other_sidebar()
+st.session_state.sidebar()
 
 st.title('Bancarizaciones')
 

@@ -2,10 +2,10 @@ import pandas as pd
 from datetime import date
 from time import sleep
 from sqlalchemy import create_engine, insert
-import numpy as np;
+import numpy as np
 import re
 
-from models import Pedidos, session
+from models import Pedidos
 from services.Querys import adquirientes, cargar_datos
 
 pd.set_option('display.max_columns', None)

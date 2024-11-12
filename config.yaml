@@ -1,21 +1,39 @@
+cookie:
+  expiry_days: 30
+  key: some_signature_key # Must be a string
+  name: some_cookie_name
 credentials:
   usernames:
     FACTURACION:
-      email: jsmith@gmail.com
-      name: Facturacion
-      password: $2b$12$r1ZYdm4GJIpUp3SmestHDuqc0eegojorXR3VEkJ9mdDWhSoYCkRVi # To be replaced with hashed password
-    EMISION:
       email: vickyvaravara@outlook.com
-      name: Emisor
-      password: $2b$12$xKObxKqjF2n0XhWBlo3azeTX0BVUBij21le7yAoJ4lYLm584BppPe # To be replaced with hashed password
+      failed_login_attempts: 0 # Will be managed automatically
+      first_name: Vicky
+      last_name: Vara
+      logged_in: False # Will be managed automatically
+      password: $2b$12$r1ZYdm4GJIpUp3SmestHDuqc0eegojorXR3VEkJ9mdDWhSoYCkRVi # Will be hashed automatically
+      roles: # Optional
+      - editor
+      - viewer
+    EMISION:
+      email: caballeropacheco.15@gmail.com
+      failed_login_attempts: 0 # Will be managed automatically
+      first_name: Jose
+      last_name: Pacheco
+      logged_in: False # Will be managed automatically
+      password: $2b$12$xKObxKqjF2n0XhWBlo3azeTX0BVUBij21le7yAoJ4lYLm584BppPe # Will be hashed automatically
+      roles: # Optional
+      - viewer
     GERENCIA:
       email: gestionempresarialintegral@outlook.com
-      name: Gerencia
-      password: $2b$12$2/DU/2UfdLFmB7Dqs1f3Meb04HTtJIBBCBzMuEKCdInmfqjtM.cuy # To be replaced with hashed password
-cookie:
-  expiry_days: 1
-  key: random_signature_key # Must be string
-  name: random_cookie_name
-preauthorized:
+      failed_login_attempts: 0 # Will be managed automatically
+      first_name: Paolo
+      last_name: Meza
+      logged_in: False # Will be managed automatically
+      password: $2b$12$r1ZYdm4GJIpUp3SmestHDuqc0eegojorXR3VEkJ9mdDWhSoYCkRVi # Will be hashed automatically
+      roles: # Optional
+        - admin
+        - editor
+        - viewer
+pre-authorized: # Optional
   emails:
   - luciocandiotti@outlook.com
