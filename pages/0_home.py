@@ -1,3 +1,5 @@
+from time import sleep
+
 import streamlit as st
 
 from services.Querys import proveedores, adquirientes, catalogo
@@ -92,7 +94,8 @@ if st.session_state.get("authentication_status"):
             )
         }, column_order=['id', 'categoria', 'descripcion', 'precio', 'unidad_medida', 'peso'])
 else:
-    st.error("No estás autenticado.")
+    st.error("Por favor inicia sesion para continuar...")
+    sleep(2)
     st.switch_page("app.py")
 
 
