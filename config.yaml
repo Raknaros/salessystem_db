@@ -1,5 +1,5 @@
 cookie:
-  expiry_days: 30
+  expiry_days: 3
   key: some_signature_key # Must be a string
   name: some_cookie_name
 credentials:
@@ -29,7 +29,7 @@ credentials:
       first_name: Paolo
       last_name: Meza
       logged_in: False # Will be managed automatically
-      password: $2b$12$r1ZYdm4GJIpUp3SmestHDuqc0eegojorXR3VEkJ9mdDWhSoYCkRVi # Will be hashed automatically
+      password: p259E9C695+ # Will be hashed automatically $2b$12$r1ZYdm4GJIpUp3SmestHDuqc0eegojorXR3VEkJ9mdDWhSoYCkRVi
       roles: # Optional
         - admin
         - editor

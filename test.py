@@ -37,3 +37,6 @@ print(put_pedidos(pedidos.to_dict(orient='records')))
     sleep(2)
     st.switch_page("home.py")
 """
+
+
+#TODO en cargar_pedidos revisar que al ingresar un pedido de un adquiriente nuevo aparezca en la tabla

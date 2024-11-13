@@ -10,7 +10,7 @@ st.set_page_config(page_title="Home", page_icon=":material/edit:", layout="wide"
 if st.session_state.get("authentication_status"):
     st.session_state.sidebar()
     st.session_state['authenticator'].logout(location='sidebar', button_name='Cerrar Sesion')
-    st.write(f'Bienvenido {st.session_state["username"]}')
+    st.title('Bienvenido')
     tab1, tab2, tab3 = st.tabs(["Proveedores", "Adquirientes", "Catalogo"])
     with tab1:
         st.dataframe(proveedores, height=300, hide_index=True, column_config={

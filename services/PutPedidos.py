@@ -36,6 +36,7 @@ def put_pedidos(data: list):
             return "Se ingresaron "+str(len(data))+" pedidos."
         elif len(data) == 1:
             return "Se ingresó el pedido con código "+cargar_datos().iloc[-1]['cod_pedido']+"."
+
     except Exception as e:
         session.rollback()
         return "Ocurrió un error al insertar el pedido"
