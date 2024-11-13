@@ -31,7 +31,7 @@ def put_pedidos(data: list):
                 notas=fila.get('notas'),
             )
             session.add(nuevo_pedido)
-        session.commit()  # Commit al final
+        session.commit()# Commit al final
         if len(data) > 1:
             return "Se ingresaron "+str(len(data))+" pedidos."
         elif len(data) == 1:
@@ -40,4 +40,6 @@ def put_pedidos(data: list):
     except Exception as e:
         session.rollback()
         return "Ocurrió un error al insertar el pedido"
+    finally:
+        session.close()
 
