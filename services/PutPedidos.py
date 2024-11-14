@@ -40,5 +40,6 @@ def put_pedidos(data: list):
     except Exception as e:
         session.rollback()
         return "Ocurrió un error al insertar el pedido"
-
+    finally:
+        session.close()
 
