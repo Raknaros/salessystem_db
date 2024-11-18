@@ -2,9 +2,11 @@ from time import sleep
 
 import streamlit as st
 
+from services.PutCotizaciones import load_cotizaciones
 from services.Querys import facturas_poremitir
 
 st.set_page_config(page_title="Cotizaciones", page_icon=":material/edit:", layout="wide")
+
 
 st.session_state.sidebar()
 
@@ -72,10 +74,10 @@ col1, col2, col3 = st.columns(3)
 
 col1.subheader('Subir Cotizaciones')
 
-col1.file_uploader("Subir Cotizaciones", type=['xlsx'],
+cotizaciones_masivo = col1.file_uploader("Subir Cotizaciones", type=['xlsx'],
                    help='Subir archivo excel de cotizaciones(pre-cuadro) ya elaborado segun el pedido',
                    label_visibility='collapsed')
-col1.button(label='Subir', key='subir_cotizaciones')
+col1.button(label='Subir', key='subir_cotizaciones', on_click=load_cotizaciones, args=(cotizaciones_masivo,))
 
 col2.subheader('Descargar Cuadro para Emitir')
 

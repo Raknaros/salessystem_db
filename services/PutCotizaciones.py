@@ -13,11 +13,11 @@ pd.set_option('display.max_rows', None)
 pd.set_option('future.no_silent_downcasting', True)
 
 
-def load_cotizaciones(ruta: str):
+def load_cotizaciones(archivo):
     # Determinar ruta del libro
-    workbook_path = Path(ruta)
+    #workbook_path = Path(archivo)
     # Cargar libro excel
-    workbook = load_workbook(workbook_path)
+    workbook = load_workbook(archivo)
     # Crear dataframe Cotizaciones
     cotizaciones = pd.DataFrame(
         columns=['cuo', 'alias', 'emision', 'descripcion', 'cantidad', 'precio_unit', 'total', 'peso_articulo',
@@ -32,6 +32,9 @@ def load_cotizaciones(ruta: str):
 
         # Recuperar la primera fila
         pedido = sheet['A1'].value
+
+        print(pedido)
+
 
         # Crear una lista de listas con el resto del contenido de la hoja
         resto_filas = [[cell.value for cell in row[:25]] for row in sheet.iter_rows(min_row=2)]
@@ -101,8 +104,6 @@ def load_cotizaciones(ruta: str):
                                                                                            include_groups=False)
                           .drop(['cantidad', 'peso_articulo'], axis=1))
 
-    return print(facturas.to_sql('facturas', engine, if_exists='append', index=False),
-                 remision_remitente.to_sql('remision_remitente', engine, if_exists='append', index=False))  ##
+    #return print(facturas.to_sql('facturas', engine, if_exists='append', index=False),
+    #             remision_remitente.to_sql('remision_remitente', engine, if_exists='append', index=False))  ##
 
-
-load_cotizaciones('D:/pytest/pedidos_20240719.xlsx')
