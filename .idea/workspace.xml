@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dab2095f-379b-465f-87ee-4f7071043456" name="Changes" comment="first in dev">
+      <change afterPath="$PROJECT_DIR$/services/GetPrecuadro.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/3_cargar_cotizaciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/3_cargar_cotizaciones.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/PutCotizaciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/PutCotizaciones.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/Querys.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/Querys.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,6 +116,8 @@
       <workItem from="1728928907091" duration="1972000" />
       <workItem from="1729544222493" duration="10035000" />
       <workItem from="1731893536153" duration="6399000" />
+      <workItem from="1731901012575" duration="8165000" />
+      <workItem from="1732126577643" duration="1398000" />
     </task>
     <task id="LOCAL-00001" summary="Third">
       <option name="closed" value="true" />
@@ -397,7 +399,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731552439950</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="first in dev">
+      <option name="closed" value="true" />
+      <created>1731901024165</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1731901024165</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

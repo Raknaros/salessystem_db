@@ -23,9 +23,9 @@ warehouse = create_engine(warehouse_url, connect_args={"connect_timeout": 5})
 
 Session = sessionmaker(bind=salessystem)
 
-
 pedidos = pd.read_sql("SELECT * FROM pedidos",
                       salessystem)
+
 
 def cargar_datos():
     # Función para cargar datos de la base de datos
@@ -41,18 +41,18 @@ cotizaciones_poremitir = cotizaciones[~cotizaciones['estado'].isin(['TERMINADO',
 
 facturas_poremitir = (cotizaciones_poremitir.groupby(['cod_pedido', 'cuo'])
                       .agg({
-                            'alias': 'first',
-                            'emision': 'first',
-                            'ruc': 'first',
-                            'nombre_razon': 'first',
-                            'moneda': 'first',
-                            'precio_unit': lambda x: (x * cotizaciones_poremitir.loc[x.index, 'cantidad']).sum() * 1.18,
-                            'forma_pago': 'first',
-                            'observaciones': 'first',
-                            'detraccion': 'first',
-                            'retencion': 'first',
-                            'estado': 'first'
-                        }).reset_index())
+    'alias': 'first',
+    'emision': 'first',
+    'ruc': 'first',
+    'nombre_razon': 'first',
+    'moneda': 'first',
+    'precio_unit': lambda x: (x * cotizaciones_poremitir.loc[x.index, 'cantidad']).sum() * 1.18,
+    'forma_pago': 'first',
+    'observaciones': 'first',
+    'detraccion': 'first',
+    'retencion': 'first',
+    'estado': 'first'
+}).reset_index())
 
 # Renombramos la columna de precio_unit para que tenga el nombre correcto si es necesario
 facturas_poremitir.rename(columns={'precio_unit': 'total'}, inplace=True)
@@ -70,3 +70,7 @@ proveedores = pd.read_sql("SELECT * FROM proveedores", salessystem)
 catalogo = pd.read_sql("SELECT * FROM catalogo", salessystem)
 
 #vehiculos = pd.read_sql("SELECT * FROM vehiculos", salessystem)
+
+pre_detalle = pd.read_sql('SELECT * FROM pre_detalle ORDER BY fecha_emision', warehouse)
+
+detalle_completo = pd.merge(pre_detalle, catalogo, on='descripcion', how='left')
