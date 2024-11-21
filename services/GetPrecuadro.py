@@ -4,7 +4,7 @@ from datetime import date
 from sqlalchemy import create_engine
 import numpy as np
 
-from services.Querys import salessystem
+from services.Querys import salessystem, pedidos, adquirientes
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
@@ -12,11 +12,7 @@ pd.set_option('display.max_rows', None)
 
 def get_precuadros():
 
-    pedidos = pd.read_sql(
-        "SELECT cod_pedido, periodo, (SELECT alias FROM customers WHERE ruc = adquiriente) as alias, contado_credito, importe_total, promedio_factura"
-        " FROM pedidos WHERE estado = 'PENDIENTE'",
-        salessystem,
-        parse_dates=['fecha'])
+    pedidos_alias = pd.merge(pedidos, adquirientes[['ruc', 'alias']], left_on='adquiriente', right_on='ruc', how='left')
 
     encabezado = ['cuo', 'alias', 'emision', 'descripcion', 'cantidad', 'precio_unit', 'total',
                   'peso_articulo', 'peso_total', 'observaciones', 'vencimiento', 'cuota1', 'vencimiento2',

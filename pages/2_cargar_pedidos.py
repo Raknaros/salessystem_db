@@ -145,3 +145,5 @@ else:
     st.error("Por favor inicia sesion para continuar...")
     sleep(2)
     st.switch_page("app.py")
+
+#TODO AGREGAR BOTON PARA DESCARGAR PRE CUADRO
