@@ -72,5 +72,3 @@ catalogo = pd.read_sql("SELECT * FROM catalogo", salessystem)
 #vehiculos = pd.read_sql("SELECT * FROM vehiculos", salessystem)
 
 pre_detalle = pd.read_sql('SELECT * FROM pre_detalle ORDER BY fecha_emision', warehouse)
-
-detalle_completo = pd.merge(pre_detalle, catalogo, on='descripcion', how='left')
