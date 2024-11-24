@@ -14,7 +14,11 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
 
-def get_precuadros(cod_pedidos):
+def get_precuadros(ped_seleccionados):
+    if ped_seleccionados == 'Todos':
+        seleccionados = pedidos.loc[pedidos['estado'] == 'PENDIENTE']['cod_pedido'].tolist()
+    else:
+        seleccionados = [x.strip().upper() for x in ped_seleccionados.split(',')]
 
     pedidos_extendido = pd.merge(pedidos, adquirientes[['ruc', 'alias']], left_on='adquiriente', right_on='ruc',
                                  how='left')
@@ -31,6 +35,8 @@ def get_precuadros(cod_pedidos):
 
     with pd.ExcelWriter('pedidos_' + date.today().strftime('%Y%m%d') + '.xlsx', engine='xlsxwriter') as writer:
         for cod_pedido in pedidos_pendientes['cod_pedido'].tolist():
+            pedidosss = pedidos_pendientes[['ruc', 'cod_pedido']].loc[pedidos_pendientes['cod_pedido'] == cod_pedido][
+                'ruc'].values
             try:
                 workbook = writer.book
                 current_worksheet = workbook.add_worksheet(cod_pedido)
