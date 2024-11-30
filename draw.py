@@ -5,13 +5,10 @@ from sqlalchemy import create_engine
 import numpy as np
 
 from services.Querys import salessystem, pedidos, adquirientes, pre_detalle, catalogo
-from streamlit_authenticator.utilities.hasher import Hasher
 
-passwords_to_hash = ['emisor2024', 'EvelynCBM1968', 'p259E9C695+']
-#hashed_passwords = Hasher(passwords_to_hash).generate()
 
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
+
+
 
 
 def get_precuadros(ped_seleccionados):
@@ -22,9 +19,6 @@ def get_precuadros(ped_seleccionados):
 
     pedidos_extendido = pd.merge(pedidos, adquirientes[['ruc', 'alias']], left_on='adquiriente', right_on='ruc',
                                  how='left')
-    pedidos_pendientes = pedidos_extendido[
-        ['cod_pedido', 'periodo', 'alias', 'contado_credito', 'importe_total', 'promedio_factura', 'notas', 'rubro',
-         'punto_entrega','ruc']].loc[pedidos_extendido['estado'] == 'PENDIENTE']
 
     encabezado = ['cuo', 'alias', 'emision', 'descripcion', 'cantidad', 'precio_unit', 'total',
                   'peso_articulo', 'peso_total', 'observaciones', 'vencimiento', 'cuota1', 'vencimiento2',
@@ -34,20 +28,22 @@ def get_precuadros(ped_seleccionados):
     detalle_completo = pd.merge(pre_detalle, catalogo, on='descripcion', how='left')
 
     with pd.ExcelWriter('pedidos_' + date.today().strftime('%Y%m%d') + '.xlsx', engine='xlsxwriter') as writer:
-        for cod_pedido in pedidos_pendientes['cod_pedido'].tolist():
-            pedidosss = pedidos_pendientes[['ruc', 'cod_pedido']].loc[pedidos_pendientes['cod_pedido'] == cod_pedido][
-                'ruc'].values
+        for cod_pedido in seleccionados:
+            detalle = detalle_completo.loc[detalle_completo['numero_documento'] == str(int(pedidos_extendido.loc[pedidos_extendido['cod_pedido'] == cod_pedido]['ruc'].values.item()))].sort_values(by='fecha_emision', ascending=False).head(30)
             try:
                 workbook = writer.book
                 current_worksheet = workbook.add_worksheet(cod_pedido)
                 #['cod_pedido','periodo','importe_total', 'rubro', 'promedio_factura', 'contado_credito''notas' 'punto_entrega''alias']
                 current_worksheet.write_row(0, 0,
-                                            pedidos_pendientes.loc[pedidos_pendientes['cod_pedido'] == cod_pedido].values.flatten().tolist())
-                current_worksheet.write_column(3, 2, my_list) #descripcion
-                current_worksheet.write_column(4, 2, my_list) #cantidad
-                current_worksheet.write_column(5, 2, my_list) #precio
-                current_worksheet.write_column(7, 2, my_list) #peso
-                current_worksheet.write_column(19, 2, my_list) #unidad_medida
+                                            pedidos_extendido[
+                                                ['cod_pedido', 'periodo', 'alias', 'contado_credito', 'importe_total',
+                                                 'promedio_factura', 'notas', 'rubro',
+                                                 'punto_entrega', 'ruc']].loc[pedidos_extendido['cod_pedido'] == cod_pedido].values.flatten().tolist())
+                current_worksheet.write_column(2, 3, detalle['descripcion'].tolist()) #descripcion
+                current_worksheet.write_column(2, 4, detalle['cantidad'].tolist()) #cantidad
+                current_worksheet.write_column(2, 5, detalle['precio_unitario'].tolist()) #precio
+                current_worksheet.write_column(2, 7, detalle['peso'].tolist()) #peso
+                current_worksheet.write_column(2, 19, detalle['unidad_medida_y'].tolist()) #unidad_medida
 
             except:
                 None
@@ -69,7 +65,7 @@ def get_precuadros(ped_seleccionados):
     return print('pedidos_' + date.today().strftime('%Y%m%d') + ' generado')
 
 
-get_precuadros()
+get_precuadros('Todos')
 
 
 #TODO en cargar_pedidos revisar que al ingresar un pedido de un adquiriente nuevo aparezca en la tabla
