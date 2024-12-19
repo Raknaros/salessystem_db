@@ -13,7 +13,7 @@ st.session_state.sidebar()
 st.title('Cotizaciones')
 
 st.dataframe(facturas_poremitir, height=450, hide_index=True, column_config={
-    "cod_pedido": st.column_config.TextColumn(
+    "Codigo de Pedido": st.column_config.TextColumn(
         help="Codigo unico del pedido al que corresponde esta factura"
     ),
     "cuo": st.column_config.NumberColumn(
