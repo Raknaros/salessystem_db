@@ -8,15 +8,15 @@ from openpyxl.reader.excel import load_workbook
 from sqlalchemy import create_engine
 import numpy as np
 
+from models import Pedidos
+from services.Querys import salessystem, Session
+
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 pd.set_option('future.no_silent_downcasting', True)
 
 
 def load_cotizaciones(archivo):
-    # Determinar ruta del libro
-    #workbook_path = Path(archivo)
-    # Cargar libro excel
     workbook = load_workbook(archivo)
     # Crear dataframe Cotizaciones
     cotizaciones = pd.DataFrame(
@@ -33,9 +33,6 @@ def load_cotizaciones(archivo):
         # Recuperar la primera fila
         pedido = sheet['A1'].value
 
-        print(pedido)
-
-
         # Crear una lista de listas con el resto del contenido de la hoja
         resto_filas = [[cell.value for cell in row[:25]] for row in sheet.iter_rows(min_row=2)]
 
@@ -51,6 +48,21 @@ def load_cotizaciones(archivo):
         # Unir verticalmente al dataframe cotizaciones solo si ningun valor de la columna cuo es nulo
         if not df['cuo'].isnull().any():
             cotizaciones = pd.concat([cotizaciones, df], ignore_index=True, axis=0)
+
+    # VERIFICAR CONSECUENCIA DE FECHAS DE VENCIMIENTO
+    for index, value in cotizaciones['vencimiento4'].items():
+        if pd.notnull(value) | pd.notna(value):
+            if pd.isnull(cotizaciones.loc[index, 'vencimiento3']) | pd.isna(cotizaciones.loc[index, 'vencimiento3']):
+                cotizaciones.loc[index, 'vencimiento3'] = cotizaciones.loc[index, 'vencimiento4']
+                cotizaciones.loc[index, 'vencimiento4'] = pd.NaT
+        elif pd.notnull(cotizaciones.loc[index, 'vencimiento3']) | pd.notna(cotizaciones.loc[index, 'vencimiento3']):
+            if pd.isnull(cotizaciones.loc[index, 'vencimiento2']) | pd.isna(cotizaciones.loc[index, 'vencimiento2']):
+                cotizaciones.loc[index, 'vencimiento2'] = cotizaciones.loc[index, 'vencimiento3']
+                cotizaciones.loc[index, 'vencimiento3'] = pd.NaT
+        elif pd.notnull(cotizaciones.loc[index, 'vencimiento2']) | pd.notna(cotizaciones.loc[index, 'vencimiento2']):
+            if pd.isnull(cotizaciones.loc[index, 'vencimiento']) | pd.isna(cotizaciones.loc[index, 'vencimiento']):
+                cotizaciones.loc[index, 'vencimiento'] = cotizaciones.loc[index, 'vencimiento2']
+                cotizaciones.loc[index, 'vencimiento2'] = pd.NaT
 
     # Rellenar vacios en traslado con fecha de emision
     cotizaciones['traslado'] = cotizaciones['traslado'].infer_objects(copy=False).fillna(cotizaciones['emision'])
@@ -104,6 +116,13 @@ def load_cotizaciones(archivo):
                                                                                            include_groups=False)
                           .drop(['cantidad', 'peso_articulo'], axis=1))
 
-    #return print(facturas.to_sql('facturas', engine, if_exists='append', index=False),
-    #             remision_remitente.to_sql('remision_remitente', engine, if_exists='append', index=False))  ##
+    session = Session()
+    for cod_pedido in facturas['cod_pedido'].unique():
+        pedido = session.query(Pedidos).filter(Pedidos.cod_pedido == cod_pedido)
+        pedido.update({Pedidos.estado: 'EN PROCESO'})
+    session.commit()
+
+    return print(facturas.to_sql('facturas', salessystem, if_exists='append', index=False),
+                 remision_remitente.to_sql('remision_remitente', salessystem, if_exists='append', index=False))
+
 
