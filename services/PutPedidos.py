@@ -27,6 +27,7 @@ def put_pedidos(data: list):
                 importe_total=fila['importe_total'],
                 rubro=fila['rubro'],
                 promedio_factura=fila['promedio_factura'],
+                punto_entrega=fila['punto_llegada'],
                 contado_credito=fila.get('forma_pago'),  # Usar .get() para evitar KeyError
                 notas=fila.get('notas'),
             )
