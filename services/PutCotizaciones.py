@@ -103,7 +103,7 @@ def load_cotizaciones(archivo):
     def columnas_guia(group):
         guia = group.iloc[0].copy()  # Tomar el primer valor de cada columna
         total_peso = (group['cantidad'] * group['peso_articulo']).sum()  # Sumar el producto de cantidad y peso
-        guia['datos_adicionales'] = 'PesoTotal: ' + str(
+        guia['datos_adicionales'] = 'Peso: ' + str(
             math.ceil(total_peso))  # Actualizar el valor de 'peso' en el primer registro
 
         return guia
