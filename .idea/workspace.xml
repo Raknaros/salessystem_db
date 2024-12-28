@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="dab2095f-379b-465f-87ee-4f7071043456" name="Changes" comment="first in dev">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/3_cargar_cotizaciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/3_cargar_cotizaciones.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/PutCotizaciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/PutCotizaciones.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/PutPedidos.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/PutPedidos.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +56,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Python.4_cargar_bancarizaciones.executor&quot;: &quot;Run&quot;,
+    &quot;Python.draw.executor&quot;: &quot;Run&quot;,
     &quot;Python.models.executor&quot;: &quot;Run&quot;,
     &quot;Python.test.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -115,17 +116,11 @@
       <workItem from="1728928659552" duration="39000" />
       <workItem from="1728928907091" duration="1972000" />
       <workItem from="1729544222493" duration="10035000" />
-      <workItem from="1731893536153" duration="6399000" />
-      <workItem from="1732290812806" duration="6630000" />
-      <workItem from="1732484058044" duration="4968000" />
-      <workItem from="1732924025380" duration="1375000" />
-      <workItem from="1733718213281" duration="7000" />
-      <workItem from="1733802844801" duration="6071000" />
-      <workItem from="1733971913135" duration="699000" />
-      <workItem from="1734031755392" duration="2925000" />
-      <workItem from="1734065391274" duration="1438000" />
-      <workItem from="1734151019331" duration="1421000" />
-      <workItem from="1734561890254" duration="806000" />
+      <workItem from="1734918250896" duration="1063000" />
+      <workItem from="1735000777875" duration="5915000" />
+      <workItem from="1735263052476" duration="2172000" />
+      <workItem from="1735273260478" duration="52000" />
+      <workItem from="1735349256437" duration="1154000" />
     </task>
     <task id="LOCAL-00001" summary="Third">
       <option name="closed" value="true" />
@@ -407,31 +402,7 @@
       <option name="project" value="LOCAL" />
       <updated>1731552439950</updated>
     </task>
-    <task id="LOCAL-00036" summary="first in dev">
-      <option name="closed" value="true" />
-      <created>1732149144890</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1732149144890</updated>
-    </task>
-    <task id="LOCAL-00037" summary="first in dev">
-      <option name="closed" value="true" />
-      <created>1732327186635</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1732327186635</updated>
-    </task>
-    <task id="LOCAL-00038" summary="first in dev">
-      <option name="closed" value="true" />
-      <created>1732489780459</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1732489780459</updated>
-    </task>
-    <option name="localTasksCounter" value="39" />
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -459,5 +430,6 @@
     <SUITE FILE_PATH="coverage/salessystem_db$models.coverage" NAME="models Coverage Results" MODIFIED="1721520498346" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/salessystem_db$4_cargar_bancarizaciones.coverage" NAME="4_cargar_bancarizaciones Coverage Results" MODIFIED="1726263853434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pages" />
     <SUITE FILE_PATH="coverage/salessystem_db$test.coverage" NAME="test Coverage Results" MODIFIED="1732484686386" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/salessystem_db$draw.coverage" NAME="draw Coverage Results" MODIFIED="1735263686477" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
