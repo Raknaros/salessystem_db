@@ -6,7 +6,7 @@ import numpy as np
 import re
 
 from models import Pedidos
-from services.Querys import adquirientes, cargar_datos, Session
+from services.Querys import adquirientes, Session
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)

@@ -2,10 +2,12 @@ from time import sleep
 
 import streamlit as st
 
-from services.Querys import proveedores, adquirientes, catalogo
+import services.Querys as Querys
 
 st.set_page_config(page_title="Home", page_icon=":material/edit:", layout="wide")
-
+proveedores = Querys.proveedores()
+catalogo = Querys.catalogo()
+st.session_state.adquirientes = Querys.adquirientes()
 
 if st.session_state.get("authentication_status"):
     st.session_state.sidebar()
@@ -47,7 +49,7 @@ if st.session_state.get("authentication_status"):
         }, column_order=['tipo_proveedor', 'numero_documento', 'nombre_razon', 'alias', 'estado', 'observaciones',
                          'actividad_economica', 'act_econ_sec_1', 'act_econ_sec_2'])
     with tab2:
-        st.dataframe(adquirientes, height=300, hide_index=True, column_config={
+        st.dataframe(st.session_state.adquirientes, height=300, hide_index=True, column_config={
             "ruc": st.column_config.NumberColumn(
                 "RUC",
                 help="Numero de RUC del adquiriente o cliente",

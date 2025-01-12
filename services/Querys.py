@@ -23,21 +23,32 @@ warehouse = create_engine(warehouse_url, connect_args={"connect_timeout": 5})
 
 Session = sessionmaker(bind=salessystem)
 
-pedidos = pd.read_sql("SELECT * FROM pedidos",
-                      salessystem)
+
+def pedidos():
+    result = None
+    while result is None:
+        try:
+            query = "SELECT id, cod_pedido, fecha_pedido, periodo, (CASE WHEN customers.alias IS NULL THEN a.adquiriente ELSE customers.alias END) AS adquiriente, a.adquiriente AS ruc,importe_total, rubro, promedio_factura, contado_credito, bancariza, notas, estado, punto_entrega FROM pedidos AS a LEFT JOIN customers ON customers.ruc=a.adquiriente ORDER BY id"
+            result = pd.read_sql(query, salessystem)
+        except Exception as e:
+            pass
+    return result
 
 
-def cargar_datos():
-    # Función para cargar datos de la base de datos
-    query = "SELECT id, cod_pedido, fecha_pedido, periodo, (CASE customers.alias WHEN null THEN adquiriente ELSE customers.alias END) AS adquiriente, importe_total, rubro, promedio_factura, contado_credito, bancariza, notas, estado, punto_entrega FROM pedidos AS a JOIN customers ON customers.ruc=a.adquiriente ORDER BY id"
-    #REVISAR CONSULTA POR INDICES DUPLICADOS, O HACER RESET_INDEX(DROP=TRUE)
-    return pd.read_sql(query, salessystem)
+def cotizaciones():
+    result = None
+    while result is None:
+        try:
+            query = "SELECT * FROM facturas"
+            result = pd.read_sql(query, salessystem)
+        except Exception as e:
+            pass
+    return result
 
 
-cotizaciones = pd.read_sql("SELECT * FROM facturas WHERE estado NOT IN ('TERMINADO', 'ENTREGADO', 'ANULADA')",
-                           salessystem)
+cotizaciones_poremitir = cotizaciones()
 
-cotizaciones_poremitir = cotizaciones[~cotizaciones['estado'].isin(['TERMINADO', 'ENTREGADO', 'ANULADO'])]
+cotizaciones_poremitir = cotizaciones_poremitir[~cotizaciones_poremitir['estado'].isin(['TERMINADO', 'ENTREGADO', 'ANULADO'])]
 
 facturas_poremitir = (cotizaciones_poremitir.groupby(['cod_pedido', 'cuo'])
                       .agg({
@@ -60,15 +71,83 @@ facturas_poremitir.rename(columns={'precio_unit': 'total'}, inplace=True)
 # Ordenamos por 'cod_pedido' y 'cuo'
 facturas_poremitir.sort_values(by=['cod_pedido', 'cuo'], inplace=True)
 
-bancarizaciones = pd.read_sql("SELECT * FROM v_bcp WHERE estado NOT IN ('TERMINADO', 'ENTREGADO', 'ANULADA')",
-                              salessystem)
+def bancarizaciones():
+    result = None
+    while result is None:
+        try:
+            query = "SELECT * FROM v_bcp WHERE estado NOT IN ('TERMINADO', 'ENTREGADO', 'ANULADA')"
+            result = pd.read_sql(query, salessystem)
+        except Exception as e:
+            pass
+    return result
 
-adquirientes = pd.read_sql("SELECT * FROM customers", salessystem)
 
-proveedores = pd.read_sql("SELECT * FROM proveedores", salessystem)
+def adquirientes():
+    result = None
+    while result is None:
+        try:
+            query = "SELECT * FROM customers"
+            result = pd.read_sql(query, salessystem)
+        except Exception as e:
+            pass
+    return result
 
-catalogo = pd.read_sql("SELECT * FROM catalogo", salessystem)
+def proveedores():
+    result = None
+    while result is None:
+        try:
+            query = "SELECT * FROM proveedores"
+            result = pd.read_sql(query, salessystem)
+        except Exception as e:
+            pass
+    return result
+
+def catalogo():
+    result = None
+    while result is None:
+        try:
+            query = "SELECT * FROM catalogo"
+            result = pd.read_sql(query, salessystem)
+        except Exception as e:
+            pass
+    return result
 
 #vehiculos = pd.read_sql("SELECT * FROM vehiculos", salessystem)
 
-pre_detalle = pd.read_sql('SELECT * FROM pre_detalle ORDER BY fecha_emision', warehouse)
+def pre_detalle():
+    result = None
+    while result is None:
+        try:
+            query = "SELECT * FROM pre_detalle ORDER BY fecha_emision"
+            result = pd.read_sql(query, warehouse)
+        except Exception as e:
+            pass
+    return result
+
+def lista_facturas():
+    result = None
+    while result is None:
+        try:
+            query = "SELECT * FROM lista_facturas"
+            result = pd.read_sql(query, con=salessystem,
+                             parse_dates=['emision', 'vencimiento', 'vencimiento2', 'vencimiento3', 'vencimiento4'])
+        except Exception as e:
+            pass
+    return result
+
+
+def lista_guias():
+    result = None
+    while result is None:
+        try:
+            query = "SELECT * FROM lista_guias"
+            result = pd.read_sql(query, con=salessystem, parse_dates=['traslado'])
+        except Exception as e:
+            pass
+    return result
+
+
+
+
+
+

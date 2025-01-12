@@ -1,16 +1,20 @@
-from time import sleep
+from datetime import date
 
 import streamlit as st
 
+from services.GetEmitir import get_emitir
 from services.PutCotizaciones import load_cotizaciones
-from services.Querys import facturas_poremitir
+from services.Querys import facturas_poremitir, lista_facturas, cotizaciones
 
 st.set_page_config(page_title="Cotizaciones", page_icon=":material/edit:", layout="wide")
-
 
 st.session_state.sidebar()
 
 st.title('Cotizaciones')
+#if 'lista_facturas' not in st.session_state:
+st.session_state.lista_facturas = lista_facturas()
+#if 'cotizaciones' not in st.session_state:
+st.session_state.cotizaciones = cotizaciones()
 
 st.dataframe(facturas_poremitir, height=450, hide_index=True, column_config={
     "Codigo de Pedido": st.column_config.TextColumn(
@@ -75,8 +79,8 @@ col1, col2, col3 = st.columns(3)
 col1.subheader('Subir Cotizaciones')
 
 cotizaciones_masivo = col1.file_uploader("Subir Cotizaciones", type=['xlsx'],
-                   help='Subir archivo excel de cotizaciones(pre-cuadro) ya elaborado segun el pedido',
-                   label_visibility='collapsed')
+                                         help='Subir archivo excel de cotizaciones(pre-cuadro) ya elaborado segun el pedido',
+                                         label_visibility='collapsed')
 col1.button(label='Subir', key='subir_cotizaciones', on_click=load_cotizaciones, args=(cotizaciones_masivo,))
 
 col2.subheader('Descargar Cuadro para Emitir')
@@ -90,22 +94,33 @@ option = col2.selectbox(
 
 if option == "Proveedor":
 
-    subcol1, subcol2 = col2.container().columns(2)
-    fecha_inicio = subcol1.date_input(
-        'Fecha Inicial',
-        help='Indicar desde que fecha desea descargar (maximo 2 dias anteriores al dia de hoy)')
-    fecha_final = subcol2.date_input(
-        'Fecha Final',
-        help='Indicar desde que fecha desea descargar (maximo 1 dia posterior al dia de hoy)')
+    #    subcol1, subcol2 = col2.container().columns(2)
+
+    fecha_final = col2.date_input(
+        'Fecha',
+        help='Indicar hasta que fecha desea solicitar las emisiones del proveedor (ejem. desde hace dos dias hasta la '
+             'fecha escogida)')
 
     pick_proveedores = col2.multiselect("proveedores", placeholder='Elige  los proveedores',
-                                        options=["Green", "Yellow", "Red", "Blue"], label_visibility='collapsed')
-    col2.button(label='Descagar')
+                                        options=st.session_state.lista_facturas['alias'].unique().tolist(),
+                                        label_visibility='collapsed')
+    col2.download_button(
+        label='Generar',
+        data=get_emitir(proveedores=pick_proveedores, fecha=fecha_final),
+        file_name='emitir_' + date.today().strftime('%Y%m%d') + '.xlsx',
+        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
 elif option == "Pedido":
 
     pick_pedidos = col2.multiselect("pedidos", placeholder='Elige  los pedidos',
-                                    options=["Green", "Yellow", "Red", "Blue"], label_visibility='collapsed')
-    col2.button(label='Descagar')
+                                    options=st.session_state.cotizaciones.loc[st.session_state.cotizaciones['estado'] == 'PENDIENTE'][
+                                        'cod_pedido'].unique().tolist(), label_visibility='collapsed')
+    col2.download_button(
+        label='Generar',
+        data=get_emitir(pedidos=pick_pedidos),
+        file_name='emitir_' + date.today().strftime('%Y%m%d') + '.xlsx',
+        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
 """
 @st.cache_data
 def convert_df(df):
