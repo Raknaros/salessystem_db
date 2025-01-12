@@ -11,10 +11,10 @@ st.set_page_config(page_title="Cotizaciones", page_icon=":material/edit:", layou
 st.session_state.sidebar()
 
 st.title('Cotizaciones')
-#if 'lista_facturas' not in st.session_state:
-st.session_state.lista_facturas = lista_facturas()
-#if 'cotizaciones' not in st.session_state:
-st.session_state.cotizaciones = cotizaciones()
+if 'lista_facturas' not in st.session_state:
+    st.session_state.lista_facturas = lista_facturas()
+if 'cotizaciones' not in st.session_state:
+    st.session_state.cotizaciones = cotizaciones()
 
 st.dataframe(facturas_poremitir, height=450, hide_index=True, column_config={
     "Codigo de Pedido": st.column_config.TextColumn(
