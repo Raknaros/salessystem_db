@@ -54,9 +54,9 @@ def get_emitir(proveedores: list = None, fecha: datetime = None, pedidos: list =
     lista_facturas['vencimiento'] = lista_facturas['vencimiento'].apply(formato_fecha)
     lista_guias['traslado'] = lista_guias['traslado'].apply(formato_fecha)
 
-    #lista_facturas[['cantidad', 'p_unit']] = lista_facturas[['cantidad', 'p_unit']].applymap(formato_float)
-    lista_facturas['cantidad'] = lista_facturas['cantidad'].map(formato_float)
-    lista_facturas['p_unit'] = lista_facturas['p_unit'].map(formato_float)
+    lista_facturas[['cantidad', 'p_unit']] = lista_facturas[['cantidad', 'p_unit']].applymap(formato_float)
+    #lista_facturas['cantidad'] = lista_facturas['cantidad'].map(formato_float)
+    #lista_facturas['p_unit'] = lista_facturas['p_unit'].map(formato_float)
 
     buffer = BytesIO()
     with pd.ExcelWriter(buffer) as writer:
