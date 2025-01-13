@@ -1,4 +1,5 @@
 from datetime import date
+from time import sleep
 
 import streamlit as st
 
@@ -15,6 +16,14 @@ if 'lista_facturas' not in st.session_state:
     st.session_state.lista_facturas = lista_facturas()
 if 'cotizaciones' not in st.session_state:
     st.session_state.cotizaciones = cotizaciones()
+
+
+def actualizar_cargar_cotizaciones():
+    st.session_state.lista_facturas = lista_facturas()
+    st.session_state.cotizaciones = cotizaciones()
+    sleep(2)
+    st.rerun()
+
 
 st.dataframe(facturas_poremitir, height=450, hide_index=True, column_config={
     "Codigo de Pedido": st.column_config.TextColumn(
@@ -81,7 +90,11 @@ col1.subheader('Subir Cotizaciones')
 cotizaciones_masivo = col1.file_uploader("Subir Cotizaciones", type=['xlsx'],
                                          help='Subir archivo excel de cotizaciones(pre-cuadro) ya elaborado segun el pedido',
                                          label_visibility='collapsed')
-col1.button(label='Subir', key='subir_cotizaciones', on_click=load_cotizaciones, args=(cotizaciones_masivo,))
+subir_cotizaciones = col1.button(label='Subir', key='subir_cotizaciones', on_click=load_cotizaciones, args=(cotizaciones_masivo,))
+
+#if subir_cotizaciones:
+#    actualizar_cargar_cotizaciones()
+
 
 col2.subheader('Descargar Cuadro para Emitir')
 
@@ -113,7 +126,8 @@ if option == "Proveedor":
 elif option == "Pedido":
 
     pick_pedidos = col2.multiselect("pedidos", placeholder='Elige  los pedidos',
-                                    options=st.session_state.cotizaciones.loc[st.session_state.cotizaciones['estado'] == 'PENDIENTE'][
+                                    options=st.session_state.cotizaciones.loc[
+                                        st.session_state.cotizaciones['estado'] == 'PENDIENTE'][
                                         'cod_pedido'].unique().tolist(), label_visibility='collapsed')
     col2.download_button(
         label='Generar',
@@ -121,20 +135,7 @@ elif option == "Pedido":
         file_name='emitir_' + date.today().strftime('%Y%m%d') + '.xlsx',
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
-"""
-@st.cache_data
-def convert_df(df):
-    # IMPORTANT: Cache the conversion to prevent computation on every rerun
-    return df.to_csv().encode("utf-8")
 
-csv = convert_df(my_large_df)
-
-st.download_button(
-    label="Download data as CSV",
-    data=csv,
-    file_name="large_df.csv",
-    mime="text/csv",
-)"""
 
 col3.subheader('Subir Cotizaciones Emitidas')
 
