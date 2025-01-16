@@ -6,7 +6,8 @@ import numpy as np
 import re
 
 from models import Pedidos
-from services.Querys import adquirientes, Session
+from services import Querys
+from services.Querys import Session
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
@@ -15,13 +16,17 @@ pd.set_option('display.max_rows', None)
 #TODO CORREGIR INGRESO DE LUGAR DE ENTREGA
 #TODO CORREGIR MOSTRAR PEDIDOS CON CUSTOMER NO REGISTRADO
 def put_pedidos(data: list):
+    adquirientes = Querys.adquirientes()
     #decidir entre insert interado y bulk insert, colocar el trigger de cambio de alias a ruc en el metodo put_pedidos
     session = Session()
     try:
         for fila in data:
+            print(fila)
             ruc_adquiriente = fila['adquiriente']
+            print(fila)
             if re.search("[a-zA-Z]", str(fila.get('adquiriente'))):
                 ruc_adquiriente = adquirientes.loc[adquirientes['alias'] == fila['adquiriente'], 'ruc'].values[0]
+                print('2')
             nuevo_pedido = Pedidos(
                 fecha_pedido=fila['fecha_pedido'],
                 periodo=fila['periodo'],
@@ -33,12 +38,14 @@ def put_pedidos(data: list):
                 contado_credito=fila.get('forma_pago'),  # Usar .get() para evitar KeyError
                 notas=fila.get('notas'),
             )
+            print('3')
             session.add(nuevo_pedido)
         session.commit()# Commit al final
         if len(data) > 1:
             return "Se ingresaron "+str(len(data))+" pedidos."
         elif len(data) == 1:
-            return "Se ingresó el pedido con código "+cargar_datos().iloc[-1]['cod_pedido']+"."
+            print('4')
+            return "Se ingresó el pedido con código "+Querys.pedidos().iloc[-1]['cod_pedido']+"."
 
     except Exception as e:
         session.rollback()
@@ -46,3 +53,4 @@ def put_pedidos(data: list):
     finally:
         session.close()
 
+#VERIFICAR DEMORA EN LA APLICACION

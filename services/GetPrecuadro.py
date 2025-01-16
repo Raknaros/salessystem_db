@@ -15,13 +15,14 @@ import services.Querys as Querys
 
 
 def get_precuadros(ped_seleccionados):
-    df = st.session_state.df_pedidos
+    df = Querys.pedidos()
+    df = df.loc[df['estado'] == 'PENDIENTE']
     adquirientes = Querys.adquirientes()
     pre_detalle = Querys.pre_detalle()
     catalogo = Querys.catalogo()
     adquirientes['ruc'] = adquirientes['ruc'].astype(str)
     if ped_seleccionados == 'TODOS':
-        seleccionados = df.loc[df['estado'] == 'PENDIENTE']['cod_pedido'].tolist()
+        seleccionados = df['cod_pedido'].tolist()
     else:
         seleccionados = df[df['adquiriente'].isin(ped_seleccionados)]['cod_pedido'].tolist()
 

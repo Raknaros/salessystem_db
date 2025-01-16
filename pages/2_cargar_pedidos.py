@@ -15,6 +15,7 @@ from services.Querys import pedidos
 st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wide")
 if 'df_pedidos' not in st.session_state:
     st.session_state.df_pedidos = pedidos()
+
 if st.session_state.get("authentication_status"):
     st.session_state.sidebar()
     st.session_state['authenticator'].logout(location='sidebar', button_name='Cerrar Sesion')
@@ -124,7 +125,8 @@ if st.session_state.get("authentication_status"):
         ped_seleccionados = st.multiselect("pedidos_precuadro", placeholder='Elige los pedidos',
                                            options=
                                            st.session_state.df_pedidos.loc[st.session_state.df_pedidos['estado'] == 'PENDIENTE'][
-                                               'adquiriente'].tolist(), label_visibility='collapsed')
+                                               'adquiriente'].tolist(), label_visibility='collapsed',
+                                           on_change=sleep(2))
 
         st.download_button(
             label='Generar',
@@ -132,6 +134,8 @@ if st.session_state.get("authentication_status"):
             file_name='precuadro'+date.today().strftime('%Y%m%d')+'.xlsx',
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             )
+
+        #DOWNLOAD BUTTON EJECUTA LA CARGA DE DATA CADA QUE CAMBIE LOS PARAMETROS, ARRANCANDO VACIO
 
     if submit:
         if masivo is not None:
