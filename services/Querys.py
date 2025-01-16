@@ -48,7 +48,8 @@ def cotizaciones():
 
 cotizaciones_poremitir = cotizaciones()
 
-cotizaciones_poremitir = cotizaciones_poremitir[~cotizaciones_poremitir['estado'].isin(['TERMINADO', 'ENTREGADO', 'ANULADO'])]
+cotizaciones_poremitir = cotizaciones_poremitir[
+    ~cotizaciones_poremitir['estado'].isin(['TERMINADO', 'ENTREGADO', 'ANULADO'])]
 
 facturas_poremitir = (cotizaciones_poremitir.groupby(['cod_pedido', 'cuo'])
                       .agg({
@@ -71,6 +72,7 @@ facturas_poremitir.rename(columns={'precio_unit': 'total'}, inplace=True)
 # Ordenamos por 'cod_pedido' y 'cuo'
 facturas_poremitir.sort_values(by=['cod_pedido', 'cuo'], inplace=True)
 
+
 def bancarizaciones():
     result = None
     while result is None:
@@ -92,6 +94,7 @@ def adquirientes():
             pass
     return result
 
+
 def proveedores():
     result = None
     while result is None:
@@ -102,6 +105,7 @@ def proveedores():
             pass
     return result
 
+
 def catalogo():
     result = None
     while result is None:
@@ -111,6 +115,7 @@ def catalogo():
         except Exception as e:
             pass
     return result
+
 
 #vehiculos = pd.read_sql("SELECT * FROM vehiculos", salessystem)
 
@@ -124,13 +129,14 @@ def pre_detalle():
             pass
     return result
 
+
 def lista_facturas():
     result = None
     while result is None:
         try:
             query = "SELECT * FROM lista_facturas"
             result = pd.read_sql(query, con=salessystem,
-                             parse_dates=['emision', 'vencimiento', 'vencimiento2', 'vencimiento3', 'vencimiento4'])
+                                 parse_dates=['emision', 'vencimiento', 'vencimiento2', 'vencimiento3', 'vencimiento4'])
         except Exception as e:
             pass
     return result
@@ -145,9 +151,3 @@ def lista_guias():
         except Exception as e:
             pass
     return result
-
-
-
-
-
-
