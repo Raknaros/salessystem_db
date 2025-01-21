@@ -21,12 +21,9 @@ def put_pedidos(data: list):
     session = Session()
     try:
         for fila in data:
-            print(fila)
             ruc_adquiriente = fila['adquiriente']
-            print(fila)
             if re.search("[a-zA-Z]", str(fila.get('adquiriente'))):
                 ruc_adquiriente = adquirientes.loc[adquirientes['alias'] == fila['adquiriente'], 'ruc'].values[0]
-                print('2')
             nuevo_pedido = Pedidos(
                 fecha_pedido=fila['fecha_pedido'],
                 periodo=fila['periodo'],
@@ -38,7 +35,6 @@ def put_pedidos(data: list):
                 contado_credito=fila.get('forma_pago'),  # Usar .get() para evitar KeyError
                 notas=fila.get('notas'),
             )
-            print('3')
             session.add(nuevo_pedido)
         session.commit()# Commit al final
         if len(data) > 1:
