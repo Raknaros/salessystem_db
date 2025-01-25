@@ -3,7 +3,7 @@ from time import sleep
 
 import streamlit as st
 
-from services.GetEmitir import get_emitir
+from services.GetEmitir import get_emitir, prueba_onclick
 from services.PutCotizaciones import load_cotizaciones
 from services.Querys import facturas_poremitir, lista_facturas, cotizaciones
 
@@ -18,9 +18,6 @@ if st.session_state.get("authentication_status"):
     st.session_state.sidebar()
     st.session_state['authenticator'].logout(location='sidebar', button_name='Cerrar Sesion')
     st.title('Cotizaciones')
-
-
-
 
 
     def actualizar_cargar_cotizaciones():
@@ -95,11 +92,11 @@ if st.session_state.get("authentication_status"):
     cotizaciones_masivo = col1.file_uploader("Subir Cotizaciones", type=['xlsx'],
                                              help='Subir archivo excel de cotizaciones(pre-cuadro) ya elaborado segun el pedido',
                                              label_visibility='collapsed')
-    subir_cotizaciones = col1.button(label='Subir', key='subir_cotizaciones', on_click=load_cotizaciones, args=(cotizaciones_masivo,))
+    subir_cotizaciones = col1.button(label='Subir', key='subir_cotizaciones', on_click=load_cotizaciones,
+                                     args=(cotizaciones_masivo,))
 
     #if subir_cotizaciones:
     #    actualizar_cargar_cotizaciones()
-
 
     col2.subheader('Descargar Cuadro para Emitir')
 
@@ -109,7 +106,9 @@ if st.session_state.get("authentication_status"):
         index=None,
         placeholder="Descargar por", label_visibility='collapsed'
     )
-
+    pick_proveedores = None
+    pick_pedidos = None
+    fecha_final = None
     if option == "Proveedor":
 
         #    subcol1, subcol2 = col2.container().columns(2)
@@ -138,15 +137,16 @@ if st.session_state.get("authentication_status"):
             label='Generar',
             data=get_emitir(pedidos=pick_pedidos),
             file_name='emitir_' + date.today().strftime('%Y%m%d') + '.xlsx',
-            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            on_click=prueba_onclick(),
+            kwargs={'proveedores': pick_proveedores, 'pedidos': pick_pedidos, 'fecha': fecha_final}
         )
-
 
     col3.subheader('Subir Cotizaciones Emitidas')
 
     col3.file_uploader("Subir Facturas Emitidas", type=['xlsx'],
                        help='Subir archivo excel de Cuadro para Emitir ya realizado y con numero de guia y factura colocada',
-                       label_visibility='collapsed')
+                       label_visibility='collapsed', disabled=True)
     col3.button(label='Subir', key='subir_cotizaciones_emitidas')
 
 else:

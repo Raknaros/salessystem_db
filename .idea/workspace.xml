@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="dab2095f-379b-465f-87ee-4f7071043456" name="Changes" comment="first in dev">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/3_cargar_cotizaciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/3_cargar_cotizaciones.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/PutPedidos.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/PutPedidos.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +130,9 @@
       <workItem from="1736467835323" duration="10707000" />
       <workItem from="1736523061519" duration="21595000" />
       <workItem from="1736700967535" duration="4195000" />
-      <workItem from="1737421795371" duration="1632000" />
+      <workItem from="1737421795371" duration="6521000" />
+      <workItem from="1737687918265" duration="5142000" />
+      <workItem from="1737745638226" duration="2023000" />
     </task>
     <task id="LOCAL-00001" summary="Third">
       <option name="closed" value="true" />
@@ -430,7 +430,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737065435137</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="first in dev">
+      <option name="closed" value="true" />
+      <created>1737424592968</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1737424592968</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
