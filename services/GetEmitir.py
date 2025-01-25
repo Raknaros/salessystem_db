@@ -11,7 +11,11 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
 
-def get_emitir(proveedores: list = None, fecha: datetime = None, pedidos: list = None):
+def prueba_onclick(proveedores: list = None, fecha: datetime = None, pedidos: list = None):
+    print(proveedores)
+    print(fecha)
+    print(pedidos)
+def update_enproceso(proveedores: list = None, fecha: datetime = None, pedidos: list = None):
     lista_facturas = Querys.lista_facturas()
     if pedidos is None:
         fecha_inicio = datetime.now() - timedelta(days=3)
@@ -23,9 +27,29 @@ def get_emitir(proveedores: list = None, fecha: datetime = None, pedidos: list =
     else:
         lista_facturas = lista_facturas[lista_facturas['cui'].str.slice(0, 9).isin(pedidos)]
 
-    lista_guias = Querys.lista_guias()
+    session = Querys.Session()
+    for cui in lista_facturas['cui'].unique().tolist():
+        session.query(Facturas).filter(
+            func.concat(Facturas.cod_pedido, '-', Facturas.cuo) == cui
+        ).update({Facturas.estado: 'EN PROCESO'}, synchronize_session=False)
+    session.commit()
+    session.close()
+def get_emitir(proveedores: list = None, fecha: datetime = None, pedidos: list = None):
+    lista_facturas = Querys.lista_facturas() #parse_dates=['emision', 'vencimiento', 'vencimiento2', 'vencimiento3', 'vencimiento4'])
 
-    lista_proveedores = Querys.proveedores()
+    if pedidos is None:
+        fecha_inicio = datetime.now() - timedelta(days=3)
+        fecha_inicio = fecha_inicio.strftime('%Y-%m-%d')
+        fecha_fin = fecha.strftime('%Y-%m-%d')
+        lista_facturas = lista_facturas.loc[(lista_facturas['emision'] >= fecha_inicio) &
+                                            (lista_facturas['emision'] <= fecha_fin) &
+                                            (lista_facturas['alias'].isin(proveedores))]
+    else:
+        lista_facturas = lista_facturas[lista_facturas['cui'].str.slice(0, 9).isin(pedidos)]
+
+    lista_guias = Querys.lista_guias() #parse_dates=['traslado'])
+
+    lista_proveedores = Querys.proveedores() #SELECT alias, numero_documento, usuario_sol, clave_sol FROM proveedores'
 
     def formato_fecha(fecha):
         return pd.to_datetime(fecha, format='%Y-%m-%d').strftime('%d/%m/%Y')
@@ -54,7 +78,7 @@ def get_emitir(proveedores: list = None, fecha: datetime = None, pedidos: list =
     lista_facturas['vencimiento'] = lista_facturas['vencimiento'].apply(formato_fecha)
     lista_guias['traslado'] = lista_guias['traslado'].apply(formato_fecha)
 
-    lista_facturas[['cantidad', 'p_unit']] = lista_facturas[['cantidad', 'p_unit']].applymap(formato_float)
+    lista_facturas[['cantidad', 'p_unit']] = lista_facturas[['cantidad', 'p_unit']].apply(lambda x: x.map(formato_float))
     #lista_facturas['cantidad'] = lista_facturas['cantidad'].map(formato_float)
     #lista_facturas['p_unit'] = lista_facturas['p_unit'].map(formato_float)
 
@@ -67,7 +91,6 @@ def get_emitir(proveedores: list = None, fecha: datetime = None, pedidos: list =
         formato4 = workbook.add_format({'bold': True, 'font_size': 8})
         formato5_totales = workbook.add_format({'bg_color': '#FFFF00', 'font_size': 10})
         alineamiento = workbook.add_format({'align': 'right'})
-        session = Querys.Session()
         for proveedor in lista_facturas['alias'].unique().tolist():
             lista_proveedor = lista_facturas[lista_facturas['alias'] == proveedor]
             # LISTA DE CUI SIN DUPLICADOS BASADA EN LAS FACTURAS
@@ -91,10 +114,7 @@ def get_emitir(proveedores: list = None, fecha: datetime = None, pedidos: list =
                 # SELECCIONAR LAS FACTURAS QUE COINCIDAN CON EL CUI SELECCIONADO RESETEANDO EL INDICE PARA QUE EMPIECE DESDE 0
                 factura = lista_facturas[lista_facturas['cui'] == cui].reset_index(drop=False)
 
-                session.query(Facturas).filter(
-                    func.concat(Facturas.cod_pedido, '-', Facturas.cuo) == cui
-                ).update({Facturas.estado: 'EN PROCESO'}, synchronize_session=False)
-                session.commit()
+                #AQUI ESTABA LA ACTUALIZACION DE BASE DE DATOS
 
                 # POR CADA INDICE Y FILA
                 for index, row in factura.iterrows():
@@ -168,6 +188,9 @@ def get_emitir(proveedores: list = None, fecha: datetime = None, pedidos: list =
                                                     (row['cantidad'], row['unidad_medida'], row['descripcion'],
                                                      row['p_unit'], row['sub_total']), formato3)
                         fila += 1
+
+
+
             # MODIFICAR ANCHO DE LAS COLUMNAS DE OPCIONES INICIALES
             current_worksheet.set_column(0, 0, 12)  # COLUMNA CUI
             current_worksheet.set_column(1, 1, 7)  # COLUMNA GUIA
@@ -179,5 +202,5 @@ def get_emitir(proveedores: list = None, fecha: datetime = None, pedidos: list =
             current_worksheet.set_column(12, 12, 45)  # COLUMNA DESCRIPCION
             current_worksheet.set_column(13, 14, None, alineamiento)
             current_worksheet.set_column(15, 15, 10)  # COLUMNA VENCIMIENTO
-        session.close()
+
     return buffer
