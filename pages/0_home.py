@@ -4,17 +4,6 @@ import streamlit as st
 
 import services.Querys as Querys
 
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-
 st.set_page_config(page_title="Home", page_icon=":material/edit:", layout="wide")
 proveedores = Querys.proveedores()
 catalogo = Querys.catalogo()
@@ -67,7 +56,7 @@ if st.session_state.get("authentication_status"):
                 format='%d'
             ),
             "nombre_razon": st.column_config.TextColumn(
-            "Nombre o Razon Social",
+                "Nombre o Razon Social",
                 width='large'
             ),
             "alias": st.column_config.TextColumn(
@@ -110,6 +99,3 @@ else:
     st.error("Por favor inicia sesion para continuar...")
     sleep(2)
     st.switch_page("app.py")
-
-
-
