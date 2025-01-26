@@ -4,6 +4,17 @@ import streamlit as st
 
 import services.Querys as Querys
 
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+
 st.set_page_config(page_title="Home", page_icon=":material/edit:", layout="wide")
 proveedores = Querys.proveedores()
 catalogo = Querys.catalogo()
