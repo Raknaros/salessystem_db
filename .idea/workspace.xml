@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="dab2095f-379b-465f-87ee-4f7071043456" name="Changes" comment="first in dev">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/PutCotizaciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/PutCotizaciones.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/PutPedidos.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/PutPedidos.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/3_cargar_cotizaciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/3_cargar_cotizaciones.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/GetEmitir.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/GetEmitir.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +55,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Python.2_cargar_pedidos.executor&quot;: &quot;Run&quot;,
     &quot;Python.4_cargar_bancarizaciones.executor&quot;: &quot;Run&quot;,
     &quot;Python.draw.executor&quot;: &quot;Run&quot;,
     &quot;Python.models.executor&quot;: &quot;Run&quot;,
@@ -77,8 +78,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.18034.82" />
-        <option value="bundled-python-sdk-975db3bf15a3-2767605e8bc2-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.18034.82" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-PY-241.15989.155" />
+        <option value="bundled-python-sdk-babbdf50b680-7c6932dee5e4-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.15989.155" />
       </set>
     </attachedChunks>
   </component>
@@ -116,11 +117,26 @@
       <workItem from="1728928659552" duration="39000" />
       <workItem from="1728928907091" duration="1972000" />
       <workItem from="1729544222493" duration="10035000" />
-      <workItem from="1734918250896" duration="1063000" />
-      <workItem from="1735000777875" duration="5915000" />
-      <workItem from="1735263052476" duration="2172000" />
-      <workItem from="1735273260478" duration="52000" />
-      <workItem from="1735349256437" duration="1154000" />
+      <workItem from="1735610443911" duration="1954000" />
+      <workItem from="1735840090409" duration="853000" />
+      <workItem from="1735870645752" duration="1057000" />
+      <workItem from="1735918420257" duration="9614000" />
+      <workItem from="1736036554029" duration="2957000" />
+      <workItem from="1736087939369" duration="1315000" />
+      <workItem from="1736133655717" duration="71000" />
+      <workItem from="1736200119354" duration="234000" />
+      <workItem from="1736206997630" duration="2328000" />
+      <workItem from="1736266655524" duration="1578000" />
+      <workItem from="1736385430944" duration="3882000" />
+      <workItem from="1736430188338" duration="2470000" />
+      <workItem from="1736467835323" duration="10707000" />
+      <workItem from="1736523061519" duration="21595000" />
+      <workItem from="1736700967535" duration="4195000" />
+      <workItem from="1737421795371" duration="6521000" />
+      <workItem from="1737687918265" duration="5142000" />
+      <workItem from="1737745638226" duration="7308000" />
+      <workItem from="1737858999685" duration="2227000" />
+      <workItem from="1737870522350" duration="2708000" />
     </task>
     <task id="LOCAL-00001" summary="Third">
       <option name="closed" value="true" />
@@ -402,7 +418,47 @@
       <option name="project" value="LOCAL" />
       <updated>1731552439950</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="first in dev">
+      <option name="closed" value="true" />
+      <created>1736389347765</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1736389347765</updated>
+    </task>
+    <task id="LOCAL-00037" summary="first in dev">
+      <option name="closed" value="true" />
+      <created>1737065435137</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1737065435137</updated>
+    </task>
+    <task id="LOCAL-00038" summary="first in dev">
+      <option name="closed" value="true" />
+      <created>1737424592968</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1737424592968</updated>
+    </task>
+    <task id="LOCAL-00039" summary="first in dev">
+      <option name="closed" value="true" />
+      <created>1737840006161</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1737840006161</updated>
+    </task>
+    <task id="LOCAL-00040" summary="first in dev">
+      <option name="closed" value="true" />
+      <created>1737861244028</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1737861244028</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -428,8 +484,9 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/salessystem_db$models.coverage" NAME="models Coverage Results" MODIFIED="1721520498346" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/salessystem_db$2_cargar_pedidos.coverage" NAME="2_cargar_pedidos Coverage Results" MODIFIED="1735920906579" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pages" />
     <SUITE FILE_PATH="coverage/salessystem_db$4_cargar_bancarizaciones.coverage" NAME="4_cargar_bancarizaciones Coverage Results" MODIFIED="1726263853434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pages" />
-    <SUITE FILE_PATH="coverage/salessystem_db$test.coverage" NAME="test Coverage Results" MODIFIED="1732484686386" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/salessystem_db$draw.coverage" NAME="draw Coverage Results" MODIFIED="1735263686477" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/salessystem_db$test.coverage" NAME="test Coverage Results" MODIFIED="1729546175355" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/salessystem_db$draw.coverage" NAME="draw Coverage Results" MODIFIED="1736656565613" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
