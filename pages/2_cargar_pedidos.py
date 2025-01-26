@@ -125,14 +125,21 @@ if st.session_state.get("authentication_status"):
         ped_seleccionados = st.multiselect("pedidos_precuadro", placeholder='Elige los pedidos',
                                            options=
                                            st.session_state.df_pedidos.loc[st.session_state.df_pedidos['estado'] == 'PENDIENTE'][
-                                               'adquiriente'].tolist(), label_visibility='collapsed',
-                                           on_change=sleep(2))
+                                               'adquiriente'].tolist(), label_visibility='collapsed')
+
+        if not st.session_state.df_pedidos.loc[st.session_state.df_pedidos['estado'] == 'PENDIENTE'][
+                                               'adquiriente'].tolist():
+            st.warning("No hay pedidos pendientes para generar el pre-cuadro.")
+            descargar_habilitado = False
+        else:
+            descargar_habilitado = bool(ped_seleccionados)
 
         st.download_button(
             label='Generar',
             data=get_precuadros(ped_seleccionados),
             file_name='precuadro'+date.today().strftime('%Y%m%d')+'.xlsx',
-            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            disabled=not descargar_habilitado
             )
 
         #DOWNLOAD BUTTON EJECUTA LA CARGA DE DATA CADA QUE CAMBIE LOS PARAMETROS, ARRANCANDO VACIO
@@ -170,7 +177,7 @@ if st.session_state.get("authentication_status"):
 
         sleep(2)
         st.session_state.df_pedidos = pedidos()
-        st.rerun()
+
 else:
     st.error("Por favor inicia sesion para continuar...")
     sleep(2)
