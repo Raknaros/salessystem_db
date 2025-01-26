@@ -15,9 +15,10 @@ def prueba_onclick(proveedores: list = None, fecha: datetime = None, pedidos: li
     print(proveedores)
     print(fecha)
     print(pedidos)
+    return print("PROBADO")
 def update_enproceso(proveedores: list = None, fecha: datetime = None, pedidos: list = None):
     lista_facturas = Querys.lista_facturas()
-    if pedidos is None:
+    if pedidos is None: #cambiar logica a si es una lista vacia
         fecha_inicio = datetime.now() - timedelta(days=3)
         fecha_inicio = fecha_inicio.strftime('%Y-%m-%d')
         fecha_fin = fecha.strftime('%Y-%m-%d')
