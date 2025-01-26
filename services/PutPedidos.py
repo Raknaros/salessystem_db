@@ -12,13 +12,10 @@ from services.Querys import Session
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
-
 #REVISAR LA CONSULTA DEL RUC DEL CUSTOMER SI RECIBE MINUSCULAS, REVISAR SI SE ELIMINA ALGUN PEDIDO CAUSA UN ERROR EN EL CONTEO Y NUMERACION DE LOS PEDIDOS
 #TODO CORREGIR INGRESO DE LUGAR DE ENTREGA
 #TODO CORREGIR MOSTRAR PEDIDOS CON CUSTOMER NO REGISTRADO
-def put_pedidos(data=None):
-    if data is None:
-        data = ['VACIO']
+def put_pedidos(data: list=None):
     adquirientes = Querys.adquirientes()
     #decidir entre insert interado y bulk insert, colocar el trigger de cambio de alias a ruc en el metodo put_pedidos
     session = Session()
@@ -39,12 +36,12 @@ def put_pedidos(data=None):
                 notas=fila.get('notas'),
             )
             session.add(nuevo_pedido)
-        session.commit()  # Commit al final
+        session.commit()# Commit al final
         if len(data) > 1:
-            return "Se ingresaron " + str(len(data)) + " pedidos."
+            return "Se ingresaron "+str(len(data))+" pedidos."
         elif len(data) == 1:
             print('4')
-            return "Se ingresó el pedido con código " + Querys.pedidos().iloc[-1]['cod_pedido'] + "."
+            return "Se ingresó el pedido con código "+Querys.pedidos().iloc[-1]['cod_pedido']+"."
 
     except Exception as e:
         session.rollback()

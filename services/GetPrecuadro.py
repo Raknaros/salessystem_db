@@ -14,7 +14,9 @@ import services.Querys as Querys
 
 
 
-def get_precuadros(ped_seleccionados):
+def get_precuadros(ped_seleccionados=None):
+    if ped_seleccionados is None:
+        ped_seleccionados = ['VACIO']
     df = Querys.pedidos()
     df = df.loc[df['estado'] == 'PENDIENTE']
     adquirientes = Querys.adquirientes()
