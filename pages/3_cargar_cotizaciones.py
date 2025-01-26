@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime, timedelta
 from time import sleep
 
 import streamlit as st
@@ -13,6 +13,8 @@ if 'lista_facturas' not in st.session_state:
     st.session_state.lista_facturas = lista_facturas()
 if 'cotizaciones' not in st.session_state:
     st.session_state.cotizaciones = cotizaciones()
+if "download_clicked" not in st.session_state:
+    st.session_state.download_clicked = False
 
 if st.session_state.get("authentication_status"):
     st.session_state.sidebar()
@@ -106,9 +108,9 @@ if st.session_state.get("authentication_status"):
         index=None,
         placeholder="Descargar por", label_visibility='collapsed'
     )
-    pick_proveedores = None
-    pick_pedidos = None
-    fecha_final = None
+    pick_proveedores = []
+    pick_pedidos = []
+    fecha_final = datetime.now() - timedelta(days=4)
     if option == "Proveedor":
 
         #    subcol1, subcol2 = col2.container().columns(2)
@@ -121,26 +123,26 @@ if st.session_state.get("authentication_status"):
         pick_proveedores = col2.multiselect("proveedores", placeholder='Elige  los proveedores',
                                             options=st.session_state.lista_facturas['alias'].unique().tolist(),
                                             label_visibility='collapsed')
-        col2.download_button(
-            label='Generar',
-            data=get_emitir(proveedores=pick_proveedores, fecha=fecha_final),
-            file_name='emitir_' + date.today().strftime('%Y%m%d') + '.xlsx',
-            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        )
+
     elif option == "Pedido":
 
         pick_pedidos = col2.multiselect("pedidos", placeholder='Elige  los pedidos',
                                         options=st.session_state.cotizaciones.loc[
                                             st.session_state.cotizaciones['estado'] == 'PENDIENTE'][
                                             'cod_pedido'].unique().tolist(), label_visibility='collapsed')
-        col2.download_button(
+
+    if col2.download_button(
             label='Generar',
-            data=get_emitir(pedidos=pick_pedidos),
+            data=get_emitir(pedidos=pick_pedidos, fecha=fecha_final, proveedores=pick_proveedores),
             file_name='emitir_' + date.today().strftime('%Y%m%d') + '.xlsx',
-            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            on_click=prueba_onclick(),
-            kwargs={'proveedores': pick_proveedores, 'pedidos': pick_pedidos, 'fecha': fecha_final}
-        )
+            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    ):
+        st.session_state.download_clicked = True
+
+    if st.session_state.download_clicked:
+        prueba_onclick(pedidos=pick_pedidos, fecha=fecha_final, proveedores=pick_proveedores)
+        # Reiniciar el estado para evitar ejecuciones múltiples
+        st.session_state.download_clicked = False
 
     col3.subheader('Subir Cotizaciones Emitidas')
 
