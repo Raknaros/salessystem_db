@@ -11,12 +11,7 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
 
-def prueba_onclick(proveedores: list = None, fecha: datetime = None, pedidos: list = None):
-    print(proveedores)
-    print(fecha)
-    print(pedidos)
-    return print("PROBADO")
-def update_enproceso(proveedores: list = None, fecha: datetime = None, pedidos: list = None):
+def update_enproceso(proveedores: list = None, fecha: datetime = datetime(1990, 2, 1), pedidos: list = None):
     lista_facturas = Querys.lista_facturas()
     if pedidos is None: #cambiar logica a si es una lista vacia
         fecha_inicio = datetime.now() - timedelta(days=3)
@@ -35,7 +30,7 @@ def update_enproceso(proveedores: list = None, fecha: datetime = None, pedidos: 
         ).update({Facturas.estado: 'EN PROCESO'}, synchronize_session=False)
     session.commit()
     session.close()
-def get_emitir(proveedores: list = None, fecha: datetime = None, pedidos: list = None):
+def get_emitir(proveedores=None, fecha: datetime = None, pedidos=None):
     lista_facturas = Querys.lista_facturas() #parse_dates=['emision', 'vencimiento', 'vencimiento2', 'vencimiento3', 'vencimiento4'])
 
     if pedidos is None:
