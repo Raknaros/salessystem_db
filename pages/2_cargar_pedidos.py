@@ -131,7 +131,12 @@ if st.session_state.get("authentication_status"):
                                                    st.session_state.df_pedidos['estado'] == 'PENDIENTE'][
                                                    'adquiriente'].tolist(), label_visibility='collapsed')
 
-
+            st.download_button(
+                label='Generar',
+                data=get_precuadros(ped_seleccionados),
+                file_name='precuadro' + date.today().strftime('%Y%m%d') + '.xlsx',
+                mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            )
 
         #DOWNLOAD BUTTON EJECUTA LA CARGA DE DATA CADA QUE CAMBIE LOS PARAMETROS, ARRANCANDO VACIO
 
@@ -168,7 +173,7 @@ if st.session_state.get("authentication_status"):
 
         sleep(2)
         st.session_state.df_pedidos = pedidos()
-
+        st.rerun()
 else:
     st.error("Por favor inicia sesion para continuar...")
     sleep(2)
