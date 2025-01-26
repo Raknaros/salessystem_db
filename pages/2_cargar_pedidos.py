@@ -119,9 +119,9 @@ if st.session_state.get("authentication_status"):
 
         submit = row3[2].form_submit_button('Subir')
 
-    #col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns(3)
 
-    with st.container(key='precuadro', height=200, border=False):
+    with col1.container(key='precuadro', height=200, border=False):
         st.subheader("Generar Pre-cuadro")
         ped_seleccionados = st.multiselect("pedidos_precuadro", placeholder='Elige los pedidos',
                                              options=
