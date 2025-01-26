@@ -124,12 +124,17 @@ if st.session_state.get("authentication_status"):
     with col1.container(key='precuadro', height=200, border=False):
         st.subheader("Generar Pre-cuadro")
         ped_seleccionados = st.multiselect("pedidos_precuadro", placeholder='Elige los pedidos',
-                                               options=
-                                                   st.session_state.df_pedidos.loc[
-                                                       st.session_state.df_pedidos['estado'] == 'PENDIENTE'][
-                                                       'adquiriente'].tolist(), label_visibility='collapsed')
-
-
+                                           options=
+                                           st.session_state.df_pedidos.loc[
+                                               st.session_state.df_pedidos['estado'] == 'PENDIENTE'][
+                                               'adquiriente'].tolist(), label_visibility='collapsed')
+        #GENERA CONFLICTO RERUN INFINITO
+        st.download_button(
+            label='Generar',
+            data=get_precuadros(ped_seleccionados=ped_seleccionados),
+            file_name='precuadro' + date.today().strftime('%Y%m%d') + '.xlsx',
+            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
 
         #DOWNLOAD BUTTON EJECUTA LA CARGA DE DATA CADA QUE CAMBIE LOS PARAMETROS, ARRANCANDO VACIO
 
@@ -149,7 +154,9 @@ if st.session_state.get("authentication_status"):
                     pedidos[column] = pedidos[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
             pedidos.replace(np.nan, None, inplace=True)
             st.success(put_pedidos(pedidos.to_dict(orient='records')))
-
+            sleep(2)
+            st.session_state.df_pedidos = pedidos()
+            st.rerun()
         else:
             data = [{
                 "fecha_pedido": fecha_pedido,
@@ -163,10 +170,12 @@ if st.session_state.get("authentication_status"):
                 "notas": notas,
             }, ]
             st.success(put_pedidos(data))
+            sleep(2)
+            st.session_state.df_pedidos = pedidos()
+            st.rerun()
 
-        sleep(2)
-        st.session_state.df_pedidos = pedidos()
-        st.rerun()
+
+
 else:
     st.error("Por favor inicia sesion para continuar...")
     sleep(2)
