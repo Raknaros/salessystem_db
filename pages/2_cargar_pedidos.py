@@ -120,20 +120,22 @@ if st.session_state.get("authentication_status"):
         submit = row3[2].form_submit_button('Subir')
 
     col1, col2, col3 = st.columns(3)
-    with col1.container(key='precuadro', height=200, border=False):
-        st.subheader("Generar Pre-cuadro")
-        ped_seleccionados = st.multiselect("pedidos_precuadro", placeholder='Elige los pedidos',
-                                           options=
-                                           st.session_state.df_pedidos.loc[st.session_state.df_pedidos['estado'] == 'PENDIENTE'][
-                                               'adquiriente'].tolist(), label_visibility='collapsed')
+    if len(st.session_state.df_pedidos.loc[
+                                                   st.session_state.df_pedidos['estado'] == 'PENDIENTE'][
+                                                   'adquiriente'].tolist()) > 0:
+        with col1.container(key='precuadro', height=200, border=False):
+            st.subheader("Generar Pre-cuadro")
+            ped_seleccionados = st.multiselect("pedidos_precuadro", placeholder='Elige los pedidos',
+                                               options=
+                                               st.session_state.df_pedidos.loc[
+                                                   st.session_state.df_pedidos['estado'] == 'PENDIENTE'][
+                                                   'adquiriente'].tolist(), label_visibility='collapsed')
 
-
-
-        st.download_button(
-            label='Generar',
-            data=get_precuadros(ped_seleccionados),
-            file_name='precuadro'+date.today().strftime('%Y%m%d')+'.xlsx',
-            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            st.download_button(
+                label='Generar',
+                data=get_precuadros(ped_seleccionados),
+                file_name='precuadro' + date.today().strftime('%Y%m%d') + '.xlsx',
+                mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             )
 
         #DOWNLOAD BUTTON EJECUTA LA CARGA DE DATA CADA QUE CAMBIE LOS PARAMETROS, ARRANCANDO VACIO
