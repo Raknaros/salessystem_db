@@ -17,9 +17,9 @@ warehouse_source = st.secrets['DB_SOURCE_WH']
 salessystem_url = f'mysql+pymysql://{salessystem_user}:{salessystem_token}@{salessystem_source}:3306/{salessystem_database}'
 warehouse_url = f'postgresql://{warehouse_user}:{warehouse_token}@{warehouse_source}:5432/{warehouse_database}'
 
-salessystem = create_engine(salessystem_url, connect_args={"connect_timeout": 5})
+salessystem = create_engine(salessystem_url, connect_args={"connect_timeout": 2})
 
-warehouse = create_engine(warehouse_url, connect_args={"connect_timeout": 5})
+warehouse = create_engine(warehouse_url, connect_args={"connect_timeout": 2})
 
 Session = sessionmaker(bind=salessystem)
 
@@ -56,7 +56,7 @@ def catalogo():
 
 
 def pre_detalle():
-    query = "SELECT * FROM pre_detalle ORDER BY fecha_emision"
+    query = "SELECT * FROM public.pre_detalle ORDER BY fecha_emision"
     return ejecutar_consulta(query, warehouse)
 
 
