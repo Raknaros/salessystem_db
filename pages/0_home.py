@@ -5,9 +5,7 @@ import streamlit as st
 import Querys as Querys
 
 st.set_page_config(page_title="Home", page_icon=":material/edit:", layout="wide")
-proveedores = Querys.proveedores()
-catalogo = Querys.catalogo()
-st.session_state.adquirientes = Querys.adquirientes()
+
 
 if st.session_state.get("authentication_status"):
     st.session_state.sidebar()
@@ -15,7 +13,7 @@ if st.session_state.get("authentication_status"):
     st.title('Bienvenido')
     tab1, tab2, tab3 = st.tabs(["Proveedores", "Adquirientes", "Catalogo"])
     with tab1:
-        st.dataframe(proveedores, height=300, hide_index=True, column_config={
+        st.dataframe(st.session_state.proveedores, height=300, hide_index=True, column_config={
             "tipo_proveedor": st.column_config.NumberColumn(
                 "Tipo",
                 help="Diferenciacion de los proveedores",
@@ -73,7 +71,7 @@ if st.session_state.get("authentication_status"):
             )
         }, column_order=['nombre_razon', 'alias', 'ruc', 'related_user', 'observaciones'])
     with tab3:
-        st.dataframe(catalogo, height=300, hide_index=True, column_config={
+        st.dataframe(st.session_state.catalogo, height=300, hide_index=True, column_config={
             "id": st.column_config.TextColumn(
                 "Codigo"
             ),
