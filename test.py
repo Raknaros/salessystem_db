@@ -10,6 +10,8 @@ from services.Querys import salessystem, pedidos, adquirientes, pre_detalle, cat
 from streamlit_authenticator.utilities.hasher import Hasher
 
 passwords_to_hash = ['emisor2024', 'EvelynCBM1968', 'p259E9C695+']
+
+
 #hashed_passwords = Hasher(passwords_to_hash).generate()
 
 def get_precuadros(ped_seleccionados):
@@ -74,4 +76,4 @@ def get_precuadros(ped_seleccionados):
     return print('pedidos_' + date.today().strftime('%Y%m%d') + ' generado')
 
 
-get_precuadros(['ENOBRAS', 'IMPULSAOE', '20608774051'])
+get_precuadros(['ENOBRAS', 'IMPULSA OE', '20608774051'])
