@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
 from io import BytesIO
-
+import streamlit as st
 import pandas as pd
 from sqlalchemy import func
 
-import services.Querys as Querys
+import Querys as Querys
 from models import Facturas
 
 pd.set_option('display.max_columns', None)
@@ -12,7 +12,7 @@ pd.set_option('display.max_rows', None)
 
 
 def update_enproceso(proveedores: list = None, fecha: datetime = datetime(1990, 2, 1), pedidos: list = None):
-    lista_facturas = Querys.lista_facturas()
+    lista_facturas = st.session_state.lista_facturas
     if pedidos is None: #cambiar logica a si es una lista vacia
         fecha_inicio = datetime.now() - timedelta(days=3)
         fecha_inicio = fecha_inicio.strftime('%Y-%m-%d')
@@ -31,7 +31,7 @@ def update_enproceso(proveedores: list = None, fecha: datetime = datetime(1990, 
     session.commit()
     session.close()
 def get_emitir(proveedores=None, fecha: datetime = None, pedidos=None):
-    lista_facturas = Querys.lista_facturas() #parse_dates=['emision', 'vencimiento', 'vencimiento2', 'vencimiento3', 'vencimiento4'])
+    lista_facturas = st.session_state.lista_facturas #parse_dates=['emision', 'vencimiento', 'vencimiento2', 'vencimiento3', 'vencimiento4'])
 
     if pedidos is None:
         fecha_inicio = datetime.now() - timedelta(days=3)
@@ -43,9 +43,9 @@ def get_emitir(proveedores=None, fecha: datetime = None, pedidos=None):
     else:
         lista_facturas = lista_facturas[lista_facturas['cui'].str.slice(0, 9).isin(pedidos)]
 
-    lista_guias = Querys.lista_guias() #parse_dates=['traslado'])
+    lista_guias = st.session_state.lista_guias #parse_dates=['traslado'])
 
-    lista_proveedores = Querys.proveedores() #SELECT alias, numero_documento, usuario_sol, clave_sol FROM proveedores'
+    lista_proveedores = st.session_state.proveedores #SELECT alias, numero_documento, usuario_sol, clave_sol FROM proveedores'
 
     def formato_fecha(fecha):
         return pd.to_datetime(fecha, format='%Y-%m-%d').strftime('%d/%m/%Y')

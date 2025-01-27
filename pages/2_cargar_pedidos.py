@@ -2,26 +2,21 @@ from datetime import date
 
 import numpy as np
 import pandas as pd
-import streamlit_authenticator as stauth
 import streamlit as st
-import yaml
-from yaml.loader import SafeLoader
 from time import sleep
 
 from services.PutPedidos import put_pedidos
 from services.GetPrecuadro import get_precuadros
-from services.Querys import pedidos
+from Querys import pedidos
 
 st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wide")
-if 'df_pedidos' not in st.session_state:
-    st.session_state.df_pedidos = pedidos()
 
 if st.session_state.get("authentication_status"):
     st.session_state.sidebar()
     st.session_state['authenticator'].logout(location='sidebar', button_name='Cerrar Sesion')
     st.title('Pedidos por entregar')
 
-    st.dataframe(st.session_state.df_pedidos[st.session_state.df_pedidos['estado'].isin(['EN PROCESO', 'PENDIENTE'])],
+    st.dataframe(st.session_state.pedidos[st.session_state.pedidos['estado'].isin(['EN PROCESO', 'PENDIENTE'])],
                  height=300, hide_index=True,
                  column_config={
                      "cod_pedido": st.column_config.TextColumn(
@@ -124,11 +119,11 @@ if st.session_state.get("authentication_status"):
     with col1.container(key='precuadro', height=200, border=False):
         st.subheader("Generar Pre-cuadro")
         ped_seleccionados = st.multiselect("pedidos_precuadro", placeholder='Elige los pedidos',
-                                             options=
-                                             st.session_state.df_pedidos.loc[
-                                                 st.session_state.df_pedidos['estado'] == 'PENDIENTE'][
-                                                 'adquiriente'].tolist(), label_visibility='collapsed')
-        #GENERA CONFLICTO RERUN INFINITO
+                                           options=
+                                           st.session_state.pedidos.loc[
+                                               st.session_state.pedidos['estado'] == 'PENDIENTE'][
+                                               'adquiriente'].tolist(), label_visibility='collapsed')
+
         st.download_button(
             label='Generar',
             data=get_precuadros(ped_seleccionados=ped_seleccionados),

@@ -1,12 +1,7 @@
 import pandas as pd
-from datetime import date
 import streamlit as st
 
-from sqlalchemy import create_engine
-import numpy as np
-
-from services.Querys import salessystem, pedidos, adquirientes, pre_detalle, catalogo
-from streamlit_authenticator.utilities.hasher import Hasher
+from Querys import pedidos, adquirientes, pre_detalle, catalogo
 
 passwords_to_hash = ['emisor2024', 'EvelynCBM1968', 'p259E9C695+']
 #hashed_passwords = Hasher(passwords_to_hash).generate()

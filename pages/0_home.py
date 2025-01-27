@@ -2,7 +2,7 @@ from time import sleep
 
 import streamlit as st
 
-import services.Querys as Querys
+import Querys as Querys
 
 st.set_page_config(page_title="Home", page_icon=":material/edit:", layout="wide")
 proveedores = Querys.proveedores()

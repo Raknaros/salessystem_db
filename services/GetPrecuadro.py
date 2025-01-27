@@ -2,13 +2,9 @@
 import io
 
 import pandas as pd
-from datetime import date
 
-from sqlalchemy import create_engine
-import numpy as np
+import Querys as Querys
 import streamlit as st
-import services.Querys as Querys
-
 
 
 
@@ -16,11 +12,11 @@ import services.Querys as Querys
 
 def get_precuadros(ped_seleccionados):
 
-    df = Querys.pedidos()
+    df = st.session_state.pedidos
     df = df.loc[df['estado'] == 'PENDIENTE']
-    adquirientes = Querys.adquirientes()
-    pre_detalle = Querys.pre_detalle()
-    catalogo = Querys.catalogo()
+    adquirientes = st.session_state.adquirientes
+    pre_detalle = st.session_state.pre_detalle
+    catalogo = st.session_state.catalogo
     adquirientes['ruc'] = adquirientes['ruc'].astype(str)
     if ped_seleccionados == 'TODOS':
         seleccionados = df['cod_pedido'].tolist()

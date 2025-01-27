@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
-from io import BytesIO
 
 import pandas as pd
-import services.Querys as Querys
+import Querys as Querys
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)

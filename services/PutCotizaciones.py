@@ -1,15 +1,11 @@
 import math
 
 import pandas as pd
-import os
-from pathlib import Path
 
 from openpyxl.reader.excel import load_workbook
-from sqlalchemy import create_engine
-import numpy as np
 
 from models import Pedidos
-from services.Querys import salessystem, Session
+from Querys import salessystem, Session
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)

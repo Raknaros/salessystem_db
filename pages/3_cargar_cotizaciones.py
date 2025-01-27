@@ -1,18 +1,14 @@
-from datetime import date, datetime, timedelta
+from datetime import date
 from time import sleep
 
 import streamlit as st
 
 from services.GetEmitir import get_emitir, update_enproceso
 from services.PutCotizaciones import load_cotizaciones
-from services.Querys import facturas_poremitir, lista_facturas, cotizaciones
+from Querys import facturas_poremitir, lista_facturas, cotizaciones
 
 st.set_page_config(page_title="Cotizaciones", page_icon=":material/edit:", layout="wide")
 
-if 'lista_facturas' not in st.session_state:
-    st.session_state.lista_facturas = lista_facturas()
-if 'cotizaciones' not in st.session_state:
-    st.session_state.cotizaciones = cotizaciones()
 if "download_clicked" not in st.session_state:
     st.session_state.download_clicked = False
 

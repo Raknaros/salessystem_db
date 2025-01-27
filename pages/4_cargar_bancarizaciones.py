@@ -1,11 +1,7 @@
-import streamlit_authenticator as stauth
 import streamlit as st
 import pandas as pd
-import yaml
-from yaml.loader import SafeLoader
-from time import sleep
 
-from services.Querys import bancarizaciones
+from Querys import bancarizaciones
 
 st.set_page_config(page_title="Bancarizaciones", page_icon=":material/edit:", layout="wide")
 
