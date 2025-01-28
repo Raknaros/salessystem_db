@@ -150,8 +150,6 @@ if st.session_state.get("authentication_status"):
             pedidos.replace(np.nan, None, inplace=True)
             st.success(put_pedidos(pedidos.to_dict(orient='records')))
             sleep(2)
-            st.session_state.df_pedidos = pedidos()
-            st.rerun()
         else:
             data = [{
                 "fecha_pedido": fecha_pedido,
@@ -166,9 +164,9 @@ if st.session_state.get("authentication_status"):
             }, ]
             st.success(put_pedidos(data))
             sleep(2)
-            st.session_state.df_pedidos = pedidos()
-            st.rerun()
 
+        st.session_state.pedidos = pedidos()
+        st.rerun()
 
 
 else:
