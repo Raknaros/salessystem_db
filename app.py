@@ -3,7 +3,7 @@ import streamlit as st
 import yaml
 from yaml.loader import SafeLoader
 
-from Querys import inicializar_datos
+from Querys import inicializar_datos, actualizar_datos
 
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
@@ -52,6 +52,8 @@ if st.session_state['authentication_status']:
     else:
         if 'other_sidebar' not in st.session_state:
             st.session_state.sidebar = other_sidebar
+
+    actualizar_datos()
     st.switch_page("pages/0_home.py")
 elif st.session_state['authentication_status'] is False:
     st.error('Username/password is incorrect')

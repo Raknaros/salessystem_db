@@ -103,6 +103,18 @@ def inicializar_datos():
         st.session_state.cotizaciones = cotizaciones()
 
 
+def actualizar_datos():
+    st.session_state.bancarizaciones = bancarizaciones()
+    st.session_state.adquirientes = adquirientes()
+    st.session_state.proveedores = proveedores()
+    st.session_state.catalogo = catalogo()
+    st.session_state.pre_detalle = pre_detalle()
+    st.session_state.lista_facturas = lista_facturas()
+    st.session_state.lista_guias = lista_guias()
+    st.session_state.pedidos = pedidos()
+    st.session_state.cotizaciones = cotizaciones()
+
+
 cotizaciones_poremitir = cotizaciones()
 
 cotizaciones_poremitir = cotizaciones_poremitir[
