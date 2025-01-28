@@ -134,7 +134,9 @@ if st.session_state.get("authentication_status"):
     elif option == "Pedido":
 
         pick_pedidos = col2.multiselect("pedidos", placeholder='Elige  los pedidos',
-                                        options=st.session_state.lista_facturas['cod_pedido'].unique().tolist(), label_visibility='collapsed')
+                                        options=st.session_state.cotizaciones.loc[
+                                            st.session_state.cotizaciones['estado'] == 'PENDIENTE'][
+                                            'cod_pedido'].unique().tolist(), label_visibility='collapsed')
 
         if col2.download_button(
                 label='Generar',
