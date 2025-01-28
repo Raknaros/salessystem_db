@@ -93,8 +93,10 @@ if st.session_state.get("authentication_status"):
     subir_cotizaciones = col1.button(label='Subir', key='subir_cotizaciones', on_click=load_cotizaciones,
                                      args=(cotizaciones_masivo,))
 
-    #if subir_cotizaciones:
-    #    actualizar_cargar_cotizaciones()
+    if subir_cotizaciones:
+        sleep(2)
+        st.session_state.cotizaciones = cotizaciones()
+        st.rerun()
 
     col2.subheader('Descargar Cuadro para Emitir')
 
@@ -132,9 +134,7 @@ if st.session_state.get("authentication_status"):
     elif option == "Pedido":
 
         pick_pedidos = col2.multiselect("pedidos", placeholder='Elige  los pedidos',
-                                        options=st.session_state.cotizaciones.loc[
-                                            st.session_state.cotizaciones['estado'] == 'PENDIENTE'][
-                                            'cod_pedido'].unique().tolist(), label_visibility='collapsed')
+                                        options=st.session_state.lista_facturas['cod_pedido'].unique().tolist(), label_visibility='collapsed')
 
         if col2.download_button(
                 label='Generar',
