@@ -38,12 +38,11 @@ def put_pedidos(data: list = None):
         if len(data) > 1:
             return "Se ingresaron " + str(len(data)) + " pedidos."
         elif len(data) == 1:
-            print('4')
             return "Se ingresó el pedido con código " + Querys.pedidos().iloc[-1]['cod_pedido'] + "."
 
     except Exception as e:
         session.rollback()
-        return "Ocurrió un error al insertar el pedido"
+        return "Ocurrio un error al registrar el pedido"
     finally:
         session.close()
 

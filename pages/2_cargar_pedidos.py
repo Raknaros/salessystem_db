@@ -7,7 +7,7 @@ from time import sleep
 
 from services.PutPedidos import put_pedidos
 from services.GetPrecuadro import get_precuadros
-from Querys import pedidos
+import Querys
 
 st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wide")
 
@@ -139,11 +139,11 @@ if st.session_state.get("authentication_status"):
                                     dtype={'periodo': np.int32, 'adquiriente': object, 'importe_total': np.int64,
                                            'rubro': str,
                                            'promedio_factura': None, 'contado_credito': str,
-                                           'punto_entrega': str, 'notas': str, 'estado': str},
+                                           'punto_llegada': str, 'notas': str, 'estado': str},
                                     parse_dates=[0, ],
                                     na_values=' ', false_values=['no', 'NO', 'No'], true_values=['si', 'Si', 'SI'])
 
-            str_columns = ['rubro', 'contado_credito', 'punto_entrega', 'notas', 'estado']
+            str_columns = ['rubro', 'contado_credito', 'punto_llegada', 'notas', 'estado']
             for column in str_columns:
                 if pedidos[column].notna().any():
                     pedidos[column] = pedidos[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
@@ -165,7 +165,7 @@ if st.session_state.get("authentication_status"):
             st.success(put_pedidos(data))
             sleep(2)
 
-        st.session_state.pedidos = pedidos()
+        st.session_state.pedidos = Querys.pedidos()
         st.rerun()
 
 
