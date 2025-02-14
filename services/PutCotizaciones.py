@@ -79,7 +79,7 @@ def load_cotizaciones(archivo):
                    'observaciones']
 
     # Definir columnas a formatear
-    columns_to_round = ['precio_unit', 'cuota1', 'cuota2', 'cuota3', 'cuota4']
+    columns_to_round = ['precio_unit']#, 'cuota1', 'cuota2', 'cuota3', 'cuota4'
 
     # Aplica redondeo a cada columna en la lista
     for col in columns_to_round:
