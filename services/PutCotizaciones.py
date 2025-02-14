@@ -83,7 +83,7 @@ def load_cotizaciones(archivo):
 
     # Aplica redondeo a cada columna en la lista
     for col in columns_to_round:
-        cotizaciones[col] = cotizaciones[col].apply(lambda x: round(x, 3) if pd.notna(x) else x)
+        cotizaciones[col] = cotizaciones[col].apply(lambda x: round(x, 3) if isinstance(x, (int, float)) and pd.notna(x) else x)
 
     # Cambiar mayusculas y quitar espacios de los extremos a cada valor de cada columna de texto
     for column in str_columns:
