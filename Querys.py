@@ -14,8 +14,8 @@ warehouse_token = st.secrets['DB_TOKEN_WH']
 warehouse_database = st.secrets['DB_DATABASE_WH']
 warehouse_source = st.secrets['DB_SOURCE_WH']
 
-salessystem_url = f'mysql+pymysql://{salessystem_user}:{salessystem_token}@{salessystem_source}:3306/{salessystem_database}'
-warehouse_url = f'postgresql://{warehouse_user}:{warehouse_token}@{warehouse_source}:5432/{warehouse_database}'
+salessystem_url = f'mysql+pymysql://{salessystem_user}:{salessystem_token}@{salessystem_source}:13306/{salessystem_database}'
+warehouse_url = f'postgresql://{warehouse_user}:{warehouse_token}@{warehouse_source}:15432/{warehouse_database}'
 
 salessystem = create_engine(salessystem_url, connect_args={"connect_timeout": 2})
 
