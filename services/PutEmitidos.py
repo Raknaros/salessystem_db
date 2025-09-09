@@ -9,8 +9,8 @@ pd.set_option('display.max_rows', None)
 
 
 def load_pedidos(ruta: str):
-    engine = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com'
-                           ':3306/salessystem')
+    engine = create_engine('mysql+pymysql://admindb:Giu72656770@giumarchan.dev'
+                           ':13306/salessystem')
 
     pedidos = pd.read_excel(ruta + '/importar.xlsx', sheet_name='pedidos', date_format='%d/%m/%Y',
                             dtype={'periodo': np.int32, 'adquiriente': object, 'importe_total': np.int64, 'rubro': str,
