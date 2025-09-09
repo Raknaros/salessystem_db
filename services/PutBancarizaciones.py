@@ -8,7 +8,7 @@ pd.set_option('display.max_rows', None)
 def put_bancarizaciones():
     pass
 def load_bancarizar(ruta: str):
-    engine = create_engine('mysql+pymysql://admin:Giu72656770@giumarchan.dev'
+    engine = create_engine('mysql+pymysql://admindb:Giu72656770@giumarchan.dev'
                            ':13306/salessystem')
 
     bancarizar = pd.read_excel(ruta + '/importar.xlsx', sheet_name='bancarizar', date_format='%d/%m/%Y',
