@@ -102,6 +102,12 @@ La aplicación estará disponible por defecto en `http://localhost:8501`.
 4.  **Emisión:** Se genera el reporte consolidado para que el área de facturación emita los comprobantes (Facturas/Guías).
 5.  **Bancarización:** Se registran los pagos para cerrar el ciclo contable.
 
+## Problemas Conocidos (Known Issues)
+
+*   **Concurrencia en Prefetching:** Se ha detectado un error ocasional `Packet sequence number wrong` al iniciar sesión, relacionado con el uso de hilos secundarios para la pre-carga de datos (`prefetch_data`). Esto se debe a conflictos en el uso compartido de conexiones de base de datos (`pymysql`) entre el hilo principal y el hilo de pre-carga.
+    *   *Estado:* En investigación.
+    *   *Workaround:* Si el error persiste, se recomienda desactivar temporalmente la función `prefetch_data` en `app.py`.
+
 ---
 *Nota: Este proyecto maneja información financiera sensible. Asegúrese de cumplir con las políticas de protección de datos y accesos.*
 
@@ -211,6 +217,12 @@ The application will be available by default at `http://localhost:8501`.
 3.  **Quotation:** The user completes prices and details in Excel and uploads it to the system.
 4.  **Issuance:** A consolidated report is generated for the billing area to issue vouchers (Invoices/Guides).
 5.  **Bank Reconciliation:** Payments are registered to close the accounting cycle.
+
+## Known Issues
+
+*   **Prefetching Concurrency:** An occasional `Packet sequence number wrong` error has been detected upon login, related to the use of secondary threads for data pre-loading (`prefetch_data`). This is due to conflicts in sharing database connections (`pymysql`) between the main thread and the pre-fetch thread.
+    *   *Status:* Under investigation.
+    *   *Workaround:* If the error persists, it is recommended to temporarily disable the `prefetch_data` function in `app.py`.
 
 ---
 *Note: This project handles sensitive financial information. Ensure compliance with data protection and access policies.*

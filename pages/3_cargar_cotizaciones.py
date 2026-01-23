@@ -125,11 +125,21 @@ if st.session_state.get("authentication_status"):
         index=None,
         placeholder="Descargar por", label_visibility='collapsed'
     )
-    #fecha_final = datetime.now() - timedelta(days=4)
+    
+    # --- LÓGICA DE DESCARGA DIFERIDA ---
+    
+    # Callback para actualizar estado DESPUÉS de la descarga
+    def on_download_click(tipo, items, fecha=None):
+        if tipo == 'proveedor':
+            update_enproceso(proveedores=items, fecha=fecha)
+        elif tipo == 'pedido':
+            update_enproceso(pedidos=items)
+        # Limpiar buffer para reiniciar el ciclo y evitar descargas viejas
+        if 'excel_buffer' in st.session_state:
+            del st.session_state['excel_buffer']
+        st.session_state.download_clicked = True
+
     if option == "Proveedor":
-
-        #    subcol1, subcol2 = col2.container().columns(2)
-
         fecha_final = col2.date_input(
             'Fecha',
             help='Indicar hasta que fecha desea solicitar las emisiones del proveedor (ejem. desde hace dos dias hasta la '
@@ -138,37 +148,43 @@ if st.session_state.get("authentication_status"):
         pick_proveedores = col2.multiselect("proveedores", placeholder='Elige  los proveedores',
                                             options=st.session_state.lista_facturas['alias'].unique().tolist(),
                                             label_visibility='collapsed')
-        if col2.download_button(
-                label='Generar',
-                data=get_emitir(fecha=fecha_final, proveedores=pick_proveedores),
-                file_name='emitir_' + date.today().strftime('%Y%m%d') + '.xlsx',
-                mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        ):
-            st.session_state.download_clicked = True
-        if st.session_state.download_clicked:
-            update_enproceso(proveedores=pick_proveedores, fecha=fecha_final)
-        # Reiniciar el estado para evitar ejecuciones múltiples
-            st.session_state.download_clicked = False
+        
+        # Paso 1: Preparar
+        if col2.button("Preparar Archivo", key="prep_prov"):
+            if pick_proveedores:
+                with st.spinner("Generando archivo Excel..."):
+                    st.session_state['excel_buffer'] = get_emitir(fecha=fecha_final, proveedores=pick_proveedores)
+                    st.session_state['contexto_descarga'] = {'tipo': 'proveedor', 'items': pick_proveedores, 'fecha': fecha_final}
+            else:
+                st.warning("Selecciona al menos un proveedor.")
 
     elif option == "Pedido":
-
         pick_pedidos = col2.multiselect("pedidos", placeholder='Elige  los pedidos',
                                         options=st.session_state.cotizaciones.loc[
                                             st.session_state.cotizaciones['estado'] == 'PENDIENTE'][
                                             'cod_pedido'].unique().tolist(), label_visibility='collapsed')
+        
+        # Paso 1: Preparar
+        if col2.button("Preparar Archivo", key="prep_ped"):
+            if pick_pedidos:
+                with st.spinner("Generando archivo Excel..."):
+                    st.session_state['excel_buffer'] = get_emitir(pedidos=pick_pedidos)
+                    st.session_state['contexto_descarga'] = {'tipo': 'pedido', 'items': pick_pedidos}
+            else:
+                st.warning("Selecciona al menos un pedido.")
 
-        if col2.download_button(
-                label='Generar',
-                data=get_emitir(pedidos=pick_pedidos),
-                file_name='emitir_' + date.today().strftime('%Y%m%d') + '.xlsx',
-                mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        ):
-            st.session_state.download_clicked = True
-
-        if st.session_state.download_clicked:
-            update_enproceso(pedidos=pick_pedidos)
-        # Reiniciar el estado para evitar ejecuciones múltiples
-            st.session_state.download_clicked = False
+    # Paso 2: Descargar (Común para ambas opciones)
+    if 'excel_buffer' in st.session_state and st.session_state.get('excel_buffer') is not None:
+        col2.download_button(
+            label="Descargar y Finalizar",
+            data=st.session_state['excel_buffer'],
+            file_name='emitir_' + date.today().strftime('%Y%m%d') + '.xlsx',
+            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            on_click=on_download_click,
+            args=(st.session_state['contexto_descarga']['tipo'], 
+                  st.session_state['contexto_descarga']['items'],
+                  st.session_state['contexto_descarga'].get('fecha'))
+        )
 
     col3.subheader('Subir Cotizaciones Emitidas')
 
