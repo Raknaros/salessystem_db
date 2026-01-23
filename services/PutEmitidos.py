@@ -1,22 +1,34 @@
 import pandas as pd
+from datetime import date
+from time import sleep
+from sqlalchemy import create_engine
 import numpy as np
-from Querys import salessystem
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
 
-def put_emitidos(dataframe: pd.DataFrame):
-    """
-    Loads a DataFrame with 'pedidos' data into the pedidos table.
-    The DataFrame should be pre-processed and cleaned.
-    """
+def load_pedidos(ruta: str):
+    engine = create_engine('mysql+pymysql://admindb:Giu72656770@giumarchan.dev'
+                           ':13306/salessystem')
+
+    pedidos = pd.read_excel(ruta + '/importar.xlsx', sheet_name='pedidos', date_format='%d/%m/%Y',
+                            dtype={'periodo': np.int32, 'adquiriente': object, 'importe_total': np.int64, 'rubro': str,
+                                   'promedio_factura': None, 'contado_credito': str,
+                                   'bancariza': bool, 'punto_entrega': str, 'notas': str, 'estado': str},
+                            parse_dates=[0, ],
+                            na_values=' ', false_values=['no', 'NO', 'No'], true_values=['si', 'Si', 'SI'])
+    #pedidos.astype(dtype={'c': int, 'd': np.int64, 'f': np.int32}, copy=False, errors='raise')
+
     str_columns = ['rubro', 'contado_credito', 'punto_entrega', 'notas', 'estado']
     for column in str_columns:
-        if column in dataframe.columns and dataframe[column].notna().any():
-            dataframe[column] = dataframe[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
+        if pedidos[column].notna().any():
+            pedidos[column] = pedidos[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
 
-    # Use the imported engine
-    dataframe.to_sql('pedidos', salessystem, if_exists='append', index=False)
-    return f"Se cargaron {len(dataframe)} registros de emitidos."
+    #observacion, si en algun campo de numero va algun espacio verificar como se parsea por el read_excel y corregir para este caso y otros
+    #
 
+    return print(pedidos.to_sql('pedidos', engine, if_exists='append', index=False))  #
+
+
+#load_pedidos('D:/OneDrive/facturacion')

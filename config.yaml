@@ -10,7 +10,7 @@ credentials:
       first_name: Vicky
       last_name: Vara
       logged_in: False # Will be managed automatically
-      password: $2b$12$xCqeYod8DgyXeVJ3bpEWJ..xuoqOKrfLMj7lSIlSuLdjDHc8/3Tna # Will be hashed automatically
+      password: $2b$12$r1ZYdm4GJIpUp3SmestHDuqc0eegojorXR3VEkJ9mdDWhSoYCkRVi # Will be hashed automatically
       roles: # Optional
       - editor
       - viewer
@@ -29,7 +29,7 @@ credentials:
       first_name: Paolo
       last_name: Meza
       logged_in: False # Will be managed automatically
-      password: $2b$12$66PjSJBlxhJPJ0I1GVwxIebDWKDyZ3dNUQcgY7T3UU97BQvqI3HMy # Will be hashed automatically $2b$12$r1ZYdm4GJIpUp3SmestHDuqc0eegojorXR3VEkJ9mdDWhSoYCkRVi
+      password: p259E9C695+ # Will be hashed automatically $2b$12$r1ZYdm4GJIpUp3SmestHDuqc0eegojorXR3VEkJ9mdDWhSoYCkRVi
       roles: # Optional
         - admin
         - editor

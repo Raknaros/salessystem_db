@@ -1,26 +1,26 @@
 import pandas as pd
-from Querys import salessystem
+import os
+from sqlalchemy import create_engine
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
-
 def put_bancarizaciones():
     pass
+def load_bancarizar(ruta: str):
+    engine = create_engine('mysql+pymysql://admindb:Giu72656770@giumarchan.dev'
+                           ':13306/salessystem')
 
-
-def load_bancarizar(dataframe: pd.DataFrame):
-    """
-    Loads a DataFrame with 'bancarizar' data into the v_bcp table.
-    The DataFrame should be pre-processed and cleaned.
-    """
+    bancarizar = pd.read_excel(ruta + '/importar.xlsx', sheet_name='bancarizar', date_format='%d/%m/%Y',
+                               parse_dates=[2, ], dtype={'observaciones': str}
+                               , na_values=' ')
 
     str_columns = ['adquiriente', 'proveedor', 'documento_relacionado', 'observaciones']
     for column in str_columns:
-        if column in dataframe.columns and dataframe[column].notna().any():
-            dataframe[column] = dataframe[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
+        if bancarizar[column].notna().any():
+            bancarizar[column] = bancarizar[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
 
-    # Use the imported engine
-    dataframe.to_sql('v_bcp', salessystem, if_exists='append', index=False)
-    return f"Se cargaron {len(dataframe)} registros de bancarización."
+    return print(bancarizar.to_sql('v_bcp', engine, if_exists='append', index=False))
 
+
+load_bancarizar('D:/OneDrive/facturacion')
