@@ -3,11 +3,13 @@ from time import sleep
 
 import streamlit as st
 
+# Configuración de página DEBE ser el primer comando de Streamlit
+st.set_page_config(page_title="Cotizaciones", page_icon=":material/edit:", layout="wide")
+
+# Importaciones locales después de la configuración
 from services.GetEmitir import get_emitir, update_enproceso
 from services.PutCotizaciones import load_cotizaciones
-from services.Querys import facturas_poremitir, lista_facturas, cotizaciones
-
-st.set_page_config(page_title="Cotizaciones", page_icon=":material/edit:", layout="wide")
+from services.Querys import get_facturas_poremitir, lista_facturas, cotizaciones
 
 if 'lista_facturas' not in st.session_state:
     st.session_state.lista_facturas = lista_facturas()
@@ -23,11 +25,16 @@ if st.session_state.get("authentication_status"):
 
 
     def actualizar_cargar_cotizaciones():
+        # Limpiar caché de cotizaciones para reflejar cambios
+        cotizaciones.clear()
+
         st.session_state.lista_facturas = lista_facturas()
         st.session_state.cotizaciones = cotizaciones()
         sleep(2)
         st.rerun()
 
+    # Carga perezosa de facturas por emitir
+    facturas_poremitir = get_facturas_poremitir()
 
     st.dataframe(facturas_poremitir, height=450, hide_index=True, column_config={
         "Codigo de Pedido": st.column_config.TextColumn(
@@ -94,11 +101,21 @@ if st.session_state.get("authentication_status"):
     cotizaciones_masivo = col1.file_uploader("Subir Cotizaciones", type=['xlsx'],
                                              help='Subir archivo excel de cotizaciones(pre-cuadro) ya elaborado segun el pedido',
                                              label_visibility='collapsed')
-    subir_cotizaciones = col1.button(label='Subir', key='subir_cotizaciones', on_click=load_cotizaciones,
-                                     args=(cotizaciones_masivo,))
-
-    #if subir_cotizaciones:
-    #    actualizar_cargar_cotizaciones()
+    
+    # Modificación: Lógica explícita de subida y recarga
+    if col1.button(label='Subir', key='subir_cotizaciones'):
+        if cotizaciones_masivo is not None:
+            with st.spinner('Procesando cotizaciones...'):
+                mensaje = load_cotizaciones(cotizaciones_masivo)
+            
+            if "Error" in mensaje:
+                st.error(mensaje)
+            else:
+                st.success(mensaje)
+                sleep(2)
+                actualizar_cargar_cotizaciones() # Llama a la función que actualiza estado y hace rerun
+        else:
+            st.warning("Por favor, selecciona un archivo primero.")
 
     col2.subheader('Descargar Cuadro para Emitir')
 

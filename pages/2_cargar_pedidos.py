@@ -1,18 +1,21 @@
 from datetime import date
+from time import sleep
 
 import numpy as np
 import pandas as pd
-import streamlit_authenticator as stauth
 import streamlit as st
+import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
-from time import sleep
 
+# Configuración de página DEBE ser el primer comando de Streamlit
+st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wide")
+
+# Importaciones locales después de la configuración
 from services.PutPedidos import put_pedidos
 from services.GetPrecuadro import get_precuadros
 from services.Querys import pedidos
 
-st.set_page_config(page_title="Pedidos", page_icon=":material/edit:", layout="wide")
 if 'df_pedidos' not in st.session_state:
     st.session_state.df_pedidos = pedidos()
 
@@ -139,7 +142,7 @@ if st.session_state.get("authentication_status"):
 
     if submit:
         if masivo is not None:
-            pedidos = pd.read_excel(masivo, sheet_name='pedidos', date_format='%d/%m/%Y',
+            pedidos_df = pd.read_excel(masivo, sheet_name='pedidos', date_format='%d/%m/%Y',
                                     dtype={'periodo': np.int32, 'adquiriente': object, 'importe_total': np.int64,
                                            'rubro': str,
                                            'promedio_factura': None, 'contado_credito': str,
@@ -149,10 +152,10 @@ if st.session_state.get("authentication_status"):
 
             str_columns = ['rubro', 'contado_credito', 'punto_entrega', 'notas', 'estado']
             for column in str_columns:
-                if pedidos[column].notna().any():
-                    pedidos[column] = pedidos[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
-            pedidos.replace(np.nan, None, inplace=True)
-            st.success(put_pedidos(pedidos.to_dict(orient='records')))
+                if pedidos_df[column].notna().any():
+                    pedidos_df[column] = pedidos_df[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
+            pedidos_df.replace(np.nan, None, inplace=True)
+            st.success(put_pedidos(pedidos_df.to_dict(orient='records')))
 
         else:
             data = [{
@@ -167,6 +170,9 @@ if st.session_state.get("authentication_status"):
                 "notas": notas,
             }, ]
             st.success(put_pedidos(data))
+        
+        # Invalidar caché de pedidos para que se refresque la tabla
+        pedidos.clear()
 
         sleep(2)
         st.session_state.df_pedidos = pedidos()

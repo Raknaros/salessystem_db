@@ -1,15 +1,51 @@
-import streamlit_authenticator as stauth
 import streamlit as st
+import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 from time import sleep
+import threading
+from streamlit.runtime.scriptrunner import add_script_run_ctx
 
-from services.Querys import adquirientes, proveedores, catalogo
+# Configuración de página DEBE ser el primer comando de Streamlit
+st.set_page_config(page_title="Login", page_icon=":material/edit:", layout="wide")
+
+# Importaciones locales después de la configuración
+# Importamos todas las funciones que queremos pre-cargar
+from services.Querys import (
+    adquirientes, proveedores, catalogo, 
+    pedidos, cotizaciones, bancarizaciones, 
+    lista_facturas, lista_guias
+)
+
+# --- LÓGICA DE PRE-CARGA (PREFETCHING) ---
+def prefetch_data():
+    """
+    Ejecuta las consultas en segundo plano para llenar el caché de Streamlit.
+    """
+    try:
+        # Llamamos a las funciones. Como tienen @st.cache_data, 
+        # Streamlit guardará el resultado en memoria.
+        pedidos()
+        cotizaciones()
+        bancarizaciones()
+        adquirientes()
+        proveedores()
+        catalogo()
+        # lista_facturas() # Estas pueden ser muy pesadas, evaluar si incluirlas
+        # lista_guias()
+    except Exception:
+        # Silenciamos errores en el hilo de pre-carga para no afectar el login
+        pass
+
+# Iniciamos el hilo de pre-carga solo si no estamos autenticados aún
+if 'authentication_status' not in st.session_state or st.session_state['authentication_status'] is None:
+    prefetch_thread = threading.Thread(target=prefetch_data)
+    add_script_run_ctx(prefetch_thread)
+    prefetch_thread.start()
+# -----------------------------------------
 
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
-
-st.set_page_config(page_title="Login", page_icon=":material/edit:", layout="wide")
 
 authenticator = stauth.Authenticate(
     config['credentials'],

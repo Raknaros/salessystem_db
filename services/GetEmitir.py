@@ -48,7 +48,14 @@ def get_emitir(proveedores=None, fecha: datetime = None, pedidos=None):
     lista_proveedores = Querys.proveedores() #SELECT alias, numero_documento, usuario_sol, clave_sol FROM proveedores'
 
     def formato_fecha(fecha):
-        return pd.to_datetime(fecha, format='%Y-%m-%d').strftime('%d/%m/%Y')
+        if pd.isna(fecha) or fecha == '':
+            return ''  # O puedes devolver un valor por defecto, como "N/A"
+
+            # Convertir la fecha al formato deseado
+        try:
+            return pd.to_datetime(fecha, format='%Y-%m-%d').strftime('%d/%m/%Y')
+        except ValueError:
+            return ''
 
     def formato_float(num):
         if pd.notna(num):

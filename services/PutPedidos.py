@@ -31,21 +31,24 @@ def put_pedidos(data: list):
                 importe_total=fila['importe_total'],
                 rubro=fila['rubro'],
                 promedio_factura=fila['promedio_factura'],
-                punto_entrega=fila['punto_llegada'],
-                contado_credito=fila.get('forma_pago'),  # Usar .get() para evitar KeyError
+                punto_entrega=fila.get('punto_llegada') or fila.get('punto_entrega'), # Manejo robusto de claves
+                contado_credito=fila.get('forma_pago') or fila.get('contado_credito'),  # Usar .get() para evitar KeyError y compatibilidad
                 notas=fila.get('notas'),
             )
             session.add(nuevo_pedido)
         session.commit()# Commit al final
+        
         if len(data) > 1:
             return "Se ingresaron "+str(len(data))+" pedidos."
         elif len(data) == 1:
-            print('4')
-            return "Se ingresó el pedido con código "+Querys.pedidos().iloc[-1]['cod_pedido']+"."
+            # Consulta ligera para obtener solo el último código insertado
+            ultimo_pedido = session.query(Pedidos.cod_pedido).order_by(Pedidos.id.desc()).first()
+            codigo = ultimo_pedido[0] if ultimo_pedido else "DESCONOCIDO"
+            return "Se ingresó el pedido con código " + str(codigo) + "."
 
     except Exception as e:
         session.rollback()
-        return "Ocurrió un error al insertar el pedido"
+        return f"Ocurrió un error al insertar el pedido: {str(e)}"
     finally:
         session.close()
 

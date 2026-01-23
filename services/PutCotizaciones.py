@@ -17,37 +17,32 @@ pd.set_option('future.no_silent_downcasting', True)
 
 
 def load_cotizaciones(archivo):
-    workbook = load_workbook(archivo)
-    # Crear dataframe Cotizaciones
-    cotizaciones = pd.DataFrame(
-        columns=['cuo', 'alias', 'emision', 'descripcion', 'cantidad', 'precio_unit', 'total', 'peso_articulo',
-                 'peso_total', 'observaciones', 'vencimiento', 'cuota1', 'vencimiento2', 'cuota2', 'vencimiento3',
-                 'cuota3', 'vencimiento4', 'cuota4', 'moneda', 'unid_medida', 'traslado', 'lugar_entrega', 'placa',
-                 'conductor', 'datos_adicionales'])
+    # Leer todas las hojas del Excel usando pandas
+    # header=1 indica que la fila 2 (índice 1) contiene los encabezados
+    # La fila 1 (índice 0) se ignora
+    xls = pd.read_excel(archivo, sheet_name=None, header=1)
+    
+    dfs = []
+    
+    for sheet_name, df in xls.items():
+        # Asignar el nombre de la hoja como cod_pedido
+        df['cod_pedido'] = sheet_name
+        
+        # Eliminar columnas total y peso_total si existen
+        cols_to_drop = [col for col in ['total', 'peso_total'] if col in df.columns]
+        if cols_to_drop:
+            df.drop(cols_to_drop, axis=1, inplace=True)
+            
+        # Filtrar filas donde 'cuo' no sea nulo
+        if 'cuo' in df.columns and not df['cuo'].isnull().all():
+             # Asegurarse de que solo tomamos filas válidas
+             df = df.dropna(subset=['cuo'])
+             dfs.append(df)
+    
+    if not dfs:
+        return "No se encontraron datos válidos en el archivo."
 
-    # Iterar sobre todas las hojas del libro
-    for sheet_name in workbook.sheetnames:
-        # Seleccionar la hoja actual
-        sheet = workbook[sheet_name]
-
-        # Recuperar la primera fila
-        pedido = sheet['A1'].value
-
-        # Crear una lista de listas con el resto del contenido de la hoja
-        resto_filas = [[cell.value for cell in row[:25]] for row in sheet.iter_rows(min_row=2)]
-
-        # Convertir el resto del contenido en un DataFrame
-        df = pd.DataFrame(resto_filas[1:], columns=resto_filas[0])
-
-        # Agregar cod_pedido de la celda A1
-        df['cod_pedido'] = pedido
-
-        # Eliminar columnas total y peso_total
-        df.drop(['total', 'peso_total'], axis=1, inplace=True)
-
-        # Unir verticalmente al dataframe cotizaciones solo si ningun valor de la columna cuo es nulo
-        if not df['cuo'].isnull().any():
-            cotizaciones = pd.concat([cotizaciones, df], ignore_index=True, axis=0)
+    cotizaciones = pd.concat(dfs, ignore_index=True)
 
     # VERIFICAR CONSECUENCIA DE FECHAS DE VENCIMIENTO
     for index, value in cotizaciones['vencimiento4'].items():
@@ -73,10 +68,11 @@ def load_cotizaciones(archivo):
                                                                                                       format='%Y-%m-%d')
 
     # Cambiar nombre de columna lugar_entrega a llegada
-    cotizaciones.rename(columns={'lugar_entrega': 'llegada'}, inplace=True)
+    if 'lugar_entrega' in cotizaciones.columns:
+        cotizaciones.rename(columns={'lugar_entrega': 'llegada'}, inplace=True)
 
     # Concatenar cod_pedido y cuo en columna cui
-    cotizaciones['cui'] = cotizaciones['cod_pedido'] + cotizaciones['cuo'].astype(str)
+    cotizaciones['cui'] = cotizaciones['cod_pedido'].astype(str) + cotizaciones['cuo'].astype(str)
 
     # Definir columnas de texto
     str_columns = ['alias', 'moneda', 'descripcion', 'unid_medida', 'llegada', 'datos_adicionales',
@@ -87,17 +83,21 @@ def load_cotizaciones(archivo):
 
     # Aplica redondeo a cada columna en la lista
     for col in columns_to_round:
-        cotizaciones[col] = cotizaciones[col].apply(lambda x: round(x, 3) if pd.notna(x) else x)
+        if col in cotizaciones.columns:
+            cotizaciones[col] = cotizaciones[col].apply(lambda x: round(x, 3) if pd.notna(x) else x)
 
     # Cambiar mayusculas y quitar espacios de los extremos a cada valor de cada columna de texto
     for column in str_columns:
-        if cotizaciones[column].notna().any():
+        if column in cotizaciones.columns and cotizaciones[column].notna().any():
             cotizaciones[column] = cotizaciones[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
 
     # Separar columnas de facturacion
-    facturas = cotizaciones[['cod_pedido', 'cuo', 'alias', 'emision', 'moneda', 'descripcion', 'unid_medida',
+    cols_facturas = ['cod_pedido', 'cuo', 'alias', 'emision', 'moneda', 'descripcion', 'unid_medida',
                              'cantidad', 'precio_unit', 'observaciones', 'vencimiento', 'cuota1',
-                             'vencimiento2', 'cuota2', 'vencimiento3', 'cuota3', 'vencimiento4', 'cuota4']]
+                             'vencimiento2', 'cuota2', 'vencimiento3', 'cuota3', 'vencimiento4', 'cuota4']
+    # Asegurar que existan las columnas antes de seleccionar
+    cols_facturas = [c for c in cols_facturas if c in cotizaciones.columns]
+    facturas = cotizaciones[cols_facturas]
 
     # Definir funcion de agrupamiento para las guias
     def columnas_guia(group):
@@ -109,20 +109,30 @@ def load_cotizaciones(archivo):
         return guia
 
     # Separar columnas para la tabla remision_remitente, aplicar funcion de agrupamiento y retirar columnas sobrantes
-    remision_remitente = (cotizaciones[
-                              ['cui', 'cod_pedido', 'cuo', 'alias', 'traslado', 'llegada', 'cantidad',
+    cols_remision = ['cui', 'cod_pedido', 'cuo', 'alias', 'traslado', 'llegada', 'cantidad',
                                'peso_articulo', 'placa', 'conductor',
-                               'datos_adicionales', 'observaciones']].groupby('cui').apply(columnas_guia,
-                                                                                           include_groups=False)
-                          .drop(['cantidad', 'peso_articulo'], axis=1))
+                               'datos_adicionales', 'observaciones']
+    cols_remision = [c for c in cols_remision if c in cotizaciones.columns]
+    
+    remision_remitente = (cotizaciones[cols_remision].groupby('cui').apply(columnas_guia, include_groups=False))
+    
+    if 'cantidad' in remision_remitente.columns:
+        remision_remitente.drop(['cantidad'], axis=1, inplace=True)
+    if 'peso_articulo' in remision_remitente.columns:
+        remision_remitente.drop(['peso_articulo'], axis=1, inplace=True)
 
     session = Session()
-    for cod_pedido in facturas['cod_pedido'].unique():
-        pedido = session.query(Pedidos).filter(Pedidos.cod_pedido == cod_pedido)
-        pedido.update({Pedidos.estado: 'EN PROCESO'})
-    session.commit()
-
-    return print(facturas.to_sql('facturas', salessystem, if_exists='append', index=False),
-                 remision_remitente.to_sql('remision_remitente', salessystem, if_exists='append', index=False))
-
-
+    try:
+        for cod_pedido in facturas['cod_pedido'].unique():
+            pedido = session.query(Pedidos).filter(Pedidos.cod_pedido == cod_pedido)
+            pedido.update({Pedidos.estado: 'EN PROCESO'})
+        session.commit()
+        
+        facturas.to_sql('facturas', salessystem, if_exists='append', index=False)
+        remision_remitente.to_sql('remision_remitente', salessystem, if_exists='append', index=False)
+        return "Carga Exitosa"
+    except Exception as e:
+        session.rollback()
+        return f"Error en la carga: {str(e)}"
+    finally:
+        session.close()
