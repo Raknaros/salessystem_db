@@ -9,6 +9,7 @@ st.set_page_config(page_title="Cotizaciones", page_icon=":material/edit:", layou
 # Importaciones locales después de la configuración
 from services.GetEmitir import get_emitir, update_enproceso
 from services.PutCotizaciones import load_cotizaciones
+from services.PutEmitidos import load_emitidos
 from services.Querys import get_facturas_poremitir, lista_facturas, cotizaciones
 
 if 'lista_facturas' not in st.session_state:
@@ -188,10 +189,23 @@ if st.session_state.get("authentication_status"):
 
     col3.subheader('Subir Cotizaciones Emitidas')
 
-    col3.file_uploader("Subir Facturas Emitidas", type=['xlsx'],
+    emitidas_masivo = col3.file_uploader("Subir Facturas Emitidas", type=['xlsx'],
                        help='Subir archivo excel de Cuadro para Emitir ya realizado y con numero de guia y factura colocada',
-                       label_visibility='collapsed', disabled=True)
-    col3.button(label='Subir', key='subir_cotizaciones_emitidas')
+                       label_visibility='collapsed')
+    
+    if col3.button(label='Subir', key='subir_cotizaciones_emitidas'):
+        if emitidas_masivo is not None:
+            with st.spinner('Procesando facturas emitidas...'):
+                mensaje = load_emitidos(emitidas_masivo)
+            
+            if "Error" in mensaje:
+                st.error(mensaje)
+            else:
+                st.success(mensaje)
+                sleep(2)
+                actualizar_cargar_cotizaciones()
+        else:
+            st.warning("Por favor, selecciona un archivo primero.")
 
 else:
     st.error("Por favor inicia sesion para continuar...")

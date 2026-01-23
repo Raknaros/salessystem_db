@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dab2095f-379b-465f-87ee-4f7071043456" name="Changes" comment="readme">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="dab2095f-379b-465f-87ee-4f7071043456" name="Changes" comment="Improve some functions and work flow">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.streamlit/secrets.toml" beforeDir="false" afterPath="$PROJECT_DIR$/.streamlit/secrets.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/2_cargar_pedidos.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/2_cargar_pedidos.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/3_cargar_cotizaciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/3_cargar_cotizaciones.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/GetEmitir.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/GetEmitir.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/GetPrecuadro.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/GetPrecuadro.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/PutCotizaciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/PutCotizaciones.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/PutPedidos.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/PutPedidos.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/PutEmitidos.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/PutEmitidos.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/Querys.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/Querys.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -157,23 +150,7 @@
       <workItem from="1757476148030" duration="1769000" />
       <workItem from="1757710878209" duration="1825000" />
       <workItem from="1768583045180" duration="1230000" />
-      <workItem from="1769123257135" duration="10729000" />
-    </task>
-    <task id="LOCAL-00002" summary="Third">
-      <option name="closed" value="true" />
-      <created>1719772421811</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1719772421811</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Third">
-      <option name="closed" value="true" />
-      <created>1719812932973</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1719812932973</updated>
+      <workItem from="1769123257135" duration="14611000" />
     </task>
     <task id="LOCAL-00004" summary="Fourth">
       <option name="closed" value="true" />
@@ -551,7 +528,23 @@
       <option name="project" value="LOCAL" />
       <updated>1738041505504</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Improve some functions and work flow">
+      <option name="closed" value="true" />
+      <created>1769134256507</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1769134256507</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Improve some functions and work flow">
+      <option name="closed" value="true" />
+      <created>1769139689096</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1769139689096</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -573,7 +566,8 @@
     <MESSAGE value="Fourth" />
     <MESSAGE value="Fifth" />
     <MESSAGE value="first in dev" />
-    <option name="LAST_COMMIT_MESSAGE" value="first in dev" />
+    <MESSAGE value="Improve some functions and work flow" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve some functions and work flow" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/salessystem_db$models.coverage" NAME="models Coverage Results" MODIFIED="1721520498346" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

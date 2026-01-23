@@ -80,7 +80,7 @@ def pedidos():
 
 @st.cache_data(ttl=60, show_spinner=False)
 def cotizaciones():
-    query = "SELECT * FROM facturas WHERE estado='PENDIENTE' ORDER BY emision"
+    query = "SELECT * FROM facturas WHERE estado= IN ('PENDIENTE','EN PROCESO') ORDER BY emision"
     return safe_query_execution(run_query, salessystem, query)
 
 def get_facturas_poremitir():

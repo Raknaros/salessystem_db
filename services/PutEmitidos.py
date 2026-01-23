@@ -1,34 +1,77 @@
 import pandas as pd
-from datetime import date
-from time import sleep
-from sqlalchemy import create_engine
-import numpy as np
+from sqlalchemy import text
+from services.Querys import salessystem, Session
 
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
+def load_emitidos(archivo):
+    """
+    Procesa el archivo de 'Cuadro para Emitir' completado con Guías y Facturas.
+    Actualiza la base de datos con los números asignados.
+    """
+    try:
+        # Leer el Excel. Asumimos que la estructura es similar a la generada por get_emitir
+        # Puede tener múltiples hojas (una por proveedor), así que leemos todas.
+        xls = pd.read_excel(archivo, sheet_name=None, dtype=str)
+        
+        registros_actualizados = 0
+        errores = []
 
+        session = Session()
+        
+        for sheet_name, df in xls.items():
+            # Normalizar nombres de columnas (quitar espacios, mayúsculas)
+            df.columns = df.columns.str.strip().str.upper()
+            
+            # Verificar columnas mínimas necesarias
+            if not {'CUI', 'GUIA', 'FACTURA'}.issubset(df.columns):
+                continue # Saltar hojas que no tengan la estructura esperada
+            
+            # Filtrar filas que tengan CUI y (GUIA o FACTURA)
+            df_validos = df.dropna(subset=['CUI'])
+            df_validos = df_validos[
+                (df_validos['GUIA'].notna() & (df_validos['GUIA'] != '')) | 
+                (df_validos['FACTURA'].notna() & (df_validos['FACTURA'] != ''))
+            ]
 
-def load_pedidos(ruta: str):
-    engine = create_engine('mysql+pymysql://admin:Giu72656770@sales-system.c988owwqmmkd.us-east-1.rds.amazonaws.com'
-                           ':3306/salessystem')
+            for index, row in df_validos.iterrows():
+                cui = row['CUI']
+                guia = row['GUIA'] if pd.notna(row['GUIA']) else None
+                factura = row['FACTURA'] if pd.notna(row['FACTURA']) else None
+                
+                # Intentar separar cod_pedido y cuo del CUI si es necesario, 
+                # pero si la tabla tiene CUI o clave compuesta, usamos eso.
+                # Asumiendo que la tabla 'facturas' tiene cod_pedido y cuo como PK,
+                # y que CUI = cod_pedido + cuo (como string).
+                # Esto puede ser delicado si el largo del cod_pedido varía.
+                # Estrategia segura: Buscar por concatenación en la BD o asumir estructura fija.
+                
+                # Opción A: Update directo usando SQL crudo para flexibilidad
+                # Actualizamos tabla FACTURAS
+                query_facturas = text("""
+                    UPDATE facturas 
+                    SET guia = :guia, numero = :factura, estado = 'TERMINADO'
+                    WHERE CONCAT(cod_pedido, cuo) = :cui
+                """)
+                
+                # Actualizamos tabla REMISION_REMITENTE (si aplica)
+                query_remision = text("""
+                    UPDATE remision_remitente
+                    SET factura = :factura, numero = :guia, estado = 'TERMINADO'
+                    WHERE CONCAT(cod_pedido, cuo) = :cui
+                """)
 
-    pedidos = pd.read_excel(ruta + '/importar.xlsx', sheet_name='pedidos', date_format='%d/%m/%Y',
-                            dtype={'periodo': np.int32, 'adquiriente': object, 'importe_total': np.int64, 'rubro': str,
-                                   'promedio_factura': None, 'contado_credito': str,
-                                   'bancariza': bool, 'punto_entrega': str, 'notas': str, 'estado': str},
-                            parse_dates=[0, ],
-                            na_values=' ', false_values=['no', 'NO', 'No'], true_values=['si', 'Si', 'SI'])
-    #pedidos.astype(dtype={'c': int, 'd': np.int64, 'f': np.int32}, copy=False, errors='raise')
+                try:
+                    session.execute(query_facturas, {'guia': guia, 'factura': factura, 'cui': cui})
+                    session.execute(query_remision, {'guia': guia, 'factura': factura, 'cui': cui})
+                    registros_actualizados += 1
+                except Exception as e:
+                    errores.append(f"Error en CUI {cui}: {str(e)}")
 
-    str_columns = ['rubro', 'contado_credito', 'punto_entrega', 'notas', 'estado']
-    for column in str_columns:
-        if pedidos[column].notna().any():
-            pedidos[column] = pedidos[column].apply(lambda x: x.strip().upper() if pd.notna(x) else x)
+        session.commit()
+        session.close()
 
-    #observacion, si en algun campo de numero va algun espacio verificar como se parsea por el read_excel y corregir para este caso y otros
-    #
+        if errores:
+            return f"Proceso completado con {registros_actualizados} actualizaciones. Errores: {len(errores)}"
+        return f"Éxito: Se actualizaron {registros_actualizados} registros correctamente."
 
-    return print(pedidos.to_sql('pedidos', engine, if_exists='append', index=False))  #
-
-
-#load_pedidos('D:/OneDrive/facturacion')
+    except Exception as e:
+        return f"Error crítico al procesar el archivo: {str(e)}"
